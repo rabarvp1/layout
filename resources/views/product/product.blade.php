@@ -23,8 +23,6 @@
                                 <label>stock</label>
                                 <input type="text" class="form-control">
 
-                                <label>category</label>
-                                <input type="text" class="form-control">
                             </form>
                         </div>
                         <div class="modal-footer">
