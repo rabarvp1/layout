@@ -1,41 +1,27 @@
 <x-layout.layout>
-
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>product</h1>
+            <h1>Catigories</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
         </div>
         <div class="card-body">
-            <table class="table  mx-auto table-hover ">
+            <table class="table  mx-auto table-hover">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-
                         <th scope="col">name</th>
 
-                        <th scope="col">price</th>
-
-                        <th scope="col">stock</th>
-
-                        <th scope="col">categories</th>
-
-                        <th scope="col">Edit</th>
-
-                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($products as $product)
+                    @foreach ($cat as $cat)
 
                     <tr>
-                        <th scope="row">{{ $product->id }}</th>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->stock  }}</td>
-                        <td>{{ $product->category }}</td>
-                        <td><button class="btn btn-secondary rounded-4">Edit</button></td>
+                        <th scope="row">{{ $cat->id }}</th>
+                        <td>{{ $cat->name }}</td>
 
-                        <td><button class="btn btn-danger rounded-4">Delete</button></td>
+
+                        {{-- <td><button class="btn btn-danger rounded-4">Delete</button></td> --}}
 
                     </tr>
 
@@ -45,6 +31,7 @@
 
                 </tbody>
             </table>
+
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -53,32 +40,15 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-                            <form id="form-id" action="/upload" class="vstack gap-3" method="POST">
+                            <form id="form-id" action="/inputCat" class="vstack gap-3" method="POST">
                                 @csrf
-                                <label>name</label>
+                                <label>Name of Catigories</label>
                                 <input type="text" name="name" class="form-control">
                                 @error('name')
                                 {{ $message }}
                                 @enderror
 
-                                <label>price</label>
-                                <input type="text" name="price" class="form-control">
-                                @error('price')
-                                {{ $message }}
-                                @enderror
 
-                                <label>stock</label>
-                                <input type="text" name="stock" class="form-control">
-                                @error('stock')
-                                {{ $message }}
-                                @enderror
-
-                                <label>catagoreis</label>
-                                <select name="cat_id" class="form-control">
-                                    @foreach($cat as $category)
-                                    <option value="{{ $category->id }}" {{ old('cat_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -98,4 +68,5 @@
 
     </script>
     @endif
+
 </x-layout.layout>

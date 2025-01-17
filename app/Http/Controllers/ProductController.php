@@ -15,9 +15,9 @@ class ProductController extends Controller
                 'cat.name as category',
             )
             ->get();
-            $cat=DB::table('cat')->get();
+        $cat = DB::table('cat')->get();
 
-        return view('product.product', ['products' => $products ,'cat'=>$cat]);
+        return view('product.product', ['products' => $products, 'cat' => $cat]);
     }
 
     public function upload(Request $request)
@@ -27,7 +27,7 @@ class ProductController extends Controller
             'name'   => 'required|string|max:50|unique:product,name',
             'price'  => 'required|numeric|gt:0',
             'stock'  => 'required|numeric|gt:0',
-            'cat_id' => 'required|numeric',
+            'cat_id' => 'required|numeric|exists:product,cat_id',
         ]);
 
         DB::table('product')->insert([
@@ -36,7 +36,7 @@ class ProductController extends Controller
             'stock'  => $request->stock,
             'cat_id' => $request->cat_id,
         ]);
-        DB::table('cat')->select();
+        // DB::table('cat')->select();
 
         return redirect('product');
 
