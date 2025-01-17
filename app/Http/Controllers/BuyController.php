@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class buy extends Controller
+class BuyController extends Controller
 {
     public function buy(){
 

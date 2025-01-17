@@ -6,19 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        //
+        Schema::create('cat', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+
+        });
+        Schema::create('product', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->decimal('price',11,2);
+            $table->decimal('stock')->default(0);
+            $table->foreignId('cat_id')->references('id')->on('cat');
+        });
+
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        //
-    }
 };

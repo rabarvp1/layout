@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class sell extends Controller
+class SellController extends Controller
 {
     public function sell(){
 

@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\product;
-use App\Http\Controllers\buy;
-use App\Http\Controllers\sell;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BuyController;
+use App\Http\Controllers\SellController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/product', [product::class,'product']);
+Route::get('/product', [ProductController::class,'product']);
 
-Route::get('/buy', [buy::class,'buy']);
+Route::post('/upload', [ProductController::class,'upload']);
 
-Route::get('/sell', [sell::class,'sell']);
+Route::get('/buy', [BuyController::class,'buy']);
+
+Route::get('/sell', [SellController::class,'sell']);
