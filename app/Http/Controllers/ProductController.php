@@ -17,6 +17,7 @@ class ProductController extends Controller
             ->get();
         $cat = DB::table('cat')->get();
 
+
         return view('product.product', ['products' => $products, 'cat' => $cat]);
     }
 
@@ -27,8 +28,9 @@ class ProductController extends Controller
             'name'   => 'required|string|max:50|unique:product,name',
             'price'  => 'required|numeric|gt:0',
             'stock'  => 'required|numeric|gt:0',
-            'cat_id' => 'required|numeric|exists:product,cat_id',
+            'cat_id' => 'required|numeric|exists:cat,id',
         ]);
+        // |exists:product,cat_id
 
         DB::table('product')->insert([
             'name'   => $request->name,
@@ -41,7 +43,7 @@ class ProductController extends Controller
 
     }
 
-  // this method for delete product
+//   this method for delete product
 
     public function deleteProduct($id)
 {

@@ -40,8 +40,14 @@
                         @csrf
 
                         </form>
-                        </td> --}}
-                        <td><button  class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</button></td>
+                        </td> --}} <td>
+                            <!-- Form for editing the product -->
+                            <form action="{{ url('/product/'.$product->id.'/edit') }}" method="GET">
+                                @csrf
+                                <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
+                            </form>
+                        </td>
+                        {{-- <td><button  class="btn btn-secondary btn-sm" >Edit</button></td> --}}
 
                         <td>
                             <!-- Form for deleting the product -->
@@ -118,40 +124,7 @@
                         </div>
                         <div class="modal-body ">
 
-                            <form id="edit"action="{{ url('/product/'.$product->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
 
-                                <div class="form-group">
-                                    <label for="name">Product Name</label>
-                                    <input type="text" name="name" class="form-control" value="{{ $product->name }}" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="price">Price</label>
-                                    <input type="number" name="price" class="form-control" value="{{ $product->price }}" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="stock">Stock</label>
-                                    <input type="number" name="stock" class="form-control" value="{{ $product->stock }}" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="cat_id">Category</label>
-                                    <select name="cat_id" class="form-control" required>
-                                        @foreach ($cat as $category)
-                                        <option value="{{ $category->id }}" {{ $category->id == $product->cat_id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" form="edit" class="btn btn-primary">Update</button>
-                                </div>
-
-                                {{-- <button type="submit" class="btn btn-primary">Update Product</button> --}}
-                            </form>
                         </div>
 
                     </div>
