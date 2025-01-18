@@ -14,10 +14,7 @@
             <input type="number" name="price" class="form-control" value="{{ $product->price }}" required>
         </div>
 
-        <div class="form-group">
-            <label for="stock">Stock</label>
-            <input type="number" name="stock" class="form-control" value="{{ $product->stock }}" required>
-        </div>
+        
 
         <div class="form-group">
             <label for="cat_id">Category</label>

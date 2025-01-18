@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\catController;
+use App\Http\Controllers\income;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
@@ -20,11 +21,20 @@ Route::put('/product/{id}', [ProductController::class, 'updateProduct']);  // Up
 
 Route::get('/buy', [BuyController::class, 'buy']);
 
+Route::post('/insert', [BuyController::class, 'insert']);
+
 Route::get('/sell', [SellController::class, 'sell']);
+
+Route::post('/insert_sell', [SellController::class, 'insert_sell']);
 
 Route::get('/cat', [catController::class, 'cat']);
 
 Route::post('/inputCat', [catController::class, 'inputCat']);
+
+
+Route::get('/income', [income::class, 'mergedData']);
+
+
 
 // Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 

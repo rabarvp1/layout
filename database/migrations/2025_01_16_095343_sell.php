@@ -11,7 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('sell', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('product');
+            $table->decimal('quantity');
+            $table->decimal('sell_price');
+            $table->decimal('total');
+
+
+
+
+        });
     }
 
     /**

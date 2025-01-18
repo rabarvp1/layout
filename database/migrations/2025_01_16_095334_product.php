@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price',11,2);
-            $table->decimal('stock')->default(0);
             $table->foreignId('cat_id')->references('id')->on('cat');
         });
 

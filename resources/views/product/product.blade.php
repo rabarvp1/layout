@@ -16,7 +16,6 @@
 
                         <th scope="col">price</th>
 
-                        <th scope="col">stock</th>
 
                         <th scope="col">categories</th>
 
@@ -32,15 +31,8 @@
                         <th scope="row">{{ $product->id }}</th>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
-                        <td>{{ $product->stock  }}</td>
                         <td>{{ $product->category }}</td>
-                        {{-- <td>
-                            <!-- Form for editing the product -->
-                            <form action="{{ url('/product/'.$product->id.'/edit') }}" method="GET">
-                        @csrf
-
-                        </form>
-                        </td> --}} <td>
+                       <td>
                             <!-- Form for editing the product -->
                             <form action="{{ url('/product/'.$product->id.'/edit') }}" method="GET">
                                 @csrf
@@ -89,11 +81,7 @@
                                 {{ $message }}
                                 @enderror
 
-                                <label>stock</label>
-                                <input type="text" name="stock" class="form-control">
-                                @error('stock')
-                                {{ $message }}
-                                @enderror
+
 
                                 <label>catagoreis</label>
                                 <select name="cat_id" class="form-control">

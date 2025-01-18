@@ -27,7 +27,6 @@ class ProductController extends Controller
         $request->validate([
             'name'   => 'required|string|max:50|unique:product,name',
             'price'  => 'required|numeric|gt:0',
-            'stock'  => 'required|numeric|gt:0',
             'cat_id' => 'required|numeric|exists:cat,id',
         ]);
         // |exists:product,cat_id
@@ -35,7 +34,6 @@ class ProductController extends Controller
         DB::table('product')->insert([
             'name'   => $request->name,
             'price'  => $request->price,
-            'stock'  => $request->stock,
             'cat_id' => $request->cat_id,
         ]);
 
@@ -71,14 +69,12 @@ public function updateProduct(Request $request, $id)
     $request->validate([
         'name'   => 'required|string|max:50|unique:product,name,' . $id,
         'price'  => 'required|numeric|gt:0',
-        'stock'  => 'required|numeric|gt:0',
         'cat_id' => 'required|numeric|exists:cat,id',
     ]);
 
     DB::table('product')->where('id', $id)->update([
         'name'   => $request->name,
         'price'  => $request->price,
-        'stock'  => $request->stock,
         'cat_id' => $request->cat_id,
     ]);
 

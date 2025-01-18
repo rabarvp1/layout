@@ -6,16 +6,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
                 <li class="nav-item ">
-                    <a class="nav-link active" aria-current="page" href="product">Product</a>
+                    <a class="nav-link active" aria-current="page" href="/product">Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="buy">buy</a>
+                    <a class="nav-link" href="/buy">buy</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="sell">sell</a>
+                    <a class="nav-link" href="/sell">sell</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="cat">Catigories</a>
+                    <a class="nav-link" href="/cat">Catigories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/income">income</a>
                 </li>
 
 
