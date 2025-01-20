@@ -9,21 +9,20 @@
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">quantity</th>
-                        <th scope="col">purchase</th>
+                        <th scope="col">order number</th>
+                        <th scope="col">discount</th>
+                        <th scope="col"></th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($storages as $storage)
+                    @foreach ($po as $storage)
                     <tr>
                         <th scope="row">{{ $storage->id }}</th>
-                        <td>{{ $storage->product_name }}</td>
-                        <td>{{ $storage->quantity }}</td>
-                        <td>{{ $storage->purchease_price }}</td>
-                        <td></td>
-                    </tr>
+                        <td>{{ $storage->order_number }}</td>
+                        <td>{{ $storage->discount }}</td>
+
+                      
 
 
 
@@ -50,6 +49,19 @@
                                 <label>quantity</label>
                                 <input type="text" name="quantity" class="form-control">
                                 @error('quantity')
+                                {{ $message }}
+                                @enderror
+
+                                <label>cost</label>
+                                <input type="text" name="cost" class="form-control">
+                                @error('cost')
+                                {{ $message }}
+                                @enderror
+
+
+                                <label>po_id</label>
+                                <input type="text" name="po_id" class="form-control">
+                                @error('po_id')
                                 {{ $message }}
                                 @enderror
 

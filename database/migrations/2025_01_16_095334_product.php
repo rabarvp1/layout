@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('cat', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
 
         });
         Schema::create('product', function (Blueprint $table) {

@@ -10,22 +10,20 @@
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">quantity</th>
-                        <th scope="col">sale price</th>
-                        <th scope="col">total</th>
+                        {{-- <th scope="col">Product name</th> --}}
+                        <th scope="col">order number</th>
+                        <th scope="col">discount</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($sells as $sale )
+                    @foreach ($invoices as $invoice )
                     <tr>
 
-                        <td>{{ $sale->id }}</td>
-                        <td>{{ $sale->product_name }}</td>
-                        <td>{{ $sale->quantity }}</td>
-                        <td>{{ $sale->sell_price }}</td>
-                        <td>{{ $sale->total }}</td>
+                        <td>{{ $invoice->id }}</td>
+                        {{-- <td>{{ $invoice->product_name }}</td> --}}
+                        <td>{{ $invoice->order_number }}</td>
+                        <td>{{ $invoice->discount }}</td>
 
                     </tr>
                     @endforeach
@@ -42,26 +40,31 @@
                         <div class="modal-body ">
                             <form id="form-id" action="/insert_sell" class="vstack gap-3" method="POST">
                                 @csrf
-                                <label>Product name</label>
-
                                 <select name="product_id" class="form-control">
                                     @foreach($products as $product)
-                                    <option value="{{ $product->id }}" >{{ $product->name }}</option>
+                                    <option value="{{ $product->id }}" {{ old('cat_id') == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
                                     @endforeach
                                 </select>
 
-
-                                <label>Quantity</label>
+                                <label>quantity</label>
                                 <input type="text" name="quantity" class="form-control">
                                 @error('quantity')
                                 {{ $message }}
                                 @enderror
 
-                                <label>Sale price</label>
-                                <input type="text" name="sell_price" class="form-control">
-                                @error('sell_price')
+                                <label>Price</label>
+                                <input type="text" name="price" class="form-control">
+                                @error('price')
                                 {{ $message }}
                                 @enderror
+
+
+                                <label>invoice_id</label>
+                                <input type="text" name="invoice_id" class="form-control">
+                                @error('invoice_id')
+                                {{ $message }}
+                                @enderror
+
 
 
 

@@ -39,11 +39,10 @@
                                 <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
                             </form>
                         </td>
-                        {{-- <td><button  class="btn btn-secondary btn-sm" >Edit</button></td> --}}
 
                         <td>
                             <!-- Form for deleting the product -->
-                            <form action="{{ url('/product/'.$product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                            <form action="{{ url('/product/'.$product->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم کاڵایە ؟')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>

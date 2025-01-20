@@ -11,12 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sell', function (Blueprint $table) {
+        Schema::create('invoice', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_number');
+            $table->decimal('discount');
+
+
+
+
+        });
+        Schema::create('invoice_id', function (Blueprint $table) {
+
             $table->foreignId('product_id')->constrained('product');
             $table->decimal('quantity');
-            $table->decimal('sell_price');
-            $table->decimal('total');
+            $table->decimal('price');
+            $table->foreignId('invoice_id')->constrained('invoice');
 
 
 
