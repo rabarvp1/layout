@@ -6,19 +6,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
                 <li class="nav-item ">
-                    <a class="nav-link active" aria-current="page" href="/product">Product</a>
+                    <a class="nav-link {{ Request::is('product') ? 'active' : '' }}" href="{{ route('product') }} " aria-current="page" href="/product">Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/buy">buy</a>
+                    <a class="nav-link {{ Request::is('buy') ? 'active' : '' }}" href="{{ route('buy') }}" href="/buy">Purchase</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/sell">sell</a>
+                    <a class="nav-link {{ Request::is('sell') ? 'active' : '' }}" href="{{ route('sell') }}" href="/sell">Invoice</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cat">Catigories</a>
+                    <a class="nav-link {{ Request::is('cat') ? 'active' : '' }}" href="{{ route('cat') }}" href="/cat">Catigories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/income">income</a>
+                    <a class="nav-link {{ Request::is('income') ? 'active' : '' }}" href="{{ route('income') }}" href="/income">Income</a>
                 </li>
 
 

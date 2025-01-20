@@ -27,7 +27,7 @@ class BuyController extends Controller
 
         $product_id = DB::table('pi')->where('product_id', $request->product_id)->first();
 
-        $validated =$request->validate([
+        $validated = $request->validate([
             'product_id' => 'required|numeric',
             'quantity'   => 'required|numeric|gt:0',
             'cost'       => 'required|numeric|gt:0',
@@ -54,25 +54,23 @@ class BuyController extends Controller
                 ->where('product_id', $existingPurchase->product_id)
                 ->update([
 
-                    'quantity' => $product_id->quantity + $request->quantity
-
+                    'quantity' => $product_id->quantity + $request->quantity,
 
                 ]);
         } else {
             // If the product has not been bought, insert a new row
             DB::table('pi')->insert([
-            'product_id' => $product->id,
-            'quantity'   => $request->quantity,
-            'cost'       => $request->cost,
-            'po_id'      => $request->po_id,
+                'product_id' => $product->id,
+                'quantity'   => $request->quantity,
+                'cost'       => $request->cost,
+                'po_id'      => $request->po_id,
 
-        ]);
+            ]);
         }
-
-
 
         return redirect('buy');
 
     }
+
 
 }

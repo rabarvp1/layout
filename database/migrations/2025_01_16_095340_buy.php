@@ -23,7 +23,7 @@ return new class extends Migration
         });
         Schema::create('pi', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained('product');
-            $table->decimal('quantity');
+            $table->integer('quantity');
             $table->decimal('cost');
             $table->foreignId('po_id')->constrained('po');
 

@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::create('invoice_id', function (Blueprint $table) {
 
             $table->foreignId('product_id')->constrained('product');
-            $table->decimal('quantity');
+            $table->integer('quantity');
             $table->decimal('price');
             $table->foreignId('invoice_id')->constrained('invoice');
 

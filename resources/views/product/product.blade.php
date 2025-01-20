@@ -14,7 +14,6 @@
 
                         <th scope="col">name</th>
 
-                        <th scope="col">price</th>
 
 
                         <th scope="col">categories</th>
@@ -30,7 +29,6 @@
                     <tr>
                         <th scope="row">{{ $product->id }}</th>
                         <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
                         <td>{{ $product->category }}</td>
                        <td>
                             <!-- Form for editing the product -->
@@ -74,11 +72,6 @@
                                 {{ $message }}
                                 @enderror
 
-                                <label>price</label>
-                                <input type="text" name="price" class="form-control">
-                                @error('price')
-                                {{ $message }}
-                                @enderror
 
 
 
@@ -100,25 +93,7 @@
 
 
 
-            {{-- // this modal for Editing product --}}
-
-            <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Product</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body ">
-
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            {{-- end modal edit --}}
+           
         </div>
     </div>
     @if ($errors->any())

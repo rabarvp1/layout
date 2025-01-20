@@ -1,11 +1,12 @@
 <x-layout.layout>
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>Buy</h1>
+            <h1>Purchase</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">BuyProduct</button></a>
         </div>
         <div class="card-body">
             <table class="table  mx-auto table-hover">
+
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
@@ -22,7 +23,7 @@
                         <td>{{ $storage->order_number }}</td>
                         <td>{{ $storage->discount }}</td>
 
-                      
+
 
 
 
@@ -72,7 +73,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" form="form-id" class="btn btn-primary">insert</button>
+                            <button type="submit" form="form-id" class="btn btn-primary">Buy</button>
                         </div>
                     </div>
                 </div>

@@ -9,12 +9,8 @@
             <input type="text" name="name" class="form-control" value="{{ $product->name }}" required>
         </div>
 
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" name="price" class="form-control" value="{{ $product->price }}" required>
-        </div>
-
         
+
 
         <div class="form-group">
             <label for="cat_id">Category</label>

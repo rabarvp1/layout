@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/product', [ProductController::class, 'product']);
+Route::get('/product', [ProductController::class, 'product'])->name('product');
 
 Route::post('/upload', [ProductController::class, 'upload']);
 
@@ -19,20 +19,22 @@ Route::put('/product/{id}', [ProductController::class, 'updateProduct']);  // Up
 
 
 
-Route::get('/buy', [BuyController::class, 'buy']);
+Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
+
+
 
 Route::post('/insert', [BuyController::class, 'insert']);
 
-Route::get('/sell', [SellController::class, 'sell']);
+Route::get('/sell', [SellController::class, 'sell'])->name('sell');
 
 Route::post('/insert_sell', [SellController::class, 'insert_sell']);
 
-Route::get('/cat', [catController::class, 'cat']);
+Route::get('/cat', [catController::class, 'cat'])->name('cat');
 
 Route::post('/inputCat', [catController::class, 'inputCat']);
 
 
-Route::get('/income', [income::class, 'mergedData']);
+Route::get('/income', [income::class, 'mergedData'])->name('income');
 
 
 

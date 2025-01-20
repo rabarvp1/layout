@@ -26,14 +26,12 @@ class ProductController extends Controller
 
         $request->validate([
             'name'   => 'required|string|max:50|unique:product,name',
-            'price'  => 'required|numeric|gt:0',
             'cat_id' => 'required|numeric|exists:cat,id',
         ]);
         // |exists:product,cat_id
 
         DB::table('product')->insert([
             'name'   => $request->name,
-            'price'  => $request->price,
             'cat_id' => $request->cat_id,
         ]);
 

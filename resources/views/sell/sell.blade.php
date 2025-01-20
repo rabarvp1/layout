@@ -2,7 +2,7 @@
 
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>sell</h1>
+            <h1>Invoice</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">Sell Product</button></a>
         </div>
         <div class="card-body">
@@ -72,7 +72,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" form="form-id" class="btn btn-primary">insert</button>
+                            <button type="submit" form="form-id" class="btn btn-primary">Sell</button>
                         </div>
                     </div>
                 </div>

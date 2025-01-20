@@ -4,9 +4,9 @@
             <h1>Income</h1>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table ">
                 <thead>
-                    <tr>
+                    <tr class="table-dark">
                         <th>Product Name</th>
                         <th>cost</th>
                         <th>Sold Quantity</th>
@@ -18,10 +18,10 @@
                     @foreach ($mergedData as $data)
                     <tr>
                         <td>{{ $data->product_name }}</td>
-                        <td>${{ $data->product_price }}</td>
+                        <td>${{ $data->buying_price}}</td>
                         <td>{{ $data->sold_quantity }}</td>
-                        <td>{{ $data->selling_price}}</td>
-                        <td>{{ ($data->selling_price-$data->product_price)*$data->sold_quantity }}</td>
+                        <td>${{ $data->selling_price}}</td>
+                        <td>${{ ($data->selling_price-$data->buying_price)*$data->sold_quantity }}</td>
                     </tr>
                     @endforeach
                 </tbody>
