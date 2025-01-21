@@ -41,7 +41,7 @@
                         <div class="modal-body ">
                             <form id="form-id" action="/insert" class="vstack gap-3" method="POST">
                                 @csrf
-                                <select name="product_id" class="form-control">
+                                <select name="product_id" class=" form-control ">
                                     @foreach($products as $product)
                                     <option value="{{ $product->id }}" {{ old('cat_id') == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
                                     @endforeach
@@ -80,5 +80,12 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+      $('.select22').select2();
+  });
+
+
+      </script>
 
 </x-layout.layout>

@@ -43,7 +43,7 @@
                             <form action="{{ url('/product/'.$product->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم کاڵایە ؟')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm sale-color">Delete</button>
                             </form>
                         </td>
 
@@ -93,9 +93,11 @@
 
 
 
-           
+
         </div>
     </div>
+
+
     @if ($errors->any())
     <script>
         $(document).ready(function() {

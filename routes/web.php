@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', [ProductController::class, 'first'])->name('first');
+
 Route::get('/product', [ProductController::class, 'product'])->name('product');
 
 Route::post('/upload', [ProductController::class, 'upload']);
