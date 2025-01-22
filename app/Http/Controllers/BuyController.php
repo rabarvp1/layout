@@ -8,69 +8,76 @@ class BuyController extends Controller
 {
     public function buy()
     {
-        $products = DB::table('product')->get();
-        $po       = DB::table('po')->get();
+        $supliers  = DB::table('suplier')->get();
+        $purchases = DB::table('purchase')->get();
 
-        $pi = DB::table('pi')
-            ->join('product', 'pi.product_id', 'product.id')
-            ->select(
-                'pi.*',
-                'product.name as product_name',
-            )
-            ->get();
-        return view('buy.buy', ['products' => $products, 'pi' => $pi, 'po' => $po]);
+        return view('buy.buy', compact('purchases', 'supliers'));
     }
     public function insert(Request $request)
     {
+        // $validated = $request->validate([
+        //     'product_id' => 'required|numeric|exists:product,id',
+        //     'quantity'   => 'required|numeric|gt:0',
+        //     'cost'       => 'required|numeric|gt:0',
+        // ]);
+        
+        DB::transaction(function () use ($request) {
+            $maxOrderNumber = DB::table('purchase')->max('order_number') ?? 0;
 
-        $product = DB::table('product')->where('id', $request->product_id)->first();
+            $purchaseId = DB::table('purchase')->insertGetId([
 
-        $product_id = DB::table('pi')->where('product_id', $request->product_id)->first();
-
-        $validated = $request->validate([
-            'product_id' => 'required|numeric',
-            'quantity'   => 'required|numeric|gt:0',
-            'cost'       => 'required|numeric|gt:0',
-            'po_id'      => 'required|numeric|gt:0',
-
-        ]);
-
-        // |exists:product,cat_id
-        $maxOrderNumber = DB::table('po')->max('order_number') ?? 0;
-
-        DB::table('po')->insert([
-            'order_number' => $maxOrderNumber + 1,
-            'discount'     => 0,
-
-        ]);
-
-        $existingPurchase = DB::table('pi')
-            ->where('product_id', $validated['product_id'])
-            ->first();
-
-        // If the product has been bought, update the existing row
-        if ($existingPurchase) {
-            DB::table('pi')
-                ->where('product_id', $existingPurchase->product_id)
-                ->update([
-
-                    'quantity' => $product_id->quantity + $request->quantity,
-
-                ]);
-        } else {
-            // If the product has not been bought, insert a new row
-            DB::table('pi')->insert([
-                'product_id' => $product->id,
-                'quantity'   => $request->quantity,
-                'cost'       => $request->cost,
-                'po_id'      => $request->po_id,
-
+                'order_number' => $maxOrderNumber + 1,
+                'discount'     => 0,
+                'note'         => $request->note,
+                'created_at'   => now(),
             ]);
-        }
+
+            for ($i = 0; $i < count($request->product_id); $i++) {
+                DB::table('purchase_product')->insert([
+                    'quantity'    => $request->quantity[$i],
+                    'cost'        => $request->cost[$i],
+                    'product_id'  => $request->product_id[$i],
+                    'purchase_id' => $purchaseId,
+                ]);
+            }
+
+        });
 
         return redirect('buy');
-
     }
 
+    public function getData()
+    {
+        $search   = request('search');
+        $products = DB::table('product')
+            ->whereLike('name', '%' . $search . '%')
+            ->select('id', 'name')
+            ->limit(10)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'value' => $item->name,
+                    'label' => $item->name,
+                    'html'  => '<tr>
+                    <td>' . $item->name . '</td>
+                    <td>
+                        <input type="number" class="form-control" name="quantity[]" value="1">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="cost[]" value="0">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="single_price[]" value="0">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="multi_price[]" value="0">
+                    </td>
+                    <input type="hidden" name="product_id[]" value="' . $item->id . '">
+                    </tr>',
+                ];
+            });
+
+        return response()->json($products);
+    }
 
 }

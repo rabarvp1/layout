@@ -13,25 +13,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('po', function (Blueprint $table) {
+        Schema::create('purchase', function (Blueprint $table) {
             $table->id();
             $table->integer('order_number');
             $table->decimal('discount');
+            $table->datetime('created_at');
+            $table->text('note')->nullable();
 
 
 
         });
-        Schema::create('pi', function (Blueprint $table) {
+        Schema::create('purchase_product', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained('product');
             $table->integer('quantity');
             $table->decimal('cost');
-            $table->foreignId('po_id')->constrained('po');
+            $table->foreignId('purchase_id')->constrained('purchase')->cascadeOnDelete();
 
 
 
 
         });
-        DB::statement('ALTER TABLE pi ADD CONSTRAINT check_quantity_nonnegative CHECK (quantity >= 0)');
+        // DB::statement('ALTER TABLE pi ADD CONSTRAINT check_quantity_nonnegative CHECK (quantity >= 0)');
 
     }
 
@@ -40,7 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('ALTER TABLE pizzas DROP CONSTRAINT check_quantity_nonnegative');
 
     }
 };

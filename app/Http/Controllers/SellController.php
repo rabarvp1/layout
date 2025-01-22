@@ -29,14 +29,14 @@ class SellController extends Controller
             'product_id' => 'required|numeric|exists:product,id',
             'quantity'   => 'required|numeric|gt:0',
             'price'      => 'required|numeric|gt:0',
-            'invoice_id' => 'required|numeric'
         ]);
 
         $product = DB::table('pi')->where('product_id', $request->product_id)->first();
 
         if (!$product) {
+            
             return redirect()->back()->with('error', 'Product not found.');
-            dd('1');
+
 
         }
 
@@ -44,7 +44,7 @@ class SellController extends Controller
           // Check if the requested quantity is available
           if ($product->quantity < $request->quantity) {
             return redirect()->back()->with('error', 'Insufficient stock available. Only ' . $product->quantity . ' items in stock.');
-            dd('2');
+
         }
 
 
@@ -56,12 +56,12 @@ class SellController extends Controller
             'discount'     => 0,
 
         ]);
-        
+
         DB::table('invoice_id')->insert([
             'product_id' => $request->product_id,
             'quantity'   => $request->quantity,
             'price'      => $request->price,
-            'invoice_id' => $request->invoice_id,
+            'invoice_id' => 1,
 
         ]);
         DB::table('pi')->where('product_id', $request->product_id)->update(['quantity' => $product->quantity - $request->quantity]);

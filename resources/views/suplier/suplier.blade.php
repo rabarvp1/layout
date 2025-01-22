@@ -1,7 +1,8 @@
+
 <x-layout.layout>
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>Catigories</h1>
+            <h1>Supliers</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
         </div>
         <div class="card-body">
@@ -10,15 +11,19 @@
                     <tr class="table-dark">
                         <th scope="col">#</th>
                         <th scope="col">name</th>
+                        <th scope="col">address</th>
+                        <th scope="col">phone number</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($cat as $cat)
+                    @foreach ($supliers as $suplier)
 
                     <tr>
-                        <th scope="row">{{ $cat->id }}</th>
-                        <td>{{ $cat->name }}</td>
+                        <th scope="row">{{ $suplier->id }}</th>
+                        <td>{{ $suplier->name }}</td>
+                        <td>{{ $suplier->address }}</td>
+                        <td>{{ $suplier->phone_number}}</td>
 
 
                         {{-- <td><button class="btn btn-danger rounded-4">Delete</button></td> --}}
@@ -36,15 +41,27 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Suplier</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-                            <form id="form-id" action="/inputCat" class="vstack gap-3" method="POST">
+                            <form id="form-id" action="/inputSuplier" class="vstack gap-3" method="POST">
                                 @csrf
-                                <label>Name of Catigories</label>
+                                <label>Name of Suplier</label>
                                 <input type="text" name="name" class="form-control">
                                 @error('name')
+                                {{ $message }}
+
+                                @enderror
+                                <label>Address</label>
+                                <input type="text" name="address" class="form-control">
+                                @error('address')
+                                {{ $message }}
+
+                                @enderror
+                                <label>Phone Number</label>
+                                <input type="text" name="phone_number" class="form-control">
+                                @error('phone_number')
                                 {{ $message }}
                                 @enderror
 

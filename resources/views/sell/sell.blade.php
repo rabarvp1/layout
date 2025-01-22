@@ -59,12 +59,6 @@
                                 @enderror
 
 
-                                <label>invoice_id</label>
-                                <input type="text" name="invoice_id" class="form-control">
-                                @error('invoice_id')
-                                {{ $message }}
-                                @enderror
-
 
 
 

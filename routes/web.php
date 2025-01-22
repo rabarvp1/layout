@@ -5,6 +5,7 @@ use App\Http\Controllers\catController;
 use App\Http\Controllers\income;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\suplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'first'])->name('first');
@@ -37,6 +38,12 @@ Route::post('/inputCat', [catController::class, 'inputCat']);
 
 
 Route::get('/income', [income::class, 'mergedData'])->name('income');
+
+Route::get('/suplier', [suplierController::class, 'suplier'])->name('suplier');
+
+Route::get('/buy/getData', [BuyController::class, 'getData'])->name('getData');
+
+Route::post('/inputSuplier', [suplierController::class, 'inputSuplier']);
 
 
 
