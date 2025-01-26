@@ -13,22 +13,43 @@ return new class extends Migration
     {
         Schema::create('invoice', function (Blueprint $table) {
             $table->id();
+            $table->string('customer');
             $table->integer('order_number');
+            $table->datetime('created_at');
+            $table->integer('sum');
             $table->decimal('discount');
+            $table->text('note')->nullable();
+            $table->integer('total');
+
+
 
 
 
 
         });
-        Schema::create('invoice_id', function (Blueprint $table) {
+        Schema::create('sell_product', function (Blueprint $table) {
 
-            $table->foreignId('product_id')->constrained('product');
+            $table->foreignId('product_id')->constrained('product')->cascadeOnDelete();
             $table->integer('quantity');
-            $table->decimal('price');
-            $table->foreignId('invoice_id')->constrained('invoice');
+            $table->decimal('sell_price');
+            $table->decimal('sum');
+            $table->foreignId('invoice_id')->constrained('invoice')->cascadeOnDelete();
 
 
 
+
+        });
+
+
+        Schema::create('customer', function (Blueprint $table) {
+
+            $table->id();
+
+            $table->string('name')->unique();
+
+            $table->string('address');
+
+            $table->string('phone_number')->unique();
 
         });
     }

@@ -8,38 +8,62 @@ class BuyController extends Controller
 {
     public function buy()
     {
-        $supliers  = DB::table('suplier')->get();
+        $supliers = DB::table('suplier')->get();
+
         $purchases = DB::table('purchase')->get();
 
         return view('buy.buy', compact('purchases', 'supliers'));
     }
     public function insert(Request $request)
     {
-        // $validated = $request->validate([
-        //     'product_id' => 'required|numeric|exists:product,id',
-        //     'quantity'   => 'required|numeric|gt:0',
-        //     'cost'       => 'required|numeric|gt:0',
-        // ]);
-        
+        $request->validate([
+            'suplier'      => 'required|string|exists:suplier,name',
+            'note'         => 'nullable|string|max:255',
+            'product_id'   => 'required|array|min:1',
+            'product_id.*' => 'required|numeric|exists:product,id',
+            'quantity'     => 'required|array|min:1',
+            'quantity.*'   => 'required|numeric|gt:0',
+            'cost'         => 'required|array|min:1',
+            'cost.*'       => 'required|numeric|gt:0',
+        ]);
         DB::transaction(function () use ($request) {
             $maxOrderNumber = DB::table('purchase')->max('order_number') ?? 0;
 
             $purchaseId = DB::table('purchase')->insertGetId([
 
                 'order_number' => $maxOrderNumber + 1,
+                'sum'          => 0,
+                'suplier'      => $request->suplier,
                 'discount'     => 0,
                 'note'         => $request->note,
+                'total'        => 0,
                 'created_at'   => now(),
             ]);
+            $totalSum = 0; // Variable to track the total sum of the purchase
 
-            for ($i = 0; $i < count($request->product_id); $i++) {
+            foreach ($request->product_id as $key => $productId) {
+                $quantity = $request->quantity[$key];
+                $cost     = $request->cost[$key];
+                $sum      = $cost * $quantity;
+                // Insert into the `purchase_product` table
                 DB::table('purchase_product')->insert([
-                    'quantity'    => $request->quantity[$i],
-                    'cost'        => $request->cost[$i],
-                    'product_id'  => $request->product_id[$i],
+                    'quantity'    => $quantity,
+                    'cost'        => $cost,
+                    'product_id'  => $productId,
                     'purchase_id' => $purchaseId,
+                    'sum'         => $sum,
                 ]);
+
+                $totalSum += $sum;
+
             }
+            // Update the total and sum fields in the purchase
+            DB::table('purchase')->where('id', $purchaseId)->update([
+                'sum'   => $totalSum,
+                'total' => $totalSum - ($request->discount ?? 0),
+            ]);
+
+            
 
         });
 
@@ -58,26 +82,54 @@ class BuyController extends Controller
                 return [
                     'value' => $item->name,
                     'label' => $item->name,
-                    'html'  => '<tr>
-                    <td>' . $item->name . '</td>
-                    <td>
-                        <input type="number" class="form-control" name="quantity[]" value="1">
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="cost[]" value="0">
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="single_price[]" value="0">
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="multi_price[]" value="0">
-                    </td>
-                    <input type="hidden" name="product_id[]" value="' . $item->id . '">
-                    </tr>',
+                    'html'  => sprintf(
+                        '<tr>
+                        <td>%s</td>
+        <td><input type="number" class="form-control" name="quantity[]" value="1"></td>
+
+        <td><input type="number" class="form-control" name="cost[]" value="0"></td>
+
+        <td><input type="number" class="form-control" name="single_price[]" value="0"></td>
+
+        <td><input type="number" class="form-control" name="multi_price[]" value="0"></td>
+        <input type="hidden" name="product_id[]" value="%s">
+
+
+        <td>
+            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">Delete</button>
+        </td>
+    </tr>',
+                        htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'),
+                        htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'),
+                        htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
+                    ),
                 ];
             });
 
         return response()->json($products);
+    }
+// delete the one row in buy modal
+    public function deleteRow(Request $request)
+    {
+        $id = $request->input('id');
+        // Perform deletion logic (e.g., DB::table('product')->where('id', $id)->delete();)
+        return response()->json(['message' => 'Product deleted successfully.']);
+    }
+
+    // purchase view
+
+    public function view_purchase($id)
+    {
+
+        $purchase = DB::table('purchase')->where('id', $id)->first();
+
+        $purchase_product = DB::table('purchase_product')->where('purchase_id', $id)
+            ->join('product', 'purchase_product.product_id', 'product.id')
+            ->select('purchase_product.*', 'product.name as product_name')
+            ->get();
+
+        return view('buy.view', compact('purchase', 'purchase_product'));
+
     }
 
 }

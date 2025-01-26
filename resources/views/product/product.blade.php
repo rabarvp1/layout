@@ -33,7 +33,7 @@
                        <td>
                             <!-- Form for editing the product -->
                             <form action="{{ url('/product/'.$product->id.'/edit') }}" method="GET">
-                                @csrf
+                                
                                 <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
                             </form>
                         </td>
@@ -106,32 +106,5 @@
 
     </script>
     @endif
-    {{--
-<script>
-    $(document).ready(function() {
-        $('.delete-btn').click(function() {
-            var productId = $(this).data('id');
 
-            if (confirm('Are you sure you want to delete this product?')) {
-                $.ajax({
-                    url: '/product/' + productId,  // Route for deleting the product
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}' // CSRF token for security
-    },
-    success: function(response) {
-    if (response.success) {
-    // On success, remove the deleted product row from the table
-    $('button[data-id="'+ productId +'"]').closest('tr').remove();
-    alert('Product deleted successfully!');
-    }
-    },
-    error: function(xhr, status, error) {
-    alert('There was an error deleting the product.');
-    }
-    });
-    }
-    });
-    });
-    </script> --}}
 </x-layout.layout>

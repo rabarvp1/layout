@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+public function login(){
+
+
+return view('login.login');
+
+}
+
+
     public function product()
     {
         $products = DB::table('product')
@@ -66,17 +74,18 @@ public function updateProduct(Request $request, $id)
 {
     $request->validate([
         'name'   => 'required|string|max:50|unique:product,name,' . $id,
-        'price'  => 'required|numeric|gt:0',
         'cat_id' => 'required|numeric|exists:cat,id',
     ]);
 
     DB::table('product')->where('id', $id)->update([
         'name'   => $request->name,
-        'price'  => $request->price,
         'cat_id' => $request->cat_id,
     ]);
 
     return redirect('product')->with('success', 'Product updated successfully!');
 }
+
+
+
 
 }

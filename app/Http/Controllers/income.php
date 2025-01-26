@@ -12,14 +12,14 @@ class income extends Controller
     {
 
         $mergedData = DB::table('product')
-            ->Join('invoice_id', 'product.id', '=', 'invoice_id.product_id')
-            ->Join('pi', 'product.id', '=', 'pi.product_id')
+            ->Join('sell_product', 'product.id', '=', 'sell_product.product_id')
+            ->Join('purchase_product', 'product.id', '=', 'purchase_product.product_id')
             ->select(
                 'product.name as product_name',
-                'invoice_id.quantity as sold_quantity',
-                'invoice_id.price as selling_price',
-                'pi.quantity as bought_quantity',
-                'pi.cost as buying_price',
+                'sell_product.quantity as sold_quantity',
+                'sell_product.sell_price as selling_price',
+                'purchase_product.quantity as bought_quantity',
+                'purchase_product.cost as buying_price',
             )
             ->get();
 

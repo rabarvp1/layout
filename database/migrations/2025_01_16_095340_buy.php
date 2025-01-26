@@ -3,8 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
-
 
 return new class extends Migration
 {
@@ -15,25 +13,23 @@ return new class extends Migration
     {
         Schema::create('purchase', function (Blueprint $table) {
             $table->id();
+            $table->string('suplier');
             $table->integer('order_number');
-            $table->decimal('discount');
             $table->datetime('created_at');
+            $table->integer('sum');
+            $table->decimal('discount');
             $table->text('note')->nullable();
-
-
+            $table->integer('total');
 
         });
         Schema::create('purchase_product', function (Blueprint $table) {
-            $table->foreignId('product_id')->constrained('product');
+            $table->foreignId('product_id')->constrained('product')->cascadeOnDelete();
             $table->integer('quantity');
             $table->decimal('cost');
+            $table->decimal('sum');
             $table->foreignId('purchase_id')->constrained('purchase')->cascadeOnDelete();
 
-
-
-
         });
-        // DB::statement('ALTER TABLE pi ADD CONSTRAINT check_quantity_nonnegative CHECK (quantity >= 0)');
 
     }
 
