@@ -32,7 +32,7 @@
 
 
     <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 " >
-        <a href="/sale/view" class=" link-underline link-underline-opacity-0">
+        <a href="/storage" class=" link-underline link-underline-opacity-0">
             <div class=" d-flex justify-content-between align-items-center  card-shadow btn_icon inventory-color rounded-4 mt-4" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16">
                     <rect width="16" height="16" fill="none" />

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\StorageController;
 use App\Http\Controllers\catController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\income;
@@ -59,5 +60,7 @@ Route::post('/delete-sellProduct', [SellController::class, 'delete_row_sell']);
 Route::get('/sell/getData_sell', [SellController::class, 'getData_sell'])->name('getData_sell');
 
 Route::delete('/sell/{id}', [SellController::class, 'deleteInvoice']);
+
+Route::get('/storage',[StorageController::class,'storage'])->name('storage');
 
 // Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');

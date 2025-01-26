@@ -42,12 +42,14 @@ class BuyController extends Controller
             $totalSum = 0; // Variable to track the total sum of the purchase
 
             foreach ($request->product_id as $key => $productId) {
-                $quantity = $request->quantity[$key];
-                $cost     = $request->cost[$key];
-                $sum      = $cost * $quantity;
+                $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
+
+                $requestedQuantity = $request->quantity[$key];
+                $cost              = $request->cost[$key];
+                $sum               = $cost * $requestedQuantity;
                 // Insert into the `purchase_product` table
                 DB::table('purchase_product')->insert([
-                    'quantity'    => $quantity,
+                    'quantity'    => $requestedQuantity,
                     'cost'        => $cost,
                     'product_id'  => $productId,
                     'purchase_id' => $purchaseId,
@@ -56,14 +58,35 @@ class BuyController extends Controller
 
                 $totalSum += $sum;
 
+                if ($existingPurchase) {
+
+                    $storage = DB::table('storage')->where('product_id', $productId)->first();
+
+                    DB::table('storage')
+                        ->where('product_id', $existingPurchase->product_id)
+                        ->update([
+                            'quantity' => $storage->quantity + $requestedQuantity,
+                            'avg_cost' => $sum / $requestedQuantity,
+
+                        ]);
+                } else {
+                    // If the product has not been bought, insert a new row
+                    DB::table('storage')->insert([
+                        'product_id' => $productId,
+                        'quantity'   => $requestedQuantity,
+                        'avg_cost'   => $cost,
+                        'cat'        => '',
+
+                    ]);
+                }
+
             }
+
             // Update the total and sum fields in the purchase
             DB::table('purchase')->where('id', $purchaseId)->update([
                 'sum'   => $totalSum,
                 'total' => $totalSum - ($request->discount ?? 0),
             ]);
-
-            
 
         });
 

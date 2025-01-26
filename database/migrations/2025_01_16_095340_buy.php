@@ -31,6 +31,14 @@ return new class extends Migration
 
         });
 
+        Schema::create('storage', function (Blueprint $table) {
+            $table->foreignId('product_id')->constrained('product')->cascadeOnDelete();
+            $table->integer('quantity');
+            $table->float('avg_cost');
+            $table->string('cat');
+
+        });
+
     }
 
     /**

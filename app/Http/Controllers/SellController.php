@@ -55,7 +55,8 @@ class SellController extends Controller
             $totalSum = 0; // Variable to track the total sum of the invoice
 
             foreach ($request->product_id as $index => $productId) {
-                $product = DB::table('purchase_product')->where('product_id', $productId)->first();
+                $product          = DB::table('purchase_product')->where('product_id', $productId)->first();
+                $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
 
                 // Check if the product exists in purchase_product
                 if (! $product) {
@@ -88,6 +89,20 @@ class SellController extends Controller
                     ->decrement('quantity', $requestedQuantity);
 
                 $totalSum += $sum;
+                if ($existingPurchase) {
+
+                    $currentQTY = DB::table('storage')->where('product_id', $productId)->first();
+
+                    DB::table('storage')
+                        ->where('product_id', $existingPurchase->product_id)
+                        ->update([
+                            'quantity' => $currentQTY->quantity - $requestedQuantity,
+
+                        ]);
+                } else {
+
+                    redirect('sell');
+                }
             }
 
             // Update the total and sum fields in the invoice
@@ -142,7 +157,6 @@ class SellController extends Controller
         // Perform deletion logic (e.g., DB::table('product')->where('id', $id)->delete();)
         return response()->json(['message' => 'Product deleted successfully.']);
     }
-
 
     public function deleteInvoice($id)
     {
