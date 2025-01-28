@@ -1,4 +1,6 @@
-<x-layout.layout>
+<x-layout.layout :navItems="[
+    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+]">
     <div class="card mt-4">
 
         <div class="card-header  d-flex align-items-center justify-content-between">
@@ -42,7 +44,7 @@
                             </form>
                         </td>
                         <td>
-                            <form action="{{ url('/sell/'.$invoice->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم کاڵایە ؟')">
+                            <form action="{{ url('/sell/'.$invoice->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم وەسڵە ؟')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm sale-color">Delete</button>

@@ -24,6 +24,34 @@ class StorageController extends Controller
         return view('storage.storage', compact('storage'));
     }
 
-    
+    public function getData_storage()
+{
+    $products = DB::table('storage')
+        ->join('product', 'product.id', '=', 'storage.product_id')
+        ->join('cat', 'cat.id', '=', 'product.cat_id')
+        ->select('product.name as product_name', 'storage.quantity', 'storage.avg_cost', 'cat.name as cat')
+        ->get()
+        ->map(function ($item) {
+            return [
+                'value' => $item->product_name,
+                'label' => $item->product_name,
+                'html'  => sprintf(
+                    '<tr>
+                        <td>%s</td>
+                        <td>%s</td>
+                        <td>$%s</td>
+                        <td>%s</td>
+                    </tr>',
+                    htmlspecialchars($item->product_name, ENT_QUOTES, 'UTF-8'),
+                    $item->quantity,
+                    number_format($item->avg_cost, 2),  // Format the cost
+                    htmlspecialchars($item->cat, ENT_QUOTES, 'UTF-8')
+                ),
+            ];
+        });
+
+    return response()->json($products);
+}
+
 
 }

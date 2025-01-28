@@ -154,5 +154,30 @@ class BuyController extends Controller
         return view('buy.view', compact('purchase', 'purchase_product'));
 
     }
+    //delete purchase
+    public function deletePurchase($id)
+    {
+        // Delete the product by id using Query Builder
+        DB::table('purchase')->where('id', $id)->delete();
 
+        // Redirect back to the product page with a success message
+        return redirect('buy')->with('success', 'purchase deleted successfully!');
+    }
+
+    //select2
+
+    public function search(Request $request)
+    {
+        $search = $request->get('search', ''); // Get search term
+
+        // Query the database (using Query Builder)
+        $products = DB::table('product')
+            ->select('id', 'name')
+            ->where('name', 'LIKE', '%' . $search . '%') // Filter by search term
+            ->limit(10) // Limit results
+            ->get();
+
+        // Return the results as JSON
+        return response()->json($products);
+    }
 }

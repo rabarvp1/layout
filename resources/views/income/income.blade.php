@@ -1,4 +1,7 @@
-<x-layout.layout>
+<x-layout.layout :navItems="[
+    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+]">
+
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
             <h1>Income</h1>
@@ -29,14 +32,13 @@
         </div>
     </div>
 
- 
 
 
- <script>
-      $(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
 
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
 
     </script>
 </x-layout.layout>

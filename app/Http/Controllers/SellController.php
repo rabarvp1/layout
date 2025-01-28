@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\alert;
+
 class SellController extends Controller
 {
 
@@ -60,6 +62,7 @@ class SellController extends Controller
 
                 // Check if the product exists in purchase_product
                 if (! $product) {
+                    alert('product not fount');
                     throw new \Exception("Product with ID $productId not found in stock.");
                 }
 
@@ -67,7 +70,10 @@ class SellController extends Controller
 
                 // Check if the requested quantity is available
                 if ($product->quantity < $requestedQuantity) {
-                    throw new \Exception("Insufficient stock for product ID $productId. Only $product->quantity items available.");
+                    return response()->json([
+                        'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available."
+                    ]);
+                    // throw new \Exception("Insufficient stock for product ID $productId. Only $product->quantity items available.");
                 }
 
                 $sellPrice = $request->sell_price[$index];
@@ -101,7 +107,7 @@ class SellController extends Controller
                         ]);
                 } else {
 
-                    redirect('sell');
+                    redirect('sell')->with('failed', 'we dont have the product in storage');
                 }
             }
 

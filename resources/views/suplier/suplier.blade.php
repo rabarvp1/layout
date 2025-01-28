@@ -1,5 +1,7 @@
 
-<x-layout.layout>
+<x-layout.layout :navItems="[
+    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+]">
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
             <h1>Supliers</h1>

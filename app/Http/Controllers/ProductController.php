@@ -25,8 +25,12 @@ return view('login.login');
             ->get();
         $cat = DB::table('cat')->get();
 
+        $navItems = [
+            ['label' => 'Back', 'url' => url('/'), 'active' => false],
+        ];
 
-        return view('product.product', ['products' => $products, 'cat' => $cat]);
+
+        return view('product.product', ['products' => $products, 'cat' => $cat,'navItems'=>$navItems]);
     }
 
     public function upload(Request $request)

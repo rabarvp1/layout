@@ -1,5 +1,8 @@
-<x-layout.layout>
-    <div class="card mt-4">
+<x-layout.layout :navItems="[
+    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+]">
+
+<div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
             <h1>Purchase</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">BuyProduct</button></a>
@@ -14,6 +17,7 @@
                         <th scope="col">discount</th>
                         <th scope="col">Note</th>
                         <th scope="col">Created At</th>
+                        <th scope="col">Action</th>
                         <th scope="col">Action</th>
 
                     </tr>
@@ -34,7 +38,13 @@
                                 <button type="submit" class="btn btn-secondary btn-sm">View</button>
                             </form>
                         </td>
-
+                        <td>
+                            <form action="{{ url('/buy/'.$purchase->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم وەسڵە ؟')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm sale-color">Delete</button>
+                            </form>
+                        </td>
 
 
 
@@ -53,6 +63,8 @@
                         <div class="modal-body ">
                             <form id="form-id" action="/insert" class="vstack gap-3" method="POST">
                                 @csrf
+                                <select id="tags" class="form-control"></select>
+
                                 <label>Suppliers</label>
                                 <select name="suplier" class=" form-control ">
                                     @foreach($supliers as $suplier)
@@ -104,8 +116,7 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 
     <script>
@@ -136,7 +147,7 @@
 
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $("#tags").autocomplete({
                 source: function(request, response) {
@@ -160,7 +171,76 @@
             });
         });
 
+    </script> --}}
+
+    <!-- Include Select2 CSS and JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $('#tags').select2({
+                ajax: {
+                    url: "{{ route('products.search') }}", // Laravel route for search
+                    type: 'get'
+                    , dataType: 'json'
+                    , delay: 250, // Add delay for better UX
+                    data: function(params) {
+                        return {
+                            search: params.term || '', // Search term
+                            limit: 10 // Limit the number of initial results
+
+                        };
+                    }
+                    , processResults: function(data) {
+                        return {
+                            results: data.map(function(item) {
+                                return {
+                                    id: item.id, // The unique ID for the option
+                                    text: item.name // The text to display
+                                };
+                            })
+                        };
+                    }
+                    , cache: true
+                }
+                , placeholder: 'Search for a product'
+                , minimumInputLength: 0
+                , dropdownParent: $("#exampleModal") // Ensure dropdown works inside the modal
+            });
+
+            // Handle selection and append to modal table
+            $('#tags').on('select2:select', function(e) {
+                const selected = e.params.data;
+
+                // Check if the product is already added to the table
+                if ($(`#productTableBody input[value="${selected.id}"]`).length > 0) {
+                    alert('This product is already added to the table.');
+                    return;
+                }
+                // Append the selected product to the table
+                $('#productTableBody').append(`
+                    <tr>
+                        <td>${selected.text}</td>
+                        <td><input type="number" class="form-control" name="quantity[]" value="1"></td>
+                        <td><input type="number" class="form-control" name="cost[]" value="0"></td>
+                        <td><input type="number" class="form-control" name="single_price[]" value="0"></td>
+                        <td><input type="number" class="form-control" name="multi_price[]" value="0"></td>
+                        <input type="hidden" name="product_id[]" value="${selected.id}">
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="${selected.id}">Delete</button>
+                        </td>
+                    </tr>
+                `);
+            });
+            // Handle delete button click to remove the row
+            $('#productTableBody').on('click', '.delete-btn', function() {
+                $(this).closest('tr').remove();
+            });
+        });
+
     </script>
+
 
 
 

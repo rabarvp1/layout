@@ -1,4 +1,6 @@
-<x-layout.layout>
+<x-layout.layout :navItems="[
+    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+]">
 
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
@@ -33,7 +35,7 @@
                        <td>
                             <!-- Form for editing the product -->
                             <form action="{{ url('/product/'.$product->id.'/edit') }}" method="GET">
-                                
+
                                 <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
                             </form>
                         </td>

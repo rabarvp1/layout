@@ -1,5 +1,6 @@
-<x-layout.layout>
-
+<x-layout.layout :navItems="[
+    ['label' => 'Back', 'url' => url('/sell'), 'active' => false],
+]">
     <h5 class="d-flex justify-content-between align-items-center pr-1 pl-1 mt-n2" tabindex="-1">
         receipts sold ({{ $invoice->order_number }})
         <span tabindex="-1">

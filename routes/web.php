@@ -47,6 +47,8 @@ Route::get('/suplier', [suplierController::class, 'suplier'])->name('suplier');
 
 Route::get('/buy/getData', [BuyController::class, 'getData'])->name('getData');
 
+Route::get('/search/products', [BuyController::class, 'search'])->name('products.search');
+
 Route::post('/inputSuplier', [suplierController::class, 'inputSuplier']);
 
 Route::get('/customer', [CustomerController::class, 'customer'])->name('customer');
@@ -61,6 +63,10 @@ Route::get('/sell/getData_sell', [SellController::class, 'getData_sell'])->name(
 
 Route::delete('/sell/{id}', [SellController::class, 'deleteInvoice']);
 
+Route::delete('/buy/{id}', [BuyController::class, 'deletePurchase']);
+
 Route::get('/storage',[StorageController::class,'storage'])->name('storage');
+
+Route::get('/storage/getData_storage',[StorageController::class,'getData_storage'])->name('getData_storage');
 
 // Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
