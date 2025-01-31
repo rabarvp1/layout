@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('purchase', function (Blueprint $table) {
             $table->id();
-            $table->string('suplier');
+            $table->foreignId('suplier_id')->constrained('suplier')->cascadeOnDelete();
             $table->integer('order_number');
             $table->datetime('created_at');
-            $table->integer('sum');
-            $table->decimal('discount');
+            $table->double('sum', 8, 2);
+            $table->double('discount');
             $table->text('note')->nullable();
-            $table->integer('total');
+            $table->double('total', 8, 2);
 
         });
         Schema::create('purchase_product', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained('product')->cascadeOnDelete();
             $table->integer('quantity');
-            $table->decimal('cost');
-            $table->decimal('sum');
+            $table->double('cost', 8, 2);
+            $table->double('sum', 8, 2);
             $table->foreignId('purchase_id')->constrained('purchase')->cascadeOnDelete();
 
         });
@@ -34,7 +34,7 @@ return new class extends Migration
         Schema::create('storage', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained('product')->cascadeOnDelete();
             $table->integer('quantity');
-            $table->float('avg_cost');
+            $table->double('avg_cost', 8, 2);
             $table->string('cat');
 
         });

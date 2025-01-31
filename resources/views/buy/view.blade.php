@@ -2,7 +2,7 @@
     ['label' => 'Back', 'url' => url('/buy'), 'active' => false],
 ]">
     <h5 class="d-flex justify-content-between align-items-center pr-1 pl-1 mt-n2" tabindex="-1">
-        receipts sold ({{ $purchase->order_number }})
+        receipts Purchased ({{ $purchase->order_number }})
         <span>
         </span>
     </h5>
@@ -22,8 +22,8 @@
                             <div dir="ltr">{{ $purchase->created_at }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Customer
-                            <div>{{ $purchase->suplier }}</div>
+                            Suplier
+                            <div> {{ $purchase->suplier }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Note
@@ -65,13 +65,10 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-
-                    {{ $count=null }}
-
                     @foreach ($purchase_product as $purchase )
 
                     <tr>
-                        <td>{{ $count=$count+1 }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $purchase->product_name }}</td>
                         <td>{{ $purchase->quantity }}</td>
                         <td>${{ $purchase->cost }}</td>

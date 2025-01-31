@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('cat_id')->references('id')->on('cat');
+            $table->foreignId('cat_id')->references('id')->on('cat')->cascadeOnDelete();
         });
 
     }

@@ -1,5 +1,5 @@
  <!DOCTYPE html>
- <html lang="en" class="h-full bg-white" >
+ <html lang="en" class="h-full bg-white">
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,38 +16,43 @@
 
  <body class="h-full">
 
-     <!--
-  This example requires updating your template:
 
-  ```
-  <html class="h-full bg-white">
-  <body class="h-full">
-  ```
--->
      <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
          <div class="sm:mx-auto sm:w-full sm:max-w-sm">
              <img class="mx-auto h-35 w-auto" src="snawbar.png" alt="Your Company">
          </div>
 
          <div class="mt-7 sm:mx-auto sm:w-full sm:max-w-sm">
+             @if(session('error'))
+             <div class="alert alert-danger">{{ session('error') }}</div>
+             @endif
              <form class="space-y-6" action="#" method="POST">
+                 @csrf
                  <div>
                      <div class="mt-2">
-                         <input placeholder="User" type="text" name="user" id="user" autocomplete="user" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 sm:text-sm/6 rounded-5">
+                         <input placeholder="email" type="text" name="email" id="email" value="{{ old('email') }}" autocomplete="email" class="block w-full rounded-md border-2 border-gray-100 @error('email') border-red-300 @enderror bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 sm:text-sm/6 rounded-5">
+                         @error('email')
+                         <div class="text-danger mt-1">{{ $message }}</div>
+                         @enderror
                      </div>
                  </div>
 
                  <div>
 
                      <div class="mt-2">
-                         <input placeholder="Password" type="password" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 sm:text-sm/6 rounded-5">
+                         <input placeholder="Password" type="password" name="password" id="password" autocomplete="current-password" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 sm:text-sm/6 rounded-5">
+                         @error('password')
+                         <div class="text-danger mt-1">{{ $message }}</div>
+                         @enderror
                      </div>
                  </div>
 
                  <div>
-                    <a href="/">
-                     <button type="button" class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-5">Sign in</button>
-                    </a>
+                     {{-- <a href="/" class="no-underline flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-5">
+                         sign in </a> --}}
+                     <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-5">
+                         Login
+                     </button>
                  </div>
              </form>
 

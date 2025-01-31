@@ -23,7 +23,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Customer
-                            <div>{{ $invoice->customer }}</div>
+                            <div>{{ $invoice->customer_name }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Note

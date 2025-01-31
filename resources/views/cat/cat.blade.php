@@ -12,6 +12,7 @@
                     <tr class="table-dark">
                         <th scope="col">#</th>
                         <th scope="col">name</th>
+                        <th scope="col">Action</th>
 
                     </tr>
                 </thead>
@@ -21,9 +22,31 @@
                     <tr>
                         <th scope="row">{{ $cat->id }}</th>
                         <td>{{ $cat->name }}</td>
+                        <td>
+                            <div class="dropdown">
+                           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               Actions
+                           </button>
+
+                           <ul class="dropdown-menu">
+
+                               <li>
+                                   <form action="{{ url('/cat/'.$cat->id.'/edit') }}" method="GET">
+                                       <button type="submit" class="dropdown-item">Edit</button>
+                                   </form>
+                               </li>
+                               <li>
+                                   <form action="{{ url('/cat/'.$cat->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم کڕیارە ؟')">
+                                       @csrf
+                                       @method('DELETE')
+                                       <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                   </form>
+                               </li>
+                           </ul>
+                       </div>
+                   </td>
 
 
-                        {{-- <td><button class="btn btn-danger rounded-4">Delete</button></td> --}}
 
                     </tr>
 

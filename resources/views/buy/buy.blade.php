@@ -1,6 +1,8 @@
 <x-layout.layout :navItems="[
     ['label' => 'Back', 'url' => url('/'), 'active' => false],
 ]">
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
 
 <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
@@ -18,7 +20,7 @@
                         <th scope="col">Note</th>
                         <th scope="col">Created At</th>
                         <th scope="col">Action</th>
-                        <th scope="col">Action</th>
+
 
                     </tr>
                 </thead>
@@ -31,20 +33,36 @@
                         <td>{{ $purchase->discount }}</td>
                         <td>{{ $purchase->note }}</td>
                         <td>{{ $purchase->created_at }}</td>
-                        <td>
-                            <!-- Form for editing the product -->
-                            <form action="{{ url('/buy/view/'.$purchase->id) }}" method="GET">
 
-                                <button type="submit" class="btn btn-secondary btn-sm">View</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="{{ url('/buy/'.$purchase->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم وەسڵە ؟')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm sale-color">Delete</button>
-                            </form>
-                        </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </button>
+
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <form action="{{ url('/buy/view/'.$purchase->id) }}" method="GET">
+                                                <button type="submit" class="dropdown-item">View</button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="{{ url('/buy/'.$purchase->id.'/edit') }}" method="GET">
+                                                <button type="submit" class="dropdown-item">Edit</button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="{{ url('/buy/'.$purchase->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم وەسڵە ؟')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+
+
 
 
 
@@ -63,26 +81,18 @@
                         <div class="modal-body ">
                             <form id="form-id" action="/insert" class="vstack gap-3" method="POST">
                                 @csrf
-                                <select id="tags" class="form-control"></select>
 
                                 <label>Suppliers</label>
-                                <select name="suplier" class=" form-control ">
-                                    @foreach($supliers as $suplier)
-                                    <option value="{{ $suplier->name }}"> {{ $suplier->name }}</option>
-                                    @endforeach
+                                <select name="suplier" id="suplier" class=" form-control ">
+
                                 </select>
 
                                 <label>Note</label>
                                 <input type="text" name="note" class="form-control">
-                                @error('note')
-                                {{ $message }}
-                                @enderror
 
                                 <label>search products</label>
-                                <input type="text" name="search_product" id="tags" class="form-control">
-                                @error('search_product')
-                                {{ $message }}
-                                @enderror
+                                <input type="text" name="search_product" id="search_product" class="form-control">
+
 
                                 <table class="table  mx-auto table-hover">
 
@@ -147,9 +157,9 @@
 
     </script>
 
-    {{-- <script>
+    <script>
         $(document).ready(function() {
-            $("#tags").autocomplete({
+            $("#search_product").autocomplete({
                 source: function(request, response) {
                     $.ajax({
                         url: "/buy/getData", // Laravel route to fetch products
@@ -166,78 +176,46 @@
                 , minLength: 0, // Minimum characters before searching
                 select: function(event, ui) {
                     $('#productTableBody').append(ui.item.html);
+                    $('#search_product').val('');
+                    return false;
+
                 }
                 , appendTo: "#exampleModal", // Ensure dropdown works inside the modal
             });
         });
 
-    </script> --}}
+    </script>
 
     <!-- Include Select2 CSS and JS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Initialize Select2
-            $('#tags').select2({
-                ajax: {
-                    url: "{{ route('products.search') }}", // Laravel route for search
-                    type: 'get'
-                    , dataType: 'json'
-                    , delay: 250, // Add delay for better UX
-                    data: function(params) {
-                        return {
-                            search: params.term || '', // Search term
-                            limit: 10 // Limit the number of initial results
+      $('#exampleModal').on('shown.bs.modal', function() {
+    $('#suplier').select2({
+        ajax: {
+            url: "{{ route('search_suplier') }}",
+            type: 'get',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return { search: params.term || '', limit: 10 };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.id,
+                        text: item.name
+                    }))
+                };
+            },
+            cache: true
+        },
+        placeholder: 'Search for a Supplier',
+        minimumInputLength: 0,
+        dropdownParent: $("#exampleModal")
+    });
+});
 
-                        };
-                    }
-                    , processResults: function(data) {
-                        return {
-                            results: data.map(function(item) {
-                                return {
-                                    id: item.id, // The unique ID for the option
-                                    text: item.name // The text to display
-                                };
-                            })
-                        };
-                    }
-                    , cache: true
-                }
-                , placeholder: 'Search for a product'
-                , minimumInputLength: 0
-                , dropdownParent: $("#exampleModal") // Ensure dropdown works inside the modal
-            });
-
-            // Handle selection and append to modal table
-            $('#tags').on('select2:select', function(e) {
-                const selected = e.params.data;
-
-                // Check if the product is already added to the table
-                if ($(`#productTableBody input[value="${selected.id}"]`).length > 0) {
-                    alert('This product is already added to the table.');
-                    return;
-                }
-                // Append the selected product to the table
-                $('#productTableBody').append(`
-                    <tr>
-                        <td>${selected.text}</td>
-                        <td><input type="number" class="form-control" name="quantity[]" value="1"></td>
-                        <td><input type="number" class="form-control" name="cost[]" value="0"></td>
-                        <td><input type="number" class="form-control" name="single_price[]" value="0"></td>
-                        <td><input type="number" class="form-control" name="multi_price[]" value="0"></td>
-                        <input type="hidden" name="product_id[]" value="${selected.id}">
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="${selected.id}">Delete</button>
-                        </td>
-                    </tr>
-                `);
-            });
-            // Handle delete button click to remove the row
-            $('#productTableBody').on('click', '.delete-btn', function() {
-                $(this).closest('tr').remove();
-            });
-        });
 
     </script>
 

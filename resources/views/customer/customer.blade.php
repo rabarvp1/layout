@@ -14,6 +14,7 @@
                         <th scope="col">name</th>
                         <th scope="col">address</th>
                         <th scope="col">phone number</th>
+                        <th scope="col">Action</th>
 
                     </tr>
                 </thead>
@@ -25,6 +26,29 @@
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->address }}</td>
                         <td>{{ $customer->phone_number}}</td>
+                        <td>
+                             <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+
+                            <ul class="dropdown-menu">
+
+                                <li>
+                                    <form action="{{ url('/customer/'.$customer->id.'/edit') }}" method="GET">
+                                        <button type="submit" class="dropdown-item">Edit</button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{{ url('/customer/'.$customer->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم کڕیارە ؟')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
 
 
                         {{-- <td><button class="btn btn-danger rounded-4">Delete</button></td> --}}

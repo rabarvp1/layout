@@ -1,10 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use function Laravel\Prompts\alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-use function Laravel\Prompts\alert;
 
 class SellController extends Controller
 {
@@ -14,8 +13,10 @@ class SellController extends Controller
         $customers = DB::table('customer')->get();
 
         $products = DB::table('product')->get();
-        $invoices = DB::table('invoice')->get();
-        $sells    = DB::table('sell_product')
+        $invoices = DB::table('invoice')->join('customer', 'invoice.customer_id', 'customer.id')
+            ->select('invoice.*', 'customer.name as customer_name')
+            ->get();
+        $sells = DB::table('sell_product')
             ->join('product', 'sell_product.product_id', 'product.id')
             ->select('sell_product.*', 'product.name as product_name')
 
@@ -30,22 +31,22 @@ class SellController extends Controller
         DB::transaction(function () use ($request) {
 
             $request->validate([
-                'customer'     => 'required|string|exists:customer,name', // Ensure the customer exists
-                'product_id'   => 'required|array',
-                'note'         => 'nullable|string|max:255',
-                'product_id'   => 'required|array',
-                'product_id.*' => 'required|numeric|exists:product,id',
-                'quantity'     => 'required|array',
-                'quantity.*'   => 'required|numeric|gt:0',
-                'sell_price'   => 'required|array',
-                'sell_price.*' => 'required|numeric|gt:0',
+                'customer_id.*' => 'required|numeric|exists:customer,id',
+                'product_id'    => 'required|array',
+                'note'          => 'nullable|string|max:255',
+                'product_id'    => 'required|array',
+                'product_id.*'  => 'required|numeric|exists:product,id',
+                'quantity'      => 'required|array',
+                'quantity.*'    => 'required|numeric|gt:0',
+                'sell_price'    => 'required|array',
+                'sell_price.*'  => 'required|numeric|gt:0',
             ]);
 
             // Get the current max order number and create a new invoice
             $maxOrderNumber = DB::table('invoice')->max('order_number') ?? 0;
 
             $invoiceId = DB::table('invoice')->insertGetId([
-                'customer'     => $request->customer,
+                'customer_id'  => $request->customer_id,
                 'sum'          => 0,
                 'note'         => $request->note,
                 'total'        => 0,
@@ -71,7 +72,7 @@ class SellController extends Controller
                 // Check if the requested quantity is available
                 if ($product->quantity < $requestedQuantity) {
                     return response()->json([
-                        'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available."
+                        'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
                     ]);
                     // throw new \Exception("Insufficient stock for product ID $productId. Only $product->quantity items available.");
                 }
@@ -95,20 +96,7 @@ class SellController extends Controller
                     ->decrement('quantity', $requestedQuantity);
 
                 $totalSum += $sum;
-                if ($existingPurchase) {
 
-                    $currentQTY = DB::table('storage')->where('product_id', $productId)->first();
-
-                    DB::table('storage')
-                        ->where('product_id', $existingPurchase->product_id)
-                        ->update([
-                            'quantity' => $currentQTY->quantity - $requestedQuantity,
-
-                        ]);
-                } else {
-
-                    redirect('sell')->with('failed', 'we dont have the product in storage');
-                }
             }
 
             // Update the total and sum fields in the invoice
@@ -173,12 +161,29 @@ class SellController extends Controller
         return redirect('sell')->with('success', 'Product deleted successfully!');
     }
 
+    public function search_customer(Request $request)
+    {
+        $search = $request->get('search', ''); // Get search term
+
+        // Query the database (using Query Builder)
+        $customers = DB::table('customer')
+            ->select('id', 'name')
+            ->where('name', 'LIKE', '%' . $search . '%') // Filter by search term
+            ->limit(10)                                  // Limit results
+            ->get();
+
+        // Return the results as JSON
+        return response()->json($customers);
+    }
+
 // invoice view
 
     public function view_invoice($id)
     {
 
-        $invoice = DB::table('invoice')->where('id', $id)->first();
+        $invoice = DB::table('invoice')->join('customer', 'invoice.customer_id', 'customer.id')
+            ->select('invoice.*', 'customer.name as customer_name')
+            ->where('invoice.id', $id)->firstOrFail();
 
         $sell_product = DB::table('sell_product')->where('invoice_id', $id)
             ->join('product', 'sell_product.product_id', 'product.id')
@@ -188,5 +193,87 @@ class SellController extends Controller
         return view('sell.view', compact('invoice', 'sell_product'));
 
     }
+
+    // edit invoice
+    public function edit_invoice($id)
+    {
+
+        $invoices = DB::table('invoice')
+            ->join('customer', 'invoice.customer_id', 'customer.id')
+            ->select('invoice.*', 'customer.name as customer_name')
+            ->where('invoice.id', $id)
+            ->firstOrFail();
+
+        $sell_products = DB::table('sell_product')->where('invoice_id', $id)
+            ->join('product', 'sell_product.product_id', 'product.id')
+            ->select('sell_product.*', 'product.name as product_name')
+            ->get();
+
+        return view('sell.edit', compact('invoices', 'sell_products'));
+
+    }
+
+    public function update_invoice(Request $request,$id){
+
+        $request->validate([
+            'customer_id.*' => 'required|numeric|exists:customer,id',
+            'note'          => 'nullable|string|max:255',
+
+            'quantity'      => 'required|array',
+            'quantity.*'    => 'required|numeric|gt:0',
+            'sell_price'    => 'required|array',
+            'sell_price.*'  => 'required|numeric|gt:0',
+        ]);
+
+        $invoiceId = DB::table('invoice')->where('id',$id)->update([
+            'customer_id'  => $request->customer_id,
+            'note'         => $request->note,
+            'created_at'   => now(),
+        ]);
+
+        $totalSum = 0; // Variable to track the total sum of the invoice
+
+        foreach ($request->product_id as $index => $productId) {
+            $product          = DB::table('purchase_product')->where('product_id', $productId)->firstOrFail();
+
+            // Check if the product exists in purchase_product
+            if (! $product) {
+                alert('product not fount');
+                throw new \Exception("Product with ID $productId not found in stock.");
+            }
+
+            $requestedQuantity = $request->quantity[$index];
+
+            // Check if the requested quantity is available
+            if ($product->quantity < $requestedQuantity) {
+                return response()->json([
+                    'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
+                ]);
+            }
+
+            $sellPrice = $request->sell_price[$index];
+            $sum       = $requestedQuantity * $sellPrice;
+
+            // Insert into sell_product
+
+            DB::table('sell_product')->where('product_id',$productId)->update([
+                'quantity'   => $requestedQuantity,
+                'sell_price' => $sellPrice,
+                'sum'        => $sum,
+            ]);
+
+            // Decrement the stock in purchase_product
+            DB::table('purchase_product')
+                ->where('product_id', $productId)
+                ->decrement('quantity', $requestedQuantity);
+
+            $totalSum += $sum;
+
+        }
+
+        return redirect('sell')->with('success', 'Product updated successfully!');
+
+    }
+
 
 }

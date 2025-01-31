@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class BuyController extends Controller
 {
@@ -10,16 +11,19 @@ class BuyController extends Controller
     {
         $supliers = DB::table('suplier')->get();
 
-        $purchases = DB::table('purchase')->get();
+        $purchases = DB::table('purchase')
+            ->join('suplier', 'purchase.suplier_id', 'suplier.id')
+            ->select('purchase.*', 'suplier.name as suplier')
+
+            ->get();
 
         return view('buy.buy', compact('purchases', 'supliers'));
     }
     public function insert(Request $request)
     {
         $request->validate([
-            'suplier'      => 'required|string|exists:suplier,name',
+            'suplier_id.*' => 'required|numeric|exists:suplier,id',
             'note'         => 'nullable|string|max:255',
-            'product_id'   => 'required|array|min:1',
             'product_id.*' => 'required|numeric|exists:product,id',
             'quantity'     => 'required|array|min:1',
             'quantity.*'   => 'required|numeric|gt:0',
@@ -28,12 +32,11 @@ class BuyController extends Controller
         ]);
         DB::transaction(function () use ($request) {
             $maxOrderNumber = DB::table('purchase')->max('order_number') ?? 0;
-
-            $purchaseId = DB::table('purchase')->insertGetId([
+            $purchaseId     = DB::table('purchase')->insertGetId([
 
                 'order_number' => $maxOrderNumber + 1,
                 'sum'          => 0,
-                'suplier'      => $request->suplier,
+                'suplier_id'   => $request->suplier,
                 'discount'     => 0,
                 'note'         => $request->note,
                 'total'        => 0,
@@ -58,27 +61,27 @@ class BuyController extends Controller
 
                 $totalSum += $sum;
 
-                if ($existingPurchase) {
+                // if ($existingPurchase) {
 
-                    $storage = DB::table('storage')->where('product_id', $productId)->first();
+                //     $storage = DB::table('storage')->where('product_id', $productId)->first();
 
-                    DB::table('storage')
-                        ->where('product_id', $existingPurchase->product_id)
-                        ->update([
-                            'quantity' => $storage->quantity + $requestedQuantity,
-                            'avg_cost' => $sum / $requestedQuantity,
+                //     DB::table('storage')
+                //         ->where('product_id', $existingPurchase->product_id)
+                //         ->update([
+                //             'quantity' => $storage->quantity + $requestedQuantity,
+                //             'avg_cost' => $sum / $requestedQuantity,
 
-                        ]);
-                } else {
-                    // If the product has not been bought, insert a new row
-                    DB::table('storage')->insert([
-                        'product_id' => $productId,
-                        'quantity'   => $requestedQuantity,
-                        'avg_cost'   => $cost,
-                        'cat'        => '',
+                //         ]);
+                // } else {
+                //     // If the product has not been bought, insert a new row
+                //     DB::table('storage')->insert([
+                //         'product_id' => $productId,
+                //         'quantity'   => $requestedQuantity,
+                //         'avg_cost'   => $cost,
+                //         'cat'        => '',
 
-                    ]);
-                }
+                //     ]);
+                // }
 
             }
 
@@ -144,7 +147,14 @@ class BuyController extends Controller
     public function view_purchase($id)
     {
 
-        $purchase = DB::table('purchase')->where('id', $id)->first();
+        $purchase = DB::table('purchase')
+            ->join('suplier', 'purchase.suplier_id', 'suplier.id')
+            ->select(
+                'purchase.*',
+                'suplier.name as suplier',
+            )
+            ->where('purchase.id', $id)
+            ->firstOrFail();
 
         $purchase_product = DB::table('purchase_product')->where('purchase_id', $id)
             ->join('product', 'purchase_product.product_id', 'product.id')
@@ -153,6 +163,75 @@ class BuyController extends Controller
 
         return view('buy.view', compact('purchase', 'purchase_product'));
 
+    }
+    //edit purchase
+    public function edit_purchase($id)
+    {
+
+        $purchase = DB::table('purchase')
+            ->join('suplier', 'purchase.suplier_id', 'suplier.id')
+            ->select(
+                'purchase.*',
+                'suplier.name as suplier',
+            )
+            ->where('purchase.id', $id)
+            ->firstOrFail();
+
+        $purchase_product = DB::table('purchase_product')->where('purchase_id', $id)
+            ->join('product', 'purchase_product.product_id', 'product.id')
+            ->select('purchase_product.*', 'product.name as product_name')
+            ->get();
+
+        return view('buy.edit', compact('purchase_product', 'purchase'));
+
+    }
+
+    public function purchase_update(Request $request, $id)
+    {
+
+        $request->validate([
+            'suplier_id.*' => 'required|numeric|exists:suplier,id',
+            'note'         => 'nullable|string|max:255',
+            'quantity'     => 'required|array|min:1',
+            'quantity.*'   => 'required|numeric|gt:0',
+            'cost'         => 'required|array|min:1',
+            'cost.*'       => 'required|numeric|gt:0',
+        ]);
+
+        $purchaseId     = DB::table('purchase')->where('id',$id)->update([
+
+            'suplier_id'   => $request->suplier,
+            'note'         => $request->note,
+            'created_at'   => now(),
+        ]);
+        $totalSum = 0; // Variable to track the total sum of the purchase
+        $purchaseId     = DB::table('purchase')->get();
+        foreach ($request->product_id as $key => $productId) {
+
+            $requestedQuantity = $request->quantity[$key];
+            $cost              = $request->cost[$key];
+            $sum               = $cost * $requestedQuantity;
+            // Insert into the `purchase_product` table
+            DB::table('purchase_product')->where('product_id',$productId)->update([
+                'quantity'    => $requestedQuantity,
+                'cost'        => $cost,
+                'sum'         => $sum,
+            ]);
+
+
+            $totalSum += $sum;
+
+
+
+        }
+
+
+
+
+
+
+
+        return redirect('buy')->with('success', 'Product updated successfully!');
     }
     //delete purchase
     public function deletePurchase($id)
@@ -171,13 +250,27 @@ class BuyController extends Controller
         $search = $request->get('search', ''); // Get search term
 
         // Query the database (using Query Builder)
-        $products = DB::table('product')
+        $products = DB::table('suplier')
             ->select('id', 'name')
             ->where('name', 'LIKE', '%' . $search . '%') // Filter by search term
-            ->limit(10) // Limit results
+            ->limit(10)                                  // Limit results
             ->get();
 
         // Return the results as JSON
         return response()->json($products);
     }
+
+    public function getPurchases()
+    {
+        $purchases = DB::table('purchase') // Use Query Builder to fetch purchases
+            ->leftJoin('suplier', 'purchase.suplier_id', '=', 'supplier.id') // Join with suppliers if needed
+            ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at');
+
+        return DataTables::of($purchases)
+            ->addColumn('actions', function ($purchase) {
+                return view('buy.buy', compact('purchase'))->render(); // Return the actions dropdown
+            })
+            ->make(true);
+    }
+
 }
