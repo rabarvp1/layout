@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="/css/login.css">
     <link rel="stylesheet" type="text/css" href="/css/dashbord.css">
 
-    @stack('scripts')
+    {{-- @stack('scripts') --}}
     <link rel="icon" type="image/png" href="{{ asset('snawbar.png') }}">
 
 </head>

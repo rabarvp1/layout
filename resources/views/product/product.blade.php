@@ -10,7 +10,6 @@
                 </button>
             </div>
             <div class="card-body">
-                <!-- Custom Styled Search -->
                 <div class="mb-3">
                     <div class="input-group rounded-end-pill">
                         <span class="input-group-text bg-light rounded-start-pill"><i class="fas fa-search"></i></span>
@@ -29,14 +28,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Table rows will be populated dynamically by DataTables -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Modal for Adding Product -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -80,16 +77,13 @@
     </script>
     @endif
 
-    @push('scripts')
-    <!-- Include jQuery -->
+    {{-- @push('scripts') --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Include DataTables JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <!-- Include Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Include Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -158,5 +152,5 @@
         });
 
     </script>
-    @endpush
+    {{-- @endpush --}}
 </x-layout.layout>

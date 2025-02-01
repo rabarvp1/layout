@@ -24,6 +24,5 @@ class income extends Controller
             ->get();
 
 
-        // Pass data to view
         return view('income.income', compact('mergedData'));}
 }

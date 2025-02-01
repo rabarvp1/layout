@@ -19,7 +19,16 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item ms-auto">
-                    <a class="nav-link" href="">Rabar</a>
+                    <a class="nav-link" href="">@auth
+                        {{ Auth::user()->name }}
+                    @endauth</a>
+                </li>
+
+                <li class="nav-item ms-auto">
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">Logout</button>
+                    </form>
                 </li>
             </ul>
         </div>

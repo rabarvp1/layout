@@ -26,7 +26,6 @@ class SellController extends Controller
     }
     public function insert_sell(Request $request)
     {
-        // Validate input data
 
         DB::transaction(function () use ($request) {
 
@@ -42,7 +41,6 @@ class SellController extends Controller
                 'sell_price.*'  => 'required|numeric|gt:0',
             ]);
 
-            // Get the current max order number and create a new invoice
             $maxOrderNumber = DB::table('invoice')->max('order_number') ?? 0;
 
             $invoiceId = DB::table('invoice')->insertGetId([
@@ -55,13 +53,11 @@ class SellController extends Controller
                 'created_at'   => now(),
             ]);
 
-            $totalSum = 0; // Variable to track the total sum of the invoice
-
+            $totalSum = 0;
             foreach ($request->product_id as $index => $productId) {
                 $product          = DB::table('purchase_product')->where('product_id', $productId)->first();
                 $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
 
-                // Check if the product exists in purchase_product
                 if (! $product) {
                     alert('product not fount');
                     throw new \Exception("Product with ID $productId not found in stock.");
@@ -69,18 +65,14 @@ class SellController extends Controller
 
                 $requestedQuantity = $request->quantity[$index];
 
-                // Check if the requested quantity is available
                 if ($product->quantity < $requestedQuantity) {
                     return response()->json([
                         'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
                     ]);
-                    // throw new \Exception("Insufficient stock for product ID $productId. Only $product->quantity items available.");
                 }
 
                 $sellPrice = $request->sell_price[$index];
                 $sum       = $requestedQuantity * $sellPrice;
-
-                // Insert into sell_product
 
                 DB::table('sell_product')->insert([
                     'product_id' => $productId,
@@ -90,16 +82,14 @@ class SellController extends Controller
                     'invoice_id' => $invoiceId,
                 ]);
 
-                // Decrement the stock in purchase_product
-                DB::table('purchase_product')
-                    ->where('product_id', $productId)
-                    ->decrement('quantity', $requestedQuantity);
+                // DB::table('purchase_product')
+                //     ->where('product_id', $productId)
+                //     ->decrement('quantity', $requestedQuantity);
 
                 $totalSum += $sum;
 
             }
 
-            // Update the total and sum fields in the invoice
             DB::table('invoice')->where('id', $invoiceId)->update([
                 'sum'   => $totalSum,
                 'total' => $totalSum - ($request->discount ?? 0),
@@ -144,20 +134,16 @@ class SellController extends Controller
 
         return response()->json($products);
     }
-// delete the one row in buy modal
     public function delete_row_sell(Request $request)
     {
         $id = $request->input('id');
-        // Perform deletion logic (e.g., DB::table('product')->where('id', $id)->delete();)
         return response()->json(['message' => 'Product deleted successfully.']);
     }
 
     public function deleteInvoice($id)
     {
-        // Delete the product by id using Query Builder
         DB::table('invoice')->where('id', $id)->delete();
 
-        // Redirect back to the product page with a success message
         return redirect('sell')->with('success', 'Product deleted successfully!');
     }
 
@@ -165,14 +151,12 @@ class SellController extends Controller
     {
         $search = $request->get('search', ''); // Get search term
 
-        // Query the database (using Query Builder)
         $customers = DB::table('customer')
             ->select('id', 'name')
-            ->where('name', 'LIKE', '%' . $search . '%') // Filter by search term
-            ->limit(10)                                  // Limit results
+            ->where('name', 'LIKE', '%' . $search . '%')
+            ->limit(10)
             ->get();
 
-        // Return the results as JSON
         return response()->json($customers);
     }
 
@@ -213,7 +197,8 @@ class SellController extends Controller
 
     }
 
-    public function update_invoice(Request $request,$id){
+    public function update_invoice(Request $request, $id)
+    {
 
         $request->validate([
             'customer_id.*' => 'required|numeric|exists:customer,id',
@@ -225,18 +210,16 @@ class SellController extends Controller
             'sell_price.*'  => 'required|numeric|gt:0',
         ]);
 
-        $invoiceId = DB::table('invoice')->where('id',$id)->update([
-            'customer_id'  => $request->customer_id,
-            'note'         => $request->note,
-            'created_at'   => now(),
+        $invoiceId = DB::table('invoice')->where('id', $id)->update([
+            'customer_id' => $request->customer_id,
+            'note'        => $request->note,
+            'created_at'  => now(),
         ]);
 
-        $totalSum = 0; // Variable to track the total sum of the invoice
-
+        $totalSum = 0;
         foreach ($request->product_id as $index => $productId) {
-            $product          = DB::table('purchase_product')->where('product_id', $productId)->firstOrFail();
+            $product = DB::table('purchase_product')->where('product_id', $productId)->firstOrFail();
 
-            // Check if the product exists in purchase_product
             if (! $product) {
                 alert('product not fount');
                 throw new \Exception("Product with ID $productId not found in stock.");
@@ -244,7 +227,6 @@ class SellController extends Controller
 
             $requestedQuantity = $request->quantity[$index];
 
-            // Check if the requested quantity is available
             if ($product->quantity < $requestedQuantity) {
                 return response()->json([
                     'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
@@ -254,15 +236,12 @@ class SellController extends Controller
             $sellPrice = $request->sell_price[$index];
             $sum       = $requestedQuantity * $sellPrice;
 
-            // Insert into sell_product
-
-            DB::table('sell_product')->where('product_id',$productId)->update([
+            DB::table('sell_product')->where('product_id', $productId)->update([
                 'quantity'   => $requestedQuantity,
                 'sell_price' => $sellPrice,
                 'sum'        => $sum,
             ]);
 
-            // Decrement the stock in purchase_product
             DB::table('purchase_product')
                 ->where('product_id', $productId)
                 ->decrement('quantity', $requestedQuantity);
@@ -274,6 +253,5 @@ class SellController extends Controller
         return redirect('sell')->with('success', 'Product updated successfully!');
 
     }
-
 
 }

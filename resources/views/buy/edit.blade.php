@@ -67,20 +67,17 @@
 
     <script>
         $(document).on('click', '.delete-btn', function() {
-            // Get the current row
             const row = $(this).closest('tr');
 
-            // Remove the row from the table
             row.remove();
 
-            // Optionally, you can perform an AJAX request to notify the server
             const productId = $(this).data('id');
             $.ajax({
-                url: '/delete-product', // Replace with your endpoint
+                url: '/delete-product',
                 type: 'POST'
                 , data: {
                     id: productId
-                    , _token: '{{ csrf_token() }}', // Add CSRF token for security
+                    , _token: '{{ csrf_token() }}',
                 }
                 , success: function(response) {
                     console.log(response.message);
@@ -98,25 +95,25 @@
             $("#search_product").autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: "/buy/getData", // Laravel route to fetch products
+                        url: "/buy/getData",
                         type: "GET"
                         , data: {
                             search: request.term
-                        }, // Send search term
+                        },
                         dataType: "json"
                         , success: function(data) {
                             response(data);
                         }
                     , });
                 }
-                , minLength: 0, // Minimum characters before searching
+                , minLength: 0,
                 select: function(event, ui) {
                     $('#productTableBody').append(ui.item.html);
                     $('#search_product').val('');
                     return false;
 
                 }
-                , appendTo: "#exampleModal", // Ensure dropdown works inside the modal
+                , appendTo: "#exampleModal", 
             });
         });
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\catController;
 use App\Http\Controllers\CustomerController;
@@ -10,96 +11,100 @@ use App\Http\Controllers\StorageController;
 use App\Http\Controllers\suplierController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProductController::class, 'first'])->name('first');
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/product', [ProductController::class, 'product'])->name('product');
+    Route::get('/', [ProductController::class, 'first'])->name('first');
 
-Route::get('/product', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/product', [ProductController::class, 'product'])->name('product');
 
-Route::post('/upload', [ProductController::class, 'upload']);
+    Route::get('/product', [ProductController::class, 'index'])->name('products.index');
 
-Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
+    Route::post('/upload', [ProductController::class, 'upload']);
 
-Route::get('/product/{id}/edit', [ProductController::class, 'editProduct']); // Show edit form
+    Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
 
-Route::put('/product/{id}', [ProductController::class, 'updateProduct']); // Update product
+    Route::get('/product/{id}/edit', [ProductController::class, 'editProduct']); // Show edit form
 
-Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
+    Route::put('/product/{id}', [ProductController::class, 'updateProduct']); // Update product
 
-Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
+    Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
 
-Route::get('/buy/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase');
+    Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
 
-Route::get('/buy/{id}/edit', [BuyController::class, 'edit_purchase'])->name('edit_purchase');
+    Route::get('/buy/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase');
 
-Route::put('/buy/{id}', [BuyController::class, 'purchase_update']); // Update purchase
+    Route::get('/buy/{id}/edit', [BuyController::class, 'edit_purchase'])->name('edit_purchase');
 
-Route::post('/insert', [BuyController::class, 'insert']);
+    Route::put('/buy/{id}', [BuyController::class, 'purchase_update']); // Update purchase
 
-Route::get('/sell', [SellController::class, 'sell'])->name('sell');
+    Route::post('/insert', [BuyController::class, 'insert']);
 
-Route::get('/sell/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
+    Route::get('/sell', [SellController::class, 'sell'])->name('sell');
 
-Route::get('/sell/{id}/edit', [SellController::class, 'edit_invoice'])->name('edit_invoice');
+    Route::get('/sell/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
 
-Route::put('/sell/{id}', [SellController::class, 'update_invoice']);
+    Route::get('/sell/{id}/edit', [SellController::class, 'edit_invoice'])->name('edit_invoice');
 
-Route::get('/customer/search', [SellController::class, 'search_customer'])->name('search_customer');
+    Route::put('/sell/{id}', [SellController::class, 'update_invoice']);
 
-Route::post('/insert_sell', [SellController::class, 'insert_sell']);
+    Route::get('/customer/search', [SellController::class, 'search_customer'])->name('search_customer');
 
-Route::get('/cat', [catController::class, 'cat'])->name('cat');
+    Route::post('/insert_sell', [SellController::class, 'insert_sell']);
 
-Route::get('/cat/{id}/edit', [catController::class, 'cat_edit'])->name('cat_edit');
+    Route::get('/cat', [catController::class, 'cat'])->name('cat');
 
-Route::put('/cat/{id}', [catController::class, 'cat_update'])->name('cat_update');
+    Route::get('/cat/{id}/edit', [catController::class, 'cat_edit'])->name('cat_edit');
 
-Route::delete('/cat/{id}', [catController::class, 'cat_delete'])->name('cat_delete');
+    Route::put('/cat/{id}', [catController::class, 'cat_update'])->name('cat_update');
 
-Route::post('/inputCat', [catController::class, 'inputCat']);
+    Route::delete('/cat/{id}', [catController::class, 'cat_delete'])->name('cat_delete');
 
-Route::get('/income', [income::class, 'mergedData'])->name('income');
+    Route::post('/inputCat', [catController::class, 'inputCat']);
 
-Route::get('/suplier', [suplierController::class, 'suplier'])->name('suplier');
+    Route::get('/income', [income::class, 'mergedData'])->name('income');
 
-Route::get('/suplier/{id}/edit', [SuplierController::class, 'edit_suplier'])->name('edit_suplier');
+    Route::get('/suplier', [suplierController::class, 'suplier'])->name('suplier');
 
-Route::put('/suplier/{id}', [SuplierController::class, 'update_suplier'])->name('edit_suplier');
+    Route::get('/suplier/{id}/edit', [SuplierController::class, 'edit_suplier'])->name('edit_suplier');
 
-Route::delete('/suplier/{id}', [SuplierController::class, 'delete_suplier'])->name('edit_suplier');
+    Route::put('/suplier/{id}', [SuplierController::class, 'update_suplier'])->name('edit_suplier');
 
-Route::get('/buy/getData', [BuyController::class, 'getData'])->name('getData');
+    Route::delete('/suplier/{id}', [SuplierController::class, 'delete_suplier'])->name('edit_suplier');
 
-Route::get('/suplier/search', [BuyController::class, 'search'])->name('search_suplier');
+    Route::get('/buy/getData', [BuyController::class, 'getData'])->name('getData');
 
-Route::post('/inputSuplier', [suplierController::class, 'inputSuplier']);
+    Route::get('/suplier/search', [BuyController::class, 'search'])->name('search_suplier');
 
-Route::put('/customer/{id}', [CustomerController::class, 'update_customer']);
+    Route::post('/inputSuplier', [suplierController::class, 'inputSuplier']);
 
-Route::delete('/customer/{id}', [CustomerController::class, 'delete_customer']);
+    Route::put('/customer/{id}', [CustomerController::class, 'update_customer']);
 
-Route::get('/customer', [CustomerController::class, 'customer'])->name('customer');
+    Route::delete('/customer/{id}', [CustomerController::class, 'delete_customer']);
 
-Route::get('/customer/{id}/edit', [CustomerController::class, 'edit_customer'])->name('edit_customer');
+    Route::get('/customer', [CustomerController::class, 'customer'])->name('customer');
 
-Route::post('/delete-product', [BuyController::class, 'deleteRow']);
+    Route::get('/customer/{id}/edit', [CustomerController::class, 'edit_customer'])->name('edit_customer');
 
-Route::post('/inputCustomer', [CustomerController::class, 'inputCustomer']);
+    Route::post('/delete-product', [BuyController::class, 'deleteRow']);
 
-Route::post('/delete-sellProduct', [SellController::class, 'delete_row_sell']);
+    Route::post('/inputCustomer', [CustomerController::class, 'inputCustomer']);
 
-Route::get('/sell/getData_sell', [SellController::class, 'getData_sell'])->name('getData_sell');
+    Route::post('/delete-sellProduct', [SellController::class, 'delete_row_sell']);
 
-Route::delete('/sell/{id}', [SellController::class, 'deleteInvoice']);
+    Route::get('/sell/getData_sell', [SellController::class, 'getData_sell'])->name('getData_sell');
 
-Route::delete('/buy/{id}', [BuyController::class, 'deletePurchase']);
+    Route::delete('/sell/{id}', [SellController::class, 'deleteInvoice']);
 
-Route::get('/storage', [StorageController::class, 'storage'])->name('storage');
+    Route::delete('/buy/{id}', [BuyController::class, 'deletePurchase']);
 
-Route::get('/storage/getData_storage', [StorageController::class, 'getData_storage'])->name('getData_storage');
+    Route::get('/storage', [StorageController::class, 'storage'])->name('storage');
 
-// Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::get('/storage/getData_storage', [StorageController::class, 'getData_storage'])->name('getData_storage');
 
+
+
+});
 // Auth Route
-// Route::get('/login', [AuthController::class, 'index'])->name('login');
-// Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

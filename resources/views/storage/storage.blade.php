@@ -36,9 +36,9 @@
                 createdRow: function(row, data, dataIndex) {
                     // Apply classes based on the total_quantity
                     if (data.total_quantity === 0) {
-                        $('td', row).eq(2).addClass('text-bg-danger'); // Apply to total_quantity column
+                        $('td', row).eq(2).addClass('text-bg-danger');
                     } else if (data.total_quantity < 5) {
-                        $('td', row).eq(2).addClass('text-bg-warning'); // Apply to total_quantity column
+                        $('td', row).eq(2).addClass('text-bg-warning');
                     }
                 },
                 order: [[1, 'asc']]

@@ -41,7 +41,6 @@ return view('login.login');
             'name'   => 'required|string|max:50|unique:product,name',
             'cat_id' => 'required|numeric|exists:cat,id',
         ]);
-        // |exists:product,cat_id
 
         DB::table('product')->insert([
             'name'   => $request->name,
@@ -52,18 +51,14 @@ return view('login.login');
 
     }
 
-//   this method for delete product
 
     public function deleteProduct($id)
 {
-    // Delete the product by id using Query Builder
     DB::table('product')->where('id', $id)->delete();
 
-    // Redirect back to the product page with a success message
     return redirect('product')->with('success', 'Product deleted successfully!');
 }
 
-//this method for edit product page
 
 public function editProduct($id)
 {
@@ -73,7 +68,6 @@ public function editProduct($id)
     return view('product.edit', compact('product', 'categories'));
 }
 
-//this method for updating product
 
 public function updateProduct(Request $request, $id)
 {
@@ -102,7 +96,7 @@ public function index(Request $request)
         ->filter(function ($query) use ($request) {
             if ($request->has('search') && !empty($request->input('search')['value'])) {
                 $search = $request->input('search')['value'];
-                $query->where('product.name', 'LIKE', "%{$search}%"); 
+                $query->where('product.name', 'LIKE', "%{$search}%");
             }
         })
             ->addColumn('actions', function ($row) {

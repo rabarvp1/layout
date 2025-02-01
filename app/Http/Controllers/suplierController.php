@@ -35,20 +35,20 @@ class suplierController extends Controller
 
     }
 
-    public function edit_suplier($id){
+    public function edit_suplier($id)
+    {
 
         $suplier = DB::table('suplier')->where('id', $id)->firstOrFail();
 
-
-
-        return view('suplier.edit' , compact('suplier'));
+        return view('suplier.edit', compact('suplier'));
 
     }
-    public function update_suplier(Request $request,$id){
+    public function update_suplier(Request $request, $id)
+    {
 
         $request->validate([
-            'name'         => 'required|string|max:50',
-            'address'      => 'required|string|max:50',
+            'name'    => 'required|string|max:50',
+            'address' => 'required|string|max:50',
 
         ]);
 
@@ -61,16 +61,14 @@ class suplierController extends Controller
 
         return redirect('suplier')->with('success', 'suplier updated successfully!');
 
-
-
-
     }
 
-    public function delete_suplier($id){
+    public function delete_suplier($id)
+    {
 
-          DB::table('suplier')->where('id', $id)->delete();
+        DB::table('suplier')->where('id', $id)->delete();
 
-          return redirect('customer')->with('success', 'suplier deleted successfully!');
+        return redirect('customer')->with('success', 'suplier deleted successfully!');
     }
 
 }

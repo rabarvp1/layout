@@ -136,20 +136,17 @@
 
     <script>
         $(document).on('click', '.delete-btn', function() {
-            // Get the current row
             const row = $(this).closest('tr');
 
-            // Remove the row from the table
             row.remove();
 
-            // Optionally, you can perform an AJAX request to notify the server
             const productId = $(this).data('id');
             $.ajax({
-                url: '/delete-sellProduct', // Replace with your endpoint
+                url: '/delete-sellProduct',
                 type: 'POST'
                 , data: {
                     id: productId
-                    , _token: '{{ csrf_token() }}', // Add CSRF token for security
+                    , _token: '{{ csrf_token() }}', /
                 }
                 , success: function(response) {
                     console.log(response.message);
@@ -167,7 +164,7 @@
             $("#tags").autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: "/sell/getData_sell", // Laravel route to fetch products
+                        url: "/sell/getData_sell",
                         type: "GET"
                         , data: {
                             search: request.term
@@ -178,17 +175,16 @@
                         }
                     , });
                 }
-                , minLength: 0, // Minimum characters before searching
+                , minLength: 0,
                 select: function(event, ui) {
                     $('#productTableBody').append(ui.item.html);
                 }
-                , appendTo: "#exampleModal", // Ensure dropdown works inside the modal
+                , appendTo: "#exampleModal",
             });
         });
 
     </script>
 
-    <!-- Include Select2 CSS and JS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 

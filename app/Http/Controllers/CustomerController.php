@@ -52,7 +52,6 @@ $customers= DB::table('customer')->get();
         $request->validate([
             'name'         => 'required|string|max:50',
             'address'      => 'required|string|max:50',
-            // 'phone_number' => 'required|gt:0|unique:customer,phone_number',
 
         ]);
 

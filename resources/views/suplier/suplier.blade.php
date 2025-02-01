@@ -52,8 +52,6 @@
                        </div>
                    </td>
 
-                        {{-- <td><button class="btn btn-danger rounded-4">Delete</button></td> --}}
-
                     </tr>
 
 

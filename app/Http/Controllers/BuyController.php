@@ -42,7 +42,7 @@ class BuyController extends Controller
                 'total'        => 0,
                 'created_at'   => now(),
             ]);
-            $totalSum = 0; // Variable to track the total sum of the purchase
+            $totalSum = 0;
 
             foreach ($request->product_id as $key => $productId) {
                 $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
@@ -50,7 +50,7 @@ class BuyController extends Controller
                 $requestedQuantity = $request->quantity[$key];
                 $cost              = $request->cost[$key];
                 $sum               = $cost * $requestedQuantity;
-                // Insert into the `purchase_product` table
+
                 DB::table('purchase_product')->insert([
                     'quantity'    => $requestedQuantity,
                     'cost'        => $cost,
@@ -61,27 +61,7 @@ class BuyController extends Controller
 
                 $totalSum += $sum;
 
-                // if ($existingPurchase) {
 
-                //     $storage = DB::table('storage')->where('product_id', $productId)->first();
-
-                //     DB::table('storage')
-                //         ->where('product_id', $existingPurchase->product_id)
-                //         ->update([
-                //             'quantity' => $storage->quantity + $requestedQuantity,
-                //             'avg_cost' => $sum / $requestedQuantity,
-
-                //         ]);
-                // } else {
-                //     // If the product has not been bought, insert a new row
-                //     DB::table('storage')->insert([
-                //         'product_id' => $productId,
-                //         'quantity'   => $requestedQuantity,
-                //         'avg_cost'   => $cost,
-                //         'cat'        => '',
-
-                //     ]);
-                // }
 
             }
 
@@ -134,11 +114,9 @@ class BuyController extends Controller
 
         return response()->json($products);
     }
-// delete the one row in buy modal
     public function deleteRow(Request $request)
     {
         $id = $request->input('id');
-        // Perform deletion logic (e.g., DB::table('product')->where('id', $id)->delete();)
         return response()->json(['message' => 'Product deleted successfully.']);
     }
 
@@ -211,7 +189,7 @@ class BuyController extends Controller
             $requestedQuantity = $request->quantity[$key];
             $cost              = $request->cost[$key];
             $sum               = $cost * $requestedQuantity;
-            // Insert into the `purchase_product` table
+
             DB::table('purchase_product')->where('product_id',$productId)->update([
                 'quantity'    => $requestedQuantity,
                 'cost'        => $cost,
@@ -236,10 +214,8 @@ class BuyController extends Controller
     //delete purchase
     public function deletePurchase($id)
     {
-        // Delete the product by id using Query Builder
         DB::table('purchase')->where('id', $id)->delete();
 
-        // Redirect back to the product page with a success message
         return redirect('buy')->with('success', 'purchase deleted successfully!');
     }
 
@@ -247,28 +223,26 @@ class BuyController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->get('search', ''); // Get search term
+        $search = $request->get('search', '');
 
-        // Query the database (using Query Builder)
         $products = DB::table('suplier')
             ->select('id', 'name')
-            ->where('name', 'LIKE', '%' . $search . '%') // Filter by search term
-            ->limit(10)                                  // Limit results
+            ->where('name', 'LIKE', '%' . $search . '%')
+            ->limit(10)
             ->get();
 
-        // Return the results as JSON
         return response()->json($products);
     }
 
     public function getPurchases()
     {
-        $purchases = DB::table('purchase') // Use Query Builder to fetch purchases
-            ->leftJoin('suplier', 'purchase.suplier_id', '=', 'supplier.id') // Join with suppliers if needed
+        $purchases = DB::table('purchase')
+            ->leftJoin('suplier', 'purchase.suplier_id', '=', 'supplier.id')
             ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at');
 
         return DataTables::of($purchases)
             ->addColumn('actions', function ($purchase) {
-                return view('buy.buy', compact('purchase'))->render(); // Return the actions dropdown
+                return view('buy.buy', compact('purchase'))->render(); 
             })
             ->make(true);
     }
