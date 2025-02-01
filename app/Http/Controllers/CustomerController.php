@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class CustomerController extends Controller
 {
@@ -75,4 +76,55 @@ $customers= DB::table('customer')->get();
 
           return redirect('customer')->with('success', 'customer deleted successfully!');
     }
+
+
+    public function customer_index(Request $request)
+    {
+
+
+        if ($request->ajax()) {
+
+            $customers = DB::table('customer')
+            ->select('customer.name','customer.id','customer.address','customer.phone_number');
+
+
+
+            return DataTables::of($customers)
+
+                ->addColumn('actions', function ($row) {
+                    $editUrl   = url('/suplier/' . $row->id . '/edit');
+                    $deleteUrl = url('/suplier/' . $row->id);
+
+                    return '
+                    <div class="dropdown text-center">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">Edit</button>
+                                </form>
+                            </li>
+
+                            <li>
+                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                    ' . csrf_field() . '
+                                    ' . method_field('DELETE') . '
+                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>';
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+
+        return view('customer.customer');
+    }
+
+
 }

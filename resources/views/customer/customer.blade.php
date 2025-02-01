@@ -7,7 +7,7 @@
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
         </div>
         <div class="card-body">
-            <table class="table  mx-auto table-hover">
+            <table class="table  mx-auto table-hover" id="customer-table">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
@@ -19,44 +19,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($customers as $customer)
-
-                    <tr>
-                        <th scope="row">{{ $customer->id }}</th>
-                        <td>{{ $customer->name }}</td>
-                        <td>{{ $customer->address }}</td>
-                        <td>{{ $customer->phone_number}}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Actions
-                                </button>
-
-                                <ul class="dropdown-menu">
-
-                                    <li>
-                                        <form action="{{ url('/customer/'.$customer->id.'/edit') }}" method="GET">
-                                            <button type="submit" class="dropdown-item">Edit</button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="{{ url('/customer/'.$customer->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم کڕیارە ؟')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-
-
-
-                    </tr>
-
-
-
-                    @endforeach
 
                 </tbody>
             </table>
@@ -109,6 +71,64 @@
 
     </script>
     @endif
+
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#customer-table').DataTable({
+                processing: true
+                , serverSide: true
+                ,searching: false
+                , ajax: '{{ url("/customer") }}'
+                , columns: [{
+                        data: 'id'
+                        , name: 'id'
+                    }
+                    , {
+                        data: 'name'
+                        , name: 'name'
+                    }
+                    , {
+                        data: 'address'
+                        , name: 'address'
+                    }
+                    , {
+                        data: 'phone_number'
+                        , name: 'phone_number'
+                    }
+
+
+                    , {
+                        data: 'actions'
+                        , name: 'actions'
+                        , orderable: false
+                        , searchable: false
+
+                    }
+
+                ]
+                , dom: '<"top"l>rt<"bottom"ip>'
+                , lengthMenu: [
+                    [5, 10, 25, 50, -1]
+                    , [5, 10, 25, 50, "All"]
+                ]
+                , pageLength: 5
+                , language: {
+                    searchPlaceholder: "Search products..."
+                    , lengthMenu: "Show _MENU_ entries"
+                }
+            });
+
+            $(document).on('shown.bs.dropdown', function() {
+            });
+
+
+            $('#custom-search').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+        });
+
+    </script>
 
 
 </x-layout.layout>

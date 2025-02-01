@@ -15,6 +15,7 @@
                         <span class="input-group-text bg-light rounded-start-pill"><i class="fas fa-search"></i></span>
                         <input type="text" id="custom-search" class="form-control" placeholder="Search by product name...">
                     </div>
+
                 </div>
 
                 <div class="table-responsive mt-2">
@@ -24,7 +25,7 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Category</th>
-                                <th>Actions</th>
+                                <th class="text-center"">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,20 +78,12 @@
     </script>
     @endif
 
-    {{-- @push('scripts') --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-    <!-- Include Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         $(document).ready(function() {
             var table = $('#products-table').DataTable({
                 processing: true
                 , serverSide: true
+                ,searching: false
                 , ajax: '{{ url("/product") }}'
                 , columns: [{
                         data: 'id'
@@ -109,25 +102,7 @@
                         , name: 'actions'
                         , orderable: false
                         , searchable: false
-                        , render: function(data, type, row) {
-                            return `
-                        <div class="dropdown">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                Actions
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="{{ url('/product') }}/${row.id}/edit">Edit</a></li>
-                                <li>
-                                    <form action="{{ url('/product') }}/${row.id}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    `
-                        }
+
                     }
                 ]
                 , dom: '<"top"l>rt<"bottom"ip>'
@@ -152,5 +127,4 @@
         });
 
     </script>
-    {{-- @endpush --}}
 </x-layout.layout>

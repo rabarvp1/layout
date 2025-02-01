@@ -25,4 +25,6 @@ class income extends Controller
 
 
         return view('income.income', compact('mergedData'));}
+
+       
 }

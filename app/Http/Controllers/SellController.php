@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use function Laravel\Prompts\alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class SellController extends Controller
 {
@@ -54,7 +55,7 @@ class SellController extends Controller
             ]);
 
             $totalSum = 0;
-            foreach ($request->product_id as $index => $productId) {
+            foreach ($request->product_id as $key => $productId) {
                 $product          = DB::table('purchase_product')->where('product_id', $productId)->first();
                 $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
 
@@ -63,7 +64,7 @@ class SellController extends Controller
                     throw new \Exception("Product with ID $productId not found in stock.");
                 }
 
-                $requestedQuantity = $request->quantity[$index];
+                $requestedQuantity = $request->quantity[$key];
 
                 if ($product->quantity < $requestedQuantity) {
                     return response()->json([
@@ -71,7 +72,7 @@ class SellController extends Controller
                     ]);
                 }
 
-                $sellPrice = $request->sell_price[$index];
+                $sellPrice = $request->sell_price[$key];
                 $sum       = $requestedQuantity * $sellPrice;
 
                 DB::table('sell_product')->insert([
@@ -217,7 +218,10 @@ class SellController extends Controller
         ]);
 
         $totalSum = 0;
-        foreach ($request->product_id as $index => $productId) {
+        DB::table('sell_product')->where('invoice_id')->whereNotIn('product_id',$request->product_id)->delete();
+
+        foreach ($request->product_id as $key => $productId) {
+
             $product = DB::table('purchase_product')->where('product_id', $productId)->firstOrFail();
 
             if (! $product) {
@@ -225,26 +229,25 @@ class SellController extends Controller
                 throw new \Exception("Product with ID $productId not found in stock.");
             }
 
-            $requestedQuantity = $request->quantity[$index];
+            $requestedQuantity = $request->quantity[$key];
 
-            if ($product->quantity < $requestedQuantity) {
-                return response()->json([
-                    'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
-                ]);
-            }
+            // if ($product->quantity < $requestedQuantity) {
+            //     dd('qty');
+            //     return response()->json([
+            //         'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
+            //     ]);
+            // }
 
-            $sellPrice = $request->sell_price[$index];
+            $sellPrice = $request->sell_price[$key];
             $sum       = $requestedQuantity * $sellPrice;
 
-            DB::table('sell_product')->where('product_id', $productId)->update([
+            DB::table('sell_product')->updateOrInsert(['product_id'=>$productId,'invoice_id'=>$id],[
                 'quantity'   => $requestedQuantity,
                 'sell_price' => $sellPrice,
                 'sum'        => $sum,
             ]);
 
-            DB::table('purchase_product')
-                ->where('product_id', $productId)
-                ->decrement('quantity', $requestedQuantity);
+
 
             $totalSum += $sum;
 
@@ -252,6 +255,60 @@ class SellController extends Controller
 
         return redirect('sell')->with('success', 'Product updated successfully!');
 
+    }
+
+    public function sell_index(Request $request)
+    {
+
+
+        if ($request->ajax()) {
+
+            $invoices = DB::table('invoice')
+            ->leftJoin('customer', 'invoice.customer_id', '=', 'customer.id')
+            ->select('invoice.id', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at','invoice.total','invoice.sum');
+
+
+
+            return DataTables::of($invoices)
+
+                ->addColumn('actions', function ($row) {
+                    $editUrl   = url('/sell/' . $row->id . '/edit');
+                    $viewUrl= url('/sell/view/' .$row->id);
+                    $deleteUrl = url('/sell/' . $row->id);
+
+                    return '
+                    <div class="dropdown text-center">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">Edit</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="' . $viewUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">View</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                    ' . csrf_field() . '
+                                    ' . method_field('DELETE') . '
+                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>';
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+
+        return view('sell.sell');
     }
 
 }

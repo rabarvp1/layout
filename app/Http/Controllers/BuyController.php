@@ -22,7 +22,6 @@ class BuyController extends Controller
     public function insert(Request $request)
     {
         $request->validate([
-            'suplier_id.*' => 'required|numeric|exists:suplier,id',
             'note'         => 'nullable|string|max:255',
             'product_id.*' => 'required|numeric|exists:product,id',
             'quantity'     => 'required|array|min:1',
@@ -60,8 +59,6 @@ class BuyController extends Controller
                 ]);
 
                 $totalSum += $sum;
-
-
 
             }
 
@@ -176,38 +173,32 @@ class BuyController extends Controller
             'cost.*'       => 'required|numeric|gt:0',
         ]);
 
-        $purchaseId     = DB::table('purchase')->where('id',$id)->update([
+        DB::table('purchase')->where('id', $id)->update([
 
-            'suplier_id'   => $request->suplier,
-            'note'         => $request->note,
-            'created_at'   => now(),
+            'suplier_id' => $request->suplier,
+            'note'       => $request->note,
+            'created_at' => now(),
         ]);
-        $totalSum = 0; // Variable to track the total sum of the purchase
-        $purchaseId     = DB::table('purchase')->get();
+
+        $totalSum = 0;
+
+        DB::table('purchase_product')->where('purchase_id', $id)->whereNotIn('product_id', $request->product_id)->delete();
+
         foreach ($request->product_id as $key => $productId) {
 
             $requestedQuantity = $request->quantity[$key];
             $cost              = $request->cost[$key];
             $sum               = $cost * $requestedQuantity;
 
-            DB::table('purchase_product')->where('product_id',$productId)->update([
-                'quantity'    => $requestedQuantity,
-                'cost'        => $cost,
-                'sum'         => $sum,
+            DB::table('purchase_product')->updateOrInsert(['purchase_id' => $id, 'product_id' => $productId], [
+                'quantity' => $requestedQuantity,
+                'cost'     => $cost,
+                'sum'      => $sum,
             ]);
-
 
             $totalSum += $sum;
 
-
-
         }
-
-
-
-
-
-
 
         return redirect('buy')->with('success', 'Product updated successfully!');
     }
@@ -234,17 +225,71 @@ class BuyController extends Controller
         return response()->json($products);
     }
 
-    public function getPurchases()
+    // public function getPurchases()
+    // {
+    //     $purchases = DB::table('purchase')
+    //         ->leftJoin('suplier', 'purchase.suplier_id', '=', 'supplier.id')
+    //         ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at');
+
+    //     return DataTables::of($purchases)
+    //         ->addColumn('actions', function ($purchase) {
+    //             return view('buy.buy', compact('purchase'))->render();
+    //         })
+    //         ->make(true);
+    // }
+
+    public function buy_index(Request $request)
     {
-        $purchases = DB::table('purchase')
-            ->leftJoin('suplier', 'purchase.suplier_id', '=', 'supplier.id')
+
+
+        if ($request->ajax()) {
+
+            $purchases = DB::table('purchase')
+            ->leftJoin('suplier', 'purchase.suplier_id', '=', 'suplier.id')
             ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at');
 
-        return DataTables::of($purchases)
-            ->addColumn('actions', function ($purchase) {
-                return view('buy.buy', compact('purchase'))->render(); 
-            })
-            ->make(true);
+
+
+            return DataTables::of($purchases)
+
+                ->addColumn('actions', function ($row) {
+                    $editUrl   = url('/buy/' . $row->id . '/edit');
+                    $viewUrl= url('/buy' .$row->id);
+                    $deleteUrl = url('/buy/' . $row->id);
+
+                    return '
+                    <div class="dropdown text-center">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">Edit</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="' . $viewUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">View</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                    ' . csrf_field() . '
+                                    ' . method_field('DELETE') . '
+                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>';
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+
+        return view('buy.buy');
     }
 
 }

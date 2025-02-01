@@ -8,7 +8,7 @@
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">Sell Products</button>
                 </div>
         <div class="card-body">
-            <table class="table  mx-auto table-hover">
+            <table class="table  mx-auto table-hover" id="invoice-table">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
@@ -26,51 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($invoices as $invoice)
-                    <tr>
-                        <th scope="row">{{ $invoice->id }}</th>
-                        <td>{{ $invoice->order_number }}</td>
-                        <td>{{ $invoice->customer_name }}</td>
-                        <td>{{ $invoice->created_at }}</td>
-                        <td>{{ $invoice->sum }}</td>
-                        <td>{{ $invoice->discount }}</td>
-                        <td>{{ $invoice->note }}</td>
-                        <td>{{ $invoice->total }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Actions
-                                </button>
 
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <form action="{{ url('/sell/view/'.$invoice->id) }}" method="GET">
-                                            <button type="submit" class="dropdown-item">View</button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="{{ url('/sell/'.$invoice->id.'/edit') }}" method="GET">
-                                            <button type="submit" class="dropdown-item">Edit</button>
-                                        </form>
-                                    </li>
-
-                                    <li>
-                                        <form action="{{ url('/sell/'.$invoice->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم وەسڵە ؟')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-
-
-
-
-
-                    </tr>
-                    @endforeach
                 </tbody>
             </table>
 
@@ -219,6 +175,84 @@
         });
 
     </script>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#invoice-table').DataTable({
+            processing: true
+            , serverSide: true
+            ,searching: false
+            , ajax: '{{ url("/sell") }}'
+            , columns: [{
+                    data: 'id'
+                    , name: 'id'
+                }
+
+                , {
+                    data: 'order_number'
+                    , name: 'order_number'
+                }
+                , {
+                    data: 'customer'
+                    , name: 'customer'
+                }
+                , {
+                    data: 'created_at'
+                    , name: 'created_at'
+                }
+                , {
+                    data: 'sum'
+                    , name: 'sum'
+                }
+                , {
+                    data: 'discount'
+                    , name: 'discount'
+                }
+                , {
+                    data: 'note'
+                    , name: 'note'
+                }
+
+
+                , {
+                    data: 'total'
+                    , name: 'total'
+                }
+                , {
+                    data: 'actions'
+                    , name: 'actions'
+                    , orderable: false
+                    , searchable: false
+
+                }
+
+               
+
+            ]
+            , dom: '<"top"l>rt<"bottom"ip>'
+            , lengthMenu: [
+                [5, 10, 25, 50, -1]
+                , [5, 10, 25, 50, "All"]
+            ]
+            , pageLength: 5
+            , language: {
+                searchPlaceholder: "Search products..."
+                , lengthMenu: "Show _MENU_ entries"
+            }
+        });
+
+        $(document).on('shown.bs.dropdown', function() {
+        });
+
+
+        $('#custom-search').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+    });
+
+</script>
+
+
 
 
 </x-layout.layout>

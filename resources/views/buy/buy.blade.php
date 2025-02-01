@@ -10,7 +10,7 @@
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">BuyProduct</button></a>
         </div>
         <div class="card-body">
-            <table class="table  mx-auto table-hover">
+            <table class="table  mx-auto table-hover"id="purchase-table">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
@@ -25,16 +25,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($purchases as $purchase)
-                    <tr>
-                        <th scope="row">{{ $purchase->id }}</th>
-                        <td>{{ $purchase->suplier }}</td>
-                        <td>{{ $purchase->order_number }}</td>
-                        <td>{{ $purchase->discount }}</td>
-                        <td>{{ $purchase->note }}</td>
-                        <td>{{ $purchase->created_at }}</td>
 
-                            <td>
+                    {{-- <tr> --}}
+
+
+                            {{-- <td>
                                 <div class="dropdown">
                                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Actions
@@ -67,7 +62,7 @@
 
 
                     </tr>
-                    @endforeach
+                    @endforeach --}}
                 </tbody>
             </table>
 
@@ -177,7 +172,7 @@
                     return false;
 
                 }
-                , appendTo: "#exampleModal", 
+                , appendTo: "#exampleModal",
             });
         });
 
@@ -215,7 +210,68 @@
 
 
     </script>
+<script>
+    $(document).ready(function() {
+        var table = $('#purchase-table').DataTable({
+            processing: true
+            , serverSide: true
+            ,searching: false
+            , ajax: '{{ url("/buy") }}'
+            , columns: [{
+                    data: 'id'
+                    , name: 'id'
+                }
+                , {
+                    data: 'suplier'
+                    , name: 'suplier'
+                }
+                , {
+                    data: 'order_number'
+                    , name: 'order_number'
+                }
+                , {
+                    data: 'discount'
+                    , name: 'discount'
+                }
+                , {
+                    data: 'note'
+                    , name: 'note'
+                }
+                , {
+                    data: 'created_at'
+                    , name: 'created_at'
+                }
+                , {
+                    data: 'actions'
+                    , name: 'actions'
+                    , orderable: false
+                    , searchable: false
 
+                }
+
+            ]
+            , dom: '<"top"l>rt<"bottom"ip>'
+            , lengthMenu: [
+                [5, 10, 25, 50, -1]
+                , [5, 10, 25, 50, "All"]
+            ]
+            , pageLength: 5
+            , language: {
+                searchPlaceholder: "Search products..."
+                , lengthMenu: "Show _MENU_ entries"
+            }
+        });
+
+        $(document).on('shown.bs.dropdown', function() {
+        });
+
+
+        $('#custom-search').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+    });
+
+</script>
 
 
 

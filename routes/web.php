@@ -9,6 +9,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\suplierController;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -29,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
 
+    Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
+
     Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
 
     Route::get('/buy/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase');
@@ -40,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/insert', [BuyController::class, 'insert']);
 
     Route::get('/sell', [SellController::class, 'sell'])->name('sell');
+
+    Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index');
 
     Route::get('/sell/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
 
@@ -53,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/cat', [catController::class, 'cat'])->name('cat');
 
+    Route::get('/cat', [catController::class, 'cat_index'])->name('cat.index');
+
     Route::get('/cat/{id}/edit', [catController::class, 'cat_edit'])->name('cat_edit');
 
     Route::put('/cat/{id}', [catController::class, 'cat_update'])->name('cat_update');
@@ -63,7 +71,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/income', [income::class, 'mergedData'])->name('income');
 
+
     Route::get('/suplier', [suplierController::class, 'suplier'])->name('suplier');
+
+    Route::get('/suplier', [suplierController::class, 'suplier_index'])->name('suplier_index');
 
     Route::get('/suplier/{id}/edit', [SuplierController::class, 'edit_suplier'])->name('edit_suplier');
 
@@ -82,6 +93,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/customer/{id}', [CustomerController::class, 'delete_customer']);
 
     Route::get('/customer', [CustomerController::class, 'customer'])->name('customer');
+
+    Route::get('/customer', [CustomerController::class, 'customer_index'])->name('customer_index');
 
     Route::get('/customer/{id}/edit', [CustomerController::class, 'edit_customer'])->name('edit_customer');
 

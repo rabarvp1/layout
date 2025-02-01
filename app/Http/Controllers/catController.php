@@ -12,7 +12,6 @@ class catController extends Controller
 
         $cat = DB::table('cat')->get();
 
-
         return view('cat.cat', ["cat" => $cat]);
     }
 
@@ -29,61 +28,78 @@ class catController extends Controller
 
     }
 
-    public function cat_index(Request $request){
+    public function cat_index(Request $request)
+    {
 
-        if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
-            dd(55); // Should work now
-        }
+
         if ($request->ajax()) {
 
-        dd(55);
             $cats = DB::table('cat')
 
-                ->select('cat.id', 'cat.name');
+                ->select('id', 'name');
 
             return DataTables::of($cats)
 
-            ->filter(function ($query) use ($request) {
-                if ($request->has('search') && !empty($request->input('search')['value'])) {
-                    $search = $request->input('search')['value'];
-                    $query->where('cat.name', 'LIKE', "%{$search}%");
-                }
-            })
+                ->addColumn('actions', function ($row) {
+                    $editUrl   = url('/cat/' . $row->id . '/edit');
+                    $deleteUrl = url('/cat/' . $row->id);
 
+                    return '
+                    <div class="dropdown text-center">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">Edit</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                    ' . csrf_field() . '
+                                    ' . method_field('DELETE') . '
+                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>';
+                })
+                ->rawColumns(['actions'])
                 ->make(true);
         }
-        $cat = DB::table('cat')->get();
 
 
-        return view('cat.cat', ["cat" => $cat]);    }
+        return view('cat.cat');
+    }
 
+    public function cat_edit($id)
+    {
+        $cat = DB::table('cat')->where('id', $id)->firstOrFail();
 
+        return view('cat.edit', compact('cat'));
 
-        public function cat_edit($id){
-            $cat = DB::table('cat')->where('id', $id)->firstOrFail();
+    }
+    public function cat_update(Request $request, $id)
+    {
 
-            return view('cat.edit', compact('cat'));
+        $request->validate([
+            'name' => 'required|string|max:50']);
 
+        DB::table('cat')->where('id', $id)->update([
+            'name' => $request->name]);
 
-        }
-        public function cat_update(Request $request,$id){
+        return redirect('cat');
 
-            $request->validate([
-                'name' => 'required|string|max:50|unique:cat,name']);
+    }
+    public function cat_delete($id)
+    {
 
-            DB::table('cat')->where('id',$id)->update([
-                'name' => $request->name]);
+        DB::table('cat')->where('id', $id)->delete();
 
-            return redirect('cat');
+        return redirect('cat')->with('success', 'category deleted successfully!');
 
-        }
-        public function cat_delete($id){
-
-            DB::table('cat')->where('id', $id)->delete();
-
-            return redirect('cat')->with('success', 'category deleted successfully!');
-
-
-        }
+    }
 
 }
