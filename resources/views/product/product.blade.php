@@ -1,20 +1,23 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
     <div class="container mt-4">
         <div class="card shadow-lg">
             <div class="card-header bg-info text-white d-flex align-items-center justify-content-between">
-                <h3 class="mb-0">Product List</h3>
+                <h3 class="mb-0">{{ __('index.product_list') }}</h3>
                 <button class="btn btn-light text-primary fw-bold rounded-5 px-4 py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    + Add Product
+                    + {{ __('index.add_product') }}
                 </button>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <div class="input-group rounded-end-pill">
-                        <span class="input-group-text bg-light rounded-start-pill"><i class="fas fa-search"></i></span>
-                        <input type="text" id="custom-search" class="form-control" placeholder="Search by product name...">
+                    <div class="input-group {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-start-pill' : 'rounded-end-pill' }}">
+                        <span class="input-group-text bg-light {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-end-pill' : 'rounded-start-pill' }}">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="custom-search" class="form-control" placeholder="{{ __('index.search_product_name') }}...">
                     </div>
+
 
                 </div>
 
@@ -23,9 +26,9 @@
                         <thead class="table-dark mt-2">
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th class="text-center"">Actions</th>
+                                <th>{{ __('index.name') }}</th>
+                                <th>{{ __('index.cat') }}</th>
+                                <th class="text-center"">{{ __('index.action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,19 +42,19 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-white bg-info">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{ __('index.add_product') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <form id="product-form" action="/upload" method="POST" class="row g-3">
                             @csrf
                             <div class="col-12">
-                                <label class="form-label fw-bold">Product Name</label>
+                                <label class="form-label fw-bold">{{ __('index.product_name') }}</label>
                                 <input type="text" name="name" class="form-control" required>
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold">Category</label>
+                                <label class="form-label fw-bold">{{ __('index.cat') }}</label>
                                 <select name="cat_id" class="form-select">
                                     @foreach($cat as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -61,8 +64,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" form="product-form" class="btn btn-primary">Insert</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('index.close') }}</button>
+                        <button type="submit" form="product-form" class="btn btn-primary">{{ __('index.insert') }}</button>
                     </div>
                 </div>
             </div>
@@ -91,15 +94,15 @@
                     }
                     , {
                         data: 'name'
-                        , name: 'name'
+                        , name: '{{ __('index.name') }}'
                     }
                     , {
                         data: 'category'
-                        , name: 'category'
+                        , name: '{{ __('index.cat') }}'
                     }
                     , {
                         data: 'actions'
-                        , name: 'actions'
+                        , name: '{{ __('index.action') }}'
                         , orderable: false
                         , searchable: false
 

@@ -276,20 +276,24 @@ class SellController extends Controller
                     $viewUrl= url('/sell/view/' .$row->id);
                     $deleteUrl = url('/sell/' . $row->id);
 
+                    $editLabel      = __('index.edit');
+                    $deleteLabel    = __('index.delete');
+                    $viewlabel = __('index.view');
+
                     return '
                     <div class="dropdown text-center">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
+                            ' . __('index.action') . '
                         </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <form action="' . $editUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">Edit</button>
+                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
                                 </form>
                             </li>
                             <li>
                                 <form action="' . $viewUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">View</button>
+                                    <button type="submit" class="dropdown-item">' . $viewlabel . '</button>
                                 </form>
                             </li>
                             <li>
@@ -297,7 +301,7 @@ class SellController extends Controller
                                       onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
-                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
                                 </form>
                             </li>
                         </ul>

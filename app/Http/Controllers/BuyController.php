@@ -225,18 +225,7 @@ class BuyController extends Controller
         return response()->json($products);
     }
 
-    // public function getPurchases()
-    // {
-    //     $purchases = DB::table('purchase')
-    //         ->leftJoin('suplier', 'purchase.suplier_id', '=', 'supplier.id')
-    //         ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at');
 
-    //     return DataTables::of($purchases)
-    //         ->addColumn('actions', function ($purchase) {
-    //             return view('buy.buy', compact('purchase'))->render();
-    //         })
-    //         ->make(true);
-    // }
 
     public function buy_index(Request $request)
     {
@@ -254,23 +243,26 @@ class BuyController extends Controller
 
                 ->addColumn('actions', function ($row) {
                     $editUrl   = url('/buy/' . $row->id . '/edit');
-                    $viewUrl= url('/buy' .$row->id);
+                    $viewUrl= url('/buy/view/' .$row->id);
                     $deleteUrl = url('/buy/' . $row->id);
+                    $editLabel      = __('index.edit');
+                    $deleteLabel    = __('index.delete');
+                    $viewlabel = __('index.view');
 
                     return '
                     <div class="dropdown text-center">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
+                            ' . __('index.action') . '
                         </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <form action="' . $editUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">Edit</button>
+                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
                                 </form>
                             </li>
                             <li>
                                 <form action="' . $viewUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">View</button>
+                                    <button type="submit" class="dropdown-item">' . $viewlabel . '</button>
                                 </form>
                             </li>
                             <li>
@@ -278,7 +270,7 @@ class BuyController extends Controller
                                       onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
-                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
                                 </form>
                             </li>
                         </ul>

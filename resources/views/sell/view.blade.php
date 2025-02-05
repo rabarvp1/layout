@@ -1,8 +1,8 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/sell'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/sell'), 'active' => false],
 ]">
     <h5 class="d-flex justify-content-between align-items-center pr-1 pl-1 mt-n2" tabindex="-1">
-        receipts sold ({{ $invoice->order_number }})
+        {{ __('index.receipts_sold') }} ({{ $invoice->order_number }})
         <span tabindex="-1">
         </span>
     </h5>
@@ -13,20 +13,20 @@
                 <div class="col-md-6">
                     <ul class="list-group p-0 m-0">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Order Number
+                            {{ __('index.order_no') }}
                             <div>{{ $invoice->order_number }}</div>
 
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Created at
+                            {{ __('index.created_at') }}
                             <div dir="ltr">{{ $invoice->created_at }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Customer
+                            {{ __('index.customer') }}
                             <div>{{ $invoice->customer_name }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Note
+                            {{ __('index.note') }}
                             <div>{{ $invoice->note }}</div>
                         </li>
 
@@ -36,17 +36,17 @@
                 <div class="col-md-6">
                     <ul class="list-group p-0 m-0">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Sum
+                            {{ __('index.sum') }}
                             <div>${{ $invoice->sum }}</div>
                         </li>
 
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Discount
+                            {{ __('index.discount') }}
                             <div>{{ $invoice->discount }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Total
+                            {{ __('index.total') }}
                             <div>${{ $invoice->total }}</div>
                         </li>
                     </ul>
@@ -58,20 +58,20 @@
                 <thead>
                     <tr class="table-secondary">
                         <th class="text-center"><i class="fas fa-sort-numeric-down"></i></th>
-                        <th class="text-center">Product</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Sum</th>
+                        <th class="text-center">{{ __('index.product')}} </th>
+                        <th class="text-center">{{ __('index.quantity') }}</th>
+                        <th class="text-center">{{ __('index.price')}}</th>
+                        <th class="text-center">{{ __('index.sum') }}</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
 
-                    {{ $count=null }}
+
 
                     @foreach ($sell_product as $sell )
 
                     <tr>
-                        <td>{{ $count=$count+1 }}</td>
+                        <td>{{ $loop->iteration}}</td>
                         <td>{{ $sell->product_name }}</td>
                         <td>{{ $sell->quantity }}</td>
                         <td>${{ $sell->sell_price }}</td>

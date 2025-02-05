@@ -1,25 +1,25 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
     <div class="card mt-4">
 
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>Sell</h1>
-            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">Sell Products</button>
+            <h1>{{ __('index.sell') }}</h1>
+            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">{{ __('index.sell_product')}}</button>
                 </div>
         <div class="card-body">
             <table class="table  mx-auto table-hover" id="invoice-table">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-                        <th scope="col">order number</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Sum</th>
-                        <th scope="col">discount</th>
-                        <th scope="col">Note</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{{ __('index.order_no')}}</th>
+                        <th scope="col">{{ __('index.customer')}}</th>
+                        <th scope="col">{{ __('index.created_at') }}</th>
+                        <th scope="col">{{ __('index.sum') }}</th>
+                        <th scope="col">{{ __('index.discount')}}</th>
+                        <th scope="col">{{ __('index.note') }}</th>
+                        <th scope="col">{{ __('index.total') }}</th>
+                        <th scope="col">{{ __('index.action') }}</th>
 
 
 
@@ -34,24 +34,24 @@
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header text-white bg-info">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Selling products</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('index.sell_product')}}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
                             <form id="form-id" action="/insert_sell" class="vstack gap-3" method="POST">
                                 @csrf
-                                <label>Customer</label>
+                                <label>{{ __('index.customer') }}</label>
                                 <select name="customer_id" id="customer_id" class=" form-control ">
 
                                 </select>
 
-                                <label>Note</label>
+                                <label>{{ __('index.note') }}</label>
                                 <input type="text" name="note" class="form-control">
                                 @error('note')
                                 {{ $message }}
                                 @enderror
 
-                                <label>search products</label>
+                                <label>{{ __('index.search_product_name')}}</label>
                                 <input type="text" name="search_product" id="tags" class="form-control">
                                 @error('search_product')
                                 {{ $message }}
@@ -61,10 +61,10 @@
 
                                     <thead>
                                         <tr class="table-dark">
-                                            <th scope="col">Product Name</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">sell Price</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col">{{ __('index.product_name')}}</th>
+                                            <th scope="col">{{ __('index.quantity') }}</th>
+                                            <th scope="col">{{ __('index.selling price')}}</th>
+                                            <th scope="col">{{ __('index.action') }}</th>
 
                                         </tr>
                                     </thead>
@@ -76,8 +76,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" form="form-id" class="btn btn-primary">Sell</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('index.close') }}</button>
+                            <button type="submit" form="form-id" class="btn btn-primary">{{ __('index.sell') }}</button>
                         </div>
                     </div>
                 </div>
@@ -190,43 +190,43 @@
 
                 , {
                     data: 'order_number'
-                    , name: 'order_number'
+                    , name: '{{ __('index.order_no')}}'
                 }
                 , {
                     data: 'customer'
-                    , name: 'customer'
+                    , name: ' {{ __('index.customer')}}'
                 }
                 , {
                     data: 'created_at'
-                    , name: 'created_at'
+                    , name: '{{ __('index.created_at')}}'
                 }
                 , {
                     data: 'sum'
-                    , name: 'sum'
+                    , name: ' {{ __('index.sum') }} '
                 }
                 , {
                     data: 'discount'
-                    , name: 'discount'
+                    , name: ' {{ __('index.discount')}}'
                 }
                 , {
                     data: 'note'
-                    , name: 'note'
+                    , name: ' {{ __('index.note')}}'
                 }
 
 
                 , {
                     data: 'total'
-                    , name: 'total'
+                    , name: ' {{ __('index.total')}}'
                 }
                 , {
                     data: 'actions'
-                    , name: 'actions'
+                    , name: '{{ __('index.action') }}'
                     , orderable: false
                     , searchable: false
 
                 }
 
-               
+
 
             ]
             , dom: '<"top"l>rt<"bottom"ip>'

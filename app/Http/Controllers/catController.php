@@ -44,23 +44,27 @@ class catController extends Controller
                     $editUrl   = url('/cat/' . $row->id . '/edit');
                     $deleteUrl = url('/cat/' . $row->id);
 
+                    $editLabel      = __('index.edit');
+                    $deleteLabel    = __('index.delete');
+                    $confirmMessage = __('index.confirm_delete_cat');
+
                     return '
                     <div class="dropdown text-center">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
+                            ' . __('index.action') . '
                         </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <form action="' . $editUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">Edit</button>
+                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
                                 </form>
                             </li>
                             <li>
                                 <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
-                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                      onsubmit="return confirm(\'' . $confirmMessage . '\')">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
-                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
                                 </form>
                             </li>
                         </ul>

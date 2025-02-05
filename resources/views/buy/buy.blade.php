@@ -6,63 +6,27 @@
 
 <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>Purchase</h1>
-            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">BuyProduct</button></a>
+            <h1>{{ __('index.purchase')}}</h1>
+            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">{{ __('index.buy_product') }}</button></a>
         </div>
         <div class="card-body">
             <table class="table  mx-auto table-hover"id="purchase-table">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-                        <th scope="col">Supplier</th>
-                        <th scope="col">order number</th>
-                        <th scope="col">discount</th>
-                        <th scope="col">Note</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{{ __('index.supplier') }}</th>
+                        <th scope="col">{{ __('index.order_no') }}</th>
+                        <th scope="col">{{ __('index.discount') }}</th>
+                        <th scope="col">{{ __('index.note') }}</th>
+                        <th scope="col">{{ __('index.created_at') }}</th>
+                        <th scope="col">{{ __('index.action') }}</th>
 
 
                     </tr>
                 </thead>
                 <tbody>
 
-                    {{-- <tr> --}}
 
-
-                            {{-- <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Actions
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <form action="{{ url('/buy/view/'.$purchase->id) }}" method="GET">
-                                                <button type="submit" class="dropdown-item">View</button>
-                                            </form>
-                                        </li>
-                                        <li>
-                                            <form action="{{ url('/buy/'.$purchase->id.'/edit') }}" method="GET">
-                                                <button type="submit" class="dropdown-item">Edit</button>
-                                            </form>
-                                        </li>
-                                        <li>
-                                            <form action="{{ url('/buy/'.$purchase->id) }}" method="POST" onsubmit="return confirm('تۆ دڵنیای لە سڕینەوەی ئەم وەسڵە ؟')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-
-
-
-
-
-                    </tr>
-                    @endforeach --}}
                 </tbody>
             </table>
 
@@ -70,22 +34,22 @@
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">New Purchase Order</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('index.new_purchase_order') }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
                             <form id="form-id" action="/insert" class="vstack gap-3" method="POST">
                                 @csrf
 
-                                <label>Suppliers</label>
+                                <label>{{ __('index.supplier') }}</label>
                                 <select name="suplier" id="suplier" class=" form-control ">
 
                                 </select>
 
-                                <label>Note</label>
+                                <label>{{ __('index.note') }}</label>
                                 <input type="text" name="note" class="form-control">
 
-                                <label>search products</label>
+                                <label>{{ __('index.search_product_name') }}</label>
                                 <input type="text" name="search_product" id="search_product" class="form-control">
 
 
@@ -93,12 +57,12 @@
 
                                     <thead>
                                         <tr class="table-dark">
-                                            <th scope="col">Product Name</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Buy Price</th>
-                                            <th scope="col">Single Price</th>
-                                            <th scope="col">Multi Price</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col">{{ __('index.product_name') }}</th>
+                                            <th scope="col">{{ __('index.quantity') }}</th>
+                                            <th scope="col">{{ __('index.price') }}</th>
+                                            <th scope="col">{{ __('index.single_price') }}</th>
+                                            <th scope="col">{{ __('index.multi_price') }}</th>
+                                            <th scope="col">{{ __('index.action') }}</th>
 
                                         </tr>
                                     </thead>
@@ -110,8 +74,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" form="form-id" class="btn btn-primary">Buy</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('index.close') }}</button>
+                            <button type="submit" form="form-id" class="btn btn-primary">{{ __('index.buy') }}</button>
                         </div>
                     </div>
                 </div>
@@ -223,27 +187,27 @@
                 }
                 , {
                     data: 'suplier'
-                    , name: 'suplier'
+                    , name: '{{ __('index.supplier') }}'
                 }
                 , {
                     data: 'order_number'
-                    , name: 'order_number'
+                    , name: '{{ __('index.order_no') }}'
                 }
                 , {
                     data: 'discount'
-                    , name: 'discount'
+                    , name: '{{ __('index.discount') }}'
                 }
                 , {
                     data: 'note'
-                    , name: 'note'
+                    , name: '{{ __('index.note') }}'
                 }
                 , {
                     data: 'created_at'
-                    , name: 'created_at'
+                    , name: '{{ __('index.created_at') }}'
                 }
                 , {
                     data: 'actions'
-                    , name: 'actions'
+                    , name: '{{ __('index.action') }}'
                     , orderable: false
                     , searchable: false
 

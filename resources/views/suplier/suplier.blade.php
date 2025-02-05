@@ -1,10 +1,9 @@
-
 <x-layout.layout :navItems="[
     ['label' => 'Back', 'url' => url('/'), 'active' => false],
 ]">
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>Supliers</h1>
+            <h1>{{ __('index.supplier_list')}}</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
         </div>
         <div class="card-body">
@@ -12,16 +11,17 @@
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">address</th>
-                        <th scope="col">phone number</th>
-                        <th scope="col" class="text-center">Action</th>
+                        <th scope="col">{{ __('index.name') }}</th>
+                        <th scope="col">{{ __('index.address') }}</th>
+                        <th scope="col">{{ __('index.phone_no') }}</th>
+                        <th scope="col" class="text-center">{{ __('index.action') }}</th>
+
 
 
                     </tr>
                 </thead>
                 <tbody>
-                  
+
 
                 </tbody>
             </table>
@@ -36,19 +36,19 @@
                         <div class="modal-body ">
                             <form id="form-id" action="/inputSuplier" class="vstack gap-3" method="POST">
                                 @csrf
-                                <label>Name of Suplier</label>
+                                <label>{{ __('index.name_of_supplier') }}</label>
                                 <input type="text" name="name" class="form-control">
                                 @error('name')
                                 {{ $message }}
 
                                 @enderror
-                                <label>Address</label>
+                                <label>{{ __('index.address') }}</label>
                                 <input type="text" name="address" class="form-control">
                                 @error('address')
                                 {{ $message }}
 
                                 @enderror
-                                <label>Phone Number</label>
+                                <label>{{ __('index.phone_no') }}</label>
                                 <input type="text" name="phone_number" class="form-control">
                                 @error('phone_number')
                                 {{ $message }}
@@ -58,8 +58,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" form="form-id" class="btn btn-primary">insert</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('index.close') }}</button>
+                            <button type="submit" form="form-id" class="btn btn-primary">{{ __('index.insert') }}</button>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
             var table = $('#suplier-table').DataTable({
                 processing: true
                 , serverSide: true
-                ,searching: false
+                , searching: false
                 , ajax: '{{ url("/suplier") }}'
                 , columns: [{
                         data: 'id'
@@ -88,21 +88,24 @@
                     }
                     , {
                         data: 'name'
-                        , name: 'name'
+                        , name: '{{ __('index.name') }}'
+                        , render: function(data, type, row) {
+                            return `<a href="/suplier/profile/${row.id}" class="text-primary">${data}</a>`;
+                        }
                     }
                     , {
                         data: 'address'
-                        , name: 'address'
+                        , name: '{{ __('index.address') }}'
                     }
                     , {
                         data: 'phone_number'
-                        , name: 'phone_number'
+                        , name: '{{ __('index.phone_no') }}'
                     }
 
 
                     , {
                         data: 'actions'
-                        , name: 'actions'
+                        , name: '{{ __('index.action') }}'
                         , orderable: false
                         , searchable: false
 
@@ -121,8 +124,7 @@
                 }
             });
 
-            $(document).on('shown.bs.dropdown', function() {
-            });
+            $(document).on('shown.bs.dropdown', function() {});
 
 
             $('#custom-search').on('keyup', function() {

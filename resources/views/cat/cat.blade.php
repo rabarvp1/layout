@@ -1,9 +1,9 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>Catigories</h1>
+            <h1>{{ __('index.category_list') }}</h1>
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
         </div>
         <div class="card-body">
@@ -11,8 +11,8 @@
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{{ __('index.name') }}</th>
+                        <th scope="col">{{ __('index.action')}}</th>
 
                     </tr>
                 </thead>
@@ -26,13 +26,13 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('index.Add Category') }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
                             <form id="form-id" action="/inputCat" class="vstack gap-3" method="POST">
                                 @csrf
-                                <label>Name of Catigories</label>
+                                <label>{{ __('index.Add Category') }}</label>
                                 <input type="text" name="name" class="form-control">
                                 @error('name')
                                 {{ $message }}
@@ -42,8 +42,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" form="form-id" class="btn btn-primary">insert</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('index.close') }}</button>
+                            <button type="submit" form="form-id" class="btn btn-primary">{{ __('index.insert') }}</button>
                         </div>
                     </div>
                 </div>
@@ -72,12 +72,12 @@
                     }
                     , {
                         data: 'name'
-                        , name: 'name'
+                        , name: '{{ __('index.name') }}'
                     }
 
                     , {
                         data: 'actions'
-                        , name: 'actions'
+                        , name: '{{ __('index.action') }}'
                         , orderable: false
                         , searchable: false
 

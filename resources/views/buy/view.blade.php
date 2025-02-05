@@ -1,10 +1,9 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/buy'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/buy'), 'active' => false],
 ]">
     <h5 class="d-flex justify-content-between align-items-center pr-1 pl-1 mt-n2" tabindex="-1">
-        receipts Purchased ({{ $purchase->order_number }})
-        <span>
-        </span>
+        {{ __('index.receipts_purchased') }} ({{ $purchase->order_number }})
+        <span></span>
     </h5>
 
     <div class="card">
@@ -13,40 +12,35 @@
                 <div class="col-md-6">
                     <ul class="list-group p-0 m-0">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Order Number
+                            {{ __('index.order_no') }}
                             <div>{{ $purchase->order_number }}</div>
-
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Created at
+                            {{ __('index.created_at') }}
                             <div dir="ltr">{{ $purchase->created_at }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Suplier
+                            {{ __('index.supplier') }}
                             <div> {{ $purchase->suplier }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Note
+                            {{ __('index.note') }}
                             <div>{{ $purchase->note }}</div>
                         </li>
-
-
                     </ul>
                 </div>
                 <div class="col-md-6">
                     <ul class="list-group p-0 m-0">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Sum
+                            {{ __('index.sum') }}
                             <div>${{ $purchase->sum }}</div>
                         </li>
-
-
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Discount
+                            {{ __('index.discount') }}
                             <div>{{ $purchase->discount }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Total
+                            {{ __('index.total') }}
                             <div>${{ $purchase->total }}</div>
                         </li>
                     </ul>
@@ -58,30 +52,24 @@
                 <thead>
                     <tr class="table-secondary">
                         <th class="text-center"><i class="fas fa-sort-numeric-down"></i></th>
-                        <th class="text-center">Product</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-center">Cost</th>
-                        <th class="text-center">Sum</th>
+                        <th class="text-center">{{ __('index.product_name') }}</th>
+                        <th class="text-center">{{ __('index.quantity') }}</th>
+                        <th class="text-center">{{ __('index.cost') }}</th>
+                        <th class="text-center">{{ __('index.sum') }}</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    @foreach ($purchase_product as $purchase )
-
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $purchase->product_name }}</td>
-                        <td>{{ $purchase->quantity }}</td>
-                        <td>${{ $purchase->cost }}</td>
-                        <td>${{ $purchase->sum }}</td>
-                    </tr>
-
+                    @foreach ($purchase_product as $purchase)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $purchase->product_name }}</td>
+                            <td>{{ $purchase->quantity }}</td>
+                            <td>${{ $purchase->cost }}</td>
+                            <td>${{ $purchase->sum }}</td>
+                        </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
         </div>
     </div>
-
-
 </x-layout.layout>

@@ -1,15 +1,15 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
     <div class="card-body text-center table-responsive">
-        <table id="storageTable" class="table table-bordered table-sm w-100 table-hover">
-            <thead>
-                <tr class="table-secondary">
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>AVG Cost</th>
-                    <th>Category</th>
+        <table id="storageTable" class="table  table-hover mx-auto">
+            <thead >
+                <tr class="table-dark ">
+                    <th class="text-center">#</th>
+                    <th class="text-center">{{ __('index.product') }} </th>
+                    <th class="text-center">{{ __('index.quantity') }}</th>
+                    <th class="text-center">{{ __('index.avg')}}</th>
+                    <th class="text-center">{{ __('index.cat') }}</th>
                 </tr>
             </thead>
         </table>

@@ -28,17 +28,59 @@ class AuthController extends Controller
             return redirect()->route('first');
 
         }
-
-
-        return back()->with('error', 'Invalid credentials.');
+        return back()->with('error', __('auth.failed'));
     }
 
     public function logout()
     {
         Auth::logout();
-        Session::flush();
+        Session::forget('user');
 
         return redirect()->route('login');
     }
+
+
+
+
+
+    //-----------------Registration-----------------
+
+    public function registration()
+    {
+
+
+       $users= DB::table('users')->get();
+
+        return view('login.registration');
+
 }
 
+public function register(Request $request)
+{
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8',
+    ]);
+
+
+    $user = DB::table('users')->insert([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    if ($user) {
+
+        return redirect()->route('first')->with('success', 'Registration successful. Please login.');
+    }
+
+    return back()->with('error', 'Registration failed. Please try again.');
+}
+
+
+
+}

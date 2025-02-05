@@ -1,21 +1,20 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/sell'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/sell'), 'active' => false],
 ]">
     <div class="">
         <form id="form-id" action="{{ url('/sell/'.$invoices->id)  }}" class="vstack gap-3" method="POST">
             @csrf
             @method('PUT')
-            <label>Customer</label>
+            <label>{{ __('index.customer') }}</label>
             <select name="customer_id" id="customer_id" class=" form-control ">
                 <option value="{{ $invoices->customer_id }}">{{ $invoices->customer_name }}</option>
 
             </select>
-
-            <label>Note</label>
+            <label>{{ __('index.note') }}</label>
             <input type="text" name="note" class="form-control" value="{{$invoices->note }}">
 
 
-            <label>search products</label>
+            <label>{{ __('index.search_product_name') }}</label>
             <input type="text" name="search_product" id="tags" class="form-control">
 
 
@@ -26,10 +25,10 @@
 
 
                     <tr class="table-dark">
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">sell Price</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{{ __('index.product_name') }}</th>
+                        <th scope="col">{{ __('index.quantity') }}</th>
+                        <th scope="col">{{ __('index.selling price') }}</th>
+                        <th scope="col">{{ __('index.action') }}</th>
 
                     </tr>
                 </thead>
@@ -45,14 +44,14 @@
 
                         <input type="hidden" name="product_id[]" value="{{ $sell_product->product_id }}">
                         <td>
-                            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">Delete</button>
+                            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">{{ __('index.delete') }}</button>
                         </td>
                     </tr>
                     @endforeach
 
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-primary w-25 ">Update Product</button>
+            <button type="submit" class="btn btn-primary w-25 ">{{ __('index.updateing') }}</button>
 
         </form>
     </div>
