@@ -62,7 +62,6 @@ class PaymentController extends Controller
 
     public function edit_suplier_profile($paymentId, $supplierId)
     {
-// dd($supplierId,$paymentId);
 
         $suplier_payment = DB::table('suplier_payment')->where('id', $paymentId)->firstOrFail();
 
@@ -70,66 +69,62 @@ class PaymentController extends Controller
 
         return view('suplier.edit_profile', compact('suplier_payment', 'suplier'));
     }
-
     public function update_suplier_profile(Request $request, $paymentId, $supplierId)
     {
-
         $request->validate([
             'type'   => 'required|string|in:Receiving money,Payments',
             'amount' => 'required|integer|gt:0',
             'note'   => 'nullable|string|max:255',
         ]);
 
-        // Fetch the existing payment record
-        $suplier_payment = DB::table('suplier_payment')->where('id', $paymentId)->firstOrFail();
+        $payment = DB::table('suplier_payment')->where('id', $paymentId)->first();
+        if (! $payment) {
+            return back()->with('error', 'Payment not found!');
+        }
 
-        // Get the previous balance before the update
         $previousBalance = DB::table('suplier_payment')
             ->where('suplier_id', $supplierId)
             ->where('id', '<', $paymentId)
             ->latest('id')
             ->first()->balance ?? 0;
 
-        // Get all transactions for this supplier, ordered by ID
         $transactions = DB::table('suplier_payment')
             ->where('suplier_id', $supplierId)
+            ->where('id', '>=', $paymentId)
             ->orderBy('id')
             ->get();
 
-        // Update the amount in the database
         DB::table('suplier_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
             'amount'     => $request->amount,
-            'created_at' => $request->created_at,
+            'created_at' => now(),
             'note'       => $request->note,
         ]);
 
-        // Recalculate balances for all transactions
         $newBalance = $previousBalance;
         foreach ($transactions as $transaction) {
             if ($transaction->id == $paymentId) {
-                // Use the updated amount for this transaction
                 $amount = $request->amount;
+                $type   = $request->type;
             } else {
-                // Use the existing amount
                 $amount = $transaction->amount;
+                $type   = $transaction->type;
             }
 
-            // Update balance based on type
-            if ($transaction->type === 'Receiving money') {
+            if ($type === 'Receiving money') {
                 $newBalance += $amount;
-            } elseif ($transaction->type === 'Payments') {
+            } elseif ($type === 'Payments') {
                 $newBalance -= $amount;
             }
 
-            // Update the balance in the database
             DB::table('suplier_payment')->where('id', $transaction->id)->update([
-                'balance' => $newBalance
+                'balance' => $newBalance,
             ]);
         }
 
         return redirect('/suplier/profile/' . $supplierId)->with('success', 'Profile updated successfully');
     }
+
     //--------------------------------------------------------------------------------
     // customer payment
 
@@ -146,10 +141,10 @@ class PaymentController extends Controller
     public function customer_payment(Request $request, $id)
     {
         $request->validate([
-            'type'       => 'required|string|in:Receiving money,Payments',
-            'amount'     => 'required|integer|gt:0',
+            'type'        => 'required|string|in:Receiving money,Payments',
+            'amount'      => 'required|integer|gt:0',
             'customer_id' => 'exists:customer,id',
-            'note'       => 'nullable|string|max:255',
+            'note'        => 'nullable|string|max:255',
 
         ]);
 
@@ -167,12 +162,12 @@ class PaymentController extends Controller
         }
 
         DB::table('customer_payment')->insert([
-            'type'       => $request->type,
-            'amount'     => $request->amount,
-            'created_at' => $request->created_at,
-            'note'       => $request->note,
+            'type'        => $request->type,
+            'amount'      => $request->amount,
+            'created_at'  => $request->created_at,
+            'note'        => $request->note,
             'customer_id' => $id,
-            'balance'    => $newBalance,
+            'balance'     => $newBalance,
         ]);
 
         return redirect('customer/profile/' . $id);
@@ -189,7 +184,6 @@ class PaymentController extends Controller
 
     public function edit_customer_profile($paymentId, $customerId)
     {
-// dd($customerId,$paymentId);
 
         $customer_payment = DB::table('customer_payment')->where('id', $paymentId)->firstOrFail();
 
@@ -200,30 +194,29 @@ class PaymentController extends Controller
 
     public function update_customer_profile(Request $request, $paymentId, $customerId)
     {
-
         $request->validate([
             'type'   => 'required|string|in:Receiving money,Payments',
             'amount' => 'required|integer|gt:0',
             'note'   => 'nullable|string|max:255',
         ]);
 
-        // Fetch the existing payment record
-        $customer_payment = DB::table('customer_payment')->where('id', $paymentId)->firstOrFail();
+        $customer_payment = DB::table('customer_payment')->where('id', $paymentId)->first();
+        if (! $customer_payment) {
+            return back()->with('error', 'Payment not found!');
+        }
 
-        // Get the previous balance before the update
         $previousBalance = DB::table('customer_payment')
             ->where('customer_id', $customerId)
             ->where('id', '<', $paymentId)
             ->latest('id')
             ->first()->balance ?? 0;
 
-        // Get all transactions for this supplier, ordered by ID
         $transactions = DB::table('customer_payment')
             ->where('customer_id', $customerId)
+            ->where('id', '>=', $paymentId)
             ->orderBy('id')
             ->get();
 
-        // Update the amount in the database
         DB::table('customer_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
             'amount'     => $request->amount,
@@ -231,32 +224,30 @@ class PaymentController extends Controller
             'note'       => $request->note,
         ]);
 
-        // Recalculate balances for all transactions
         $newBalance = $previousBalance;
         foreach ($transactions as $transaction) {
             if ($transaction->id == $paymentId) {
-                // Use the updated amount for this transaction
                 $amount = $request->amount;
+                $type   = $request->type;
             } else {
-                // Use the existing amount
                 $amount = $transaction->amount;
+                $type   = $transaction->type;
             }
 
-            // Update balance based on type
-            if ($transaction->type === 'Receiving money') {
+            if ($type === 'Receiving money') {
                 $newBalance -= $amount;
-            } elseif ($transaction->type === 'Payments') {
+            } elseif ($type === 'Payments') {
                 $newBalance += $amount;
             }
 
-            // Update the balance in the database
             DB::table('customer_payment')->where('id', $transaction->id)->update([
-                'balance' => $newBalance
+                'balance' => $newBalance,
             ]);
         }
 
         return redirect('/customer/profile/' . $customerId)->with('success', 'Profile updated successfully');
     }
 
+   
 
 }

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
 Route::middleware(['lang'])->group(function () {
+
     Route::middleware(['auth'])->group(function () {
 
         Route::get('/', [ProductController::class, 'first'])->name('first');
@@ -26,6 +27,14 @@ Route::middleware(['lang'])->group(function () {
         Route::get('/registration', [AuthController::class, 'registration'])->name('registration');
 
         Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+        Route::get('/users', [AuthController::class, 'users'])->name('users');
+
+        Route::get('/users/edit/{id}', [AuthController::class, 'edit_user'])->name('edit_user');
+
+        Route::put('/users/{id}', [AuthController::class, 'update_user'])->name('update_user');
+
+        Route::delete('/users/{id}', [AuthController::class, 'delete'])->name('delete_user');
 
         Route::get('/product', [ProductController::class, 'index'])->name('products.index');
 

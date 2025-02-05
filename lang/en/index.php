@@ -88,4 +88,7 @@ return [
     "Receipt_type"           => "Receipt type",
     "Catigories"             => "Catigories",
     "new_purchase_order"     => "New Purchase Order",
+    "edit_user"              => "Edit User",
+    "user"                   => "User",
+
 ];

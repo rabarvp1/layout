@@ -57,7 +57,6 @@ class SellController extends Controller
             $totalSum = 0;
             foreach ($request->product_id as $key => $productId) {
                 $product          = DB::table('purchase_product')->where('product_id', $productId)->first();
-                $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
 
                 if (! $product) {
                     alert('product not fount');
@@ -83,9 +82,7 @@ class SellController extends Controller
                     'invoice_id' => $invoiceId,
                 ]);
 
-                // DB::table('purchase_product')
-                //     ->where('product_id', $productId)
-                //     ->decrement('quantity', $requestedQuantity);
+                 ->decrement('quantity', $requestedQuantity);
 
                 $totalSum += $sum;
 
@@ -150,7 +147,7 @@ class SellController extends Controller
 
     public function search_customer(Request $request)
     {
-        $search = $request->get('search', ''); // Get search term
+        $search = $request->get('search', ''); 
 
         $customers = DB::table('customer')
             ->select('id', 'name')
@@ -231,12 +228,7 @@ class SellController extends Controller
 
             $requestedQuantity = $request->quantity[$key];
 
-            // if ($product->quantity < $requestedQuantity) {
-            //     dd('qty');
-            //     return response()->json([
-            //         'error' => "Insufficient stock for product ID $productId. Only $product->quantity items available.",
-            //     ]);
-            // }
+
 
             $sellPrice = $request->sell_price[$key];
             $sum       = $requestedQuantity * $sellPrice;

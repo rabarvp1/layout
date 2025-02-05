@@ -36,9 +36,13 @@
                         {{ __('index.type')}}
                     </label>
                     <select name="type" id="type" class="form-control">
-                        <option value="" null="">{{ __('index.choose_a_type') }}</option>
-                        <option value="Receiving money">{{ __('index.receiving_money')}}</option>
-                        <option value="Payments">{{ __('index.payment')}}</option>
+                        <option value="">{{ __('index.choose_a_type') }}</option>
+                        <option value="Receiving money" {{ $suplier_payment->type == 'Receiving money' ? 'selected' : '' }}>
+                            {{ __('index.receiving_money') }}
+                        </option>
+                        <option value="Payments" {{ $suplier_payment->type == 'Payments' ? 'selected' : '' }}>
+                            {{ __('index.payment') }}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -47,7 +51,7 @@
                     <label for="created_at">
                         {{ __('index.created_at') }}
                     </label>
-                    <input type="datetime-local" step="1" class="form-control" id="created_at" name="created_at" value="2025-02-02T21:21:27">
+                    <input type="datetime-local" step="1" class="form-control" id="created_at" name="created_at" value="{{ $suplier_payment->created_at }}">
                 </div>
             </div>
             <div class="col-md-4">
@@ -55,7 +59,7 @@
                     <label for="note">
                         {{ __('index.note') }}
                     </label>
-                    <input type="text" class="form-control" id="note" name="note" value="">
+                    <input type="text" class="form-control" id="note" name="note" value="{{ $suplier_payment->note }}">
                 </div>
             </div>
         </div>

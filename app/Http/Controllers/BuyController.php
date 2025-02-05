@@ -44,7 +44,6 @@ class BuyController extends Controller
             $totalSum = 0;
 
             foreach ($request->product_id as $key => $productId) {
-                $existingPurchase = DB::table('purchase_product')->where('product_id', $productId)->first();
 
                 $requestedQuantity = $request->quantity[$key];
                 $cost              = $request->cost[$key];
@@ -62,8 +61,7 @@ class BuyController extends Controller
 
             }
 
-            // Update the total and sum fields in the purchase
-            DB::table('purchase')->where('id', $purchaseId)->update([
+             DB::table('purchase')->where('id', $purchaseId)->update([
                 'sum'   => $totalSum,
                 'total' => $totalSum - ($request->discount ?? 0),
             ]);
@@ -113,7 +111,7 @@ class BuyController extends Controller
     }
     public function deleteRow(Request $request)
     {
-        $id = $request->input('id');
+        // $id = $request->input('id');
         return response()->json(['message' => 'Product deleted successfully.']);
     }
 
