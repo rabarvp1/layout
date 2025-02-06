@@ -79,9 +79,13 @@ class suplierController extends Controller
         if ($request->ajax()) {
 
             $supliers = DB::table('suplier')
-            ->select('suplier.name','suplier.id','suplier.address','suplier.phone_number');
+            ->select('suplier.name','suplier.id','suplier.address','suplier.phone_number')
+            ->when($request->search, function ($query, $search) {
+                $query->whereLike('name', "%{$search}%");
 
+            });
 
+         
 
             return DataTables::of($supliers)
 

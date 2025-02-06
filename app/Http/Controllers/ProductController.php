@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class ProductController extends Controller
 {
@@ -17,6 +16,7 @@ class ProductController extends Controller
 
     public function product()
     {
+
         $products = DB::table('product')
             ->join('cat', 'cat.id', 'product.cat_id')
             ->select(
@@ -24,6 +24,7 @@ class ProductController extends Controller
                 'cat.name as category',
             )
             ->get();
+
         $cat = DB::table('cat')->get();
 
         $navItems = [
@@ -40,7 +41,6 @@ class ProductController extends Controller
             'name'   => 'required|string|max:50|unique:product,name',
             'cat_id' => 'required|numeric|exists:cat,id',
         ]);
-
 
         DB::table('product')->insert([
             'name'   => $request->name,
@@ -84,14 +84,15 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $products = DB::table('product')
                 ->join('cat', 'product.cat_id', '=', 'cat.id')
-                ->select('product.id', 'product.name', 'cat.name as category');
+                ->select('product.id', 'product.name', 'cat.name as category')
+                ->when($request->search, function ($query, $search) {
+                    $query->whereLike('product.name', "%{$search}%")
+                    ->orWhereLike('cat.name', "%{$search}%");
 
-            if ($request->has('search') && ! empty($request->input('search')['value'])) {
-                $search = $request->input('search')['value'];
-                $products->where('product.name', 'LIKE', "%{$search}%");
-            }
+                });
 
             return DataTables::of($products)
                 ->addColumn('actions', function ($row) {

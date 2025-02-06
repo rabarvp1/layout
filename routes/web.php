@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-Route::middleware(['lang'])->group(function () {
+Route::middleware(['lang'])->group(function () {    
 
     Route::middleware(['auth'])->group(function () {
 

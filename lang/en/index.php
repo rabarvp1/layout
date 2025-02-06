@@ -90,5 +90,7 @@ return [
     "new_purchase_order"     => "New Purchase Order",
     "edit_user"              => "Edit User",
     "user"                   => "User",
+    "search_suplier_name"    => "Search Supplier Name",
+    "search_customer_name"    => "Search customer Name",
 
 ];

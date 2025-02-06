@@ -233,9 +233,13 @@ class BuyController extends Controller
 
             $purchases = DB::table('purchase')
             ->leftJoin('suplier', 'purchase.suplier_id', '=', 'suplier.id')
-            ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at');
+            ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at')
+            ->when($request->search, function ($query, $search) {
+                $query->whereLike('purchase.order_number', "%{$search}%")
+                ->orWhereLike('suplier.name', "%{$search}%");
 
-
+            });
+           
 
             return DataTables::of($purchases)
 

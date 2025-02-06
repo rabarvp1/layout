@@ -31,12 +31,18 @@ class catController extends Controller
     public function cat_index(Request $request)
     {
 
-
         if ($request->ajax()) {
 
-            $cats = DB::table('cat')
+            // $cats = DB::table('cat')
 
-                ->select('id', 'name');
+            //     ->select('id', 'name');
+
+            $cats = DB::table('cat')
+                ->select('id', 'name')
+                ->when($request->search, function ($query, $search) {
+                    $query->whereLike('name', "%{$search}%");
+
+                });
 
             return DataTables::of($cats)
 
@@ -73,7 +79,6 @@ class catController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-
 
         return view('cat.cat');
     }

@@ -8,6 +8,16 @@
             <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">{{ __('index.sell_product')}}</button>
                 </div>
         <div class="card-body">
+            <div class="mb-3">
+                <div class="input-group {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-start-pill' : 'rounded-end-pill' }}">
+                    <span class="input-group-text bg-light {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-end-pill' : 'rounded-start-pill' }}">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="custom-search" class="form-control" placeholder="{{ __('index.search') }}...">
+                </div>
+
+
+            </div>
             <table class="table  mx-auto table-hover" id="invoice-table">
                 <thead>
                     <tr class="table-dark">
@@ -182,7 +192,14 @@
             processing: true
             , serverSide: true
             ,searching: false
-            , ajax: '{{ url("/sell") }}'
+            , ajax: {
+                    url: '{{ url("/sell") }}',
+                    type: 'GET',
+                    data: function(d) {
+                        // Add custom search term to the request
+                        d.search = $('#custom-search').val();
+                    }
+                }
             , columns: [{
                     data: 'id'
                     , name: 'id'

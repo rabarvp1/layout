@@ -81,7 +81,14 @@ class CustomerController extends Controller
         if ($request->ajax()) {
 
             $customers = DB::table('customer')
-                ->select('customer.name', 'customer.id', 'customer.address', 'customer.phone_number');
+                ->select('customer.name', 'customer.id', 'customer.address', 'customer.phone_number')
+                ->when($request->search, function ($query, $search) {
+                    $query->whereLike('name', "%{$search}%");
+
+                });
+
+                
+
 
             return DataTables::of($customers)
 

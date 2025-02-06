@@ -83,51 +83,44 @@
 
     <script>
         $(document).ready(function() {
+            // Initialize DataTable
             var table = $('#products-table').DataTable({
-                processing: true
-                , serverSide: true
-                ,searching: false
-                , ajax: '{{ url("/product") }}'
-                , columns: [{
-                        data: 'id'
-                        , name: 'id'
+                processing: true,
+                serverSide: true,
+                searching: false,
+              
+                ajax: {
+                    url: '{{ url("/product") }}',
+                    type: 'GET',
+                    data: function(d) {
+                        // Add custom search term to the request
+                        d.search = $('#custom-search').val();
                     }
-                    , {
-                        data: 'name'
-                        , name: '{{ __('index.name') }}'
-                    }
-                    , {
-                        data: 'category'
-                        , name: '{{ __('index.cat') }}'
-                    }
-                    , {
-                        data: 'actions'
-                        , name: '{{ __('index.action') }}'
-                        , orderable: false
-                        , searchable: false
-
-                    }
-                ]
-                , dom: '<"top"l>rt<"bottom"ip>'
-                , lengthMenu: [
-                    [5, 10, 25, 50, -1]
-                    , [5, 10, 25, 50, "All"]
-                ]
-                , pageLength: 5
-                , language: {
-                    searchPlaceholder: "Search products..."
-                    , lengthMenu: "Show _MENU_ entries"
+                },
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: '{{ __('index.name') }}' },
+                    { data: 'category', name: '{{ __('index.cat') }}' },
+                    { data: 'actions', name: '{{ __('index.action') }}', orderable: false, searchable: false }
+                ],
+                dom: '<"top"l>rt<"bottom"ip>',
+                lengthMenu: [
+                    [5, 10, 25, 50, -1],
+                    [5, 10, 25, 50, "All"]
+                ],
+                pageLength: 5,
+                language: {
+                    searchPlaceholder: "Search products...",
+                    lengthMenu: "Show _MENU_ entries"
                 }
             });
 
-            $(document).on('shown.bs.dropdown', function() {
-            });
-
-
+            // Custom search input event
             $('#custom-search').on('keyup', function() {
+                // Trigger DataTable search and redraw the table
                 table.search(this.value).draw();
             });
         });
-
     </script>
+
 </x-layout.layout>

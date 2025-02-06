@@ -56,7 +56,7 @@ class SellController extends Controller
 
             $totalSum = 0;
             foreach ($request->product_id as $key => $productId) {
-                $product          = DB::table('purchase_product')->where('product_id', $productId)->first();
+                $product = DB::table('purchase_product')->where('product_id', $productId)->first();
 
                 if (! $product) {
                     alert('product not fount');
@@ -82,7 +82,7 @@ class SellController extends Controller
                     'invoice_id' => $invoiceId,
                 ]);
 
-                 ->decrement('quantity', $requestedQuantity);
+
 
                 $totalSum += $sum;
 
@@ -147,7 +147,7 @@ class SellController extends Controller
 
     public function search_customer(Request $request)
     {
-        $search = $request->get('search', ''); 
+        $search = $request->get('search', '');
 
         $customers = DB::table('customer')
             ->select('id', 'name')
@@ -215,7 +215,7 @@ class SellController extends Controller
         ]);
 
         $totalSum = 0;
-        DB::table('sell_product')->where('invoice_id')->whereNotIn('product_id',$request->product_id)->delete();
+        DB::table('sell_product')->where('invoice_id')->whereNotIn('product_id', $request->product_id)->delete();
 
         foreach ($request->product_id as $key => $productId) {
 
@@ -228,18 +228,14 @@ class SellController extends Controller
 
             $requestedQuantity = $request->quantity[$key];
 
-
-
             $sellPrice = $request->sell_price[$key];
             $sum       = $requestedQuantity * $sellPrice;
 
-            DB::table('sell_product')->updateOrInsert(['product_id'=>$productId,'invoice_id'=>$id],[
+            DB::table('sell_product')->updateOrInsert(['product_id' => $productId, 'invoice_id' => $id], [
                 'quantity'   => $requestedQuantity,
                 'sell_price' => $sellPrice,
                 'sum'        => $sum,
             ]);
-
-
 
             $totalSum += $sum;
 
@@ -252,25 +248,26 @@ class SellController extends Controller
     public function sell_index(Request $request)
     {
 
-
         if ($request->ajax()) {
 
             $invoices = DB::table('invoice')
             ->leftJoin('customer', 'invoice.customer_id', '=', 'customer.id')
-            ->select('invoice.id', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at','invoice.total','invoice.sum');
-
-
+            ->select('invoice.id', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at', 'invoice.total', 'invoice.sum')
+            ->when($request->search, function ($query, $search) {
+                $query->whereLike('invoice.order_number', "%{$search}%")
+                    ->orWhereLike('customer.name', "%{$search}%");
+                });
 
             return DataTables::of($invoices)
 
                 ->addColumn('actions', function ($row) {
                     $editUrl   = url('/sell/' . $row->id . '/edit');
-                    $viewUrl= url('/sell/view/' .$row->id);
+                    $viewUrl   = url('/sell/view/' . $row->id);
                     $deleteUrl = url('/sell/' . $row->id);
 
-                    $editLabel      = __('index.edit');
-                    $deleteLabel    = __('index.delete');
-                    $viewlabel = __('index.view');
+                    $editLabel   = __('index.edit');
+                    $deleteLabel = __('index.delete');
+                    $viewlabel   = __('index.view');
 
                     return '
                     <div class="dropdown text-center">
@@ -302,7 +299,6 @@ class SellController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-
 
         return view('sell.sell');
     }
