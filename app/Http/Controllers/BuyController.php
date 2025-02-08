@@ -3,12 +3,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
 
 class BuyController extends Controller
 {
     public function buy()
     {
+       
         $supliers = DB::table('suplier')->get();
 
         $purchases = DB::table('purchase')
@@ -239,7 +241,7 @@ class BuyController extends Controller
                 ->orWhereLike('suplier.name', "%{$search}%");
 
             });
-           
+
 
             return DataTables::of($purchases)
 

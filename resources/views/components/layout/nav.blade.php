@@ -9,6 +9,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
 
                 @foreach ($navItems as $item)
@@ -16,14 +17,16 @@
                     <a class="nav-link" href="{{ $item['url'] }}">{{ $item['label'] }}</a>
                 </li>
                 @endforeach
+
             </ul>
+
             <ul class="navbar-nav">
                 <li class="nav-item ms-auto">
                     <a class="nav-link" href="">@auth
                         {{ Auth::user()->name }}
                         @endauth</a>
                 </li>
-
+              
                 <li class="nav-item ms-3">
 
                     <div class="dropdown text-center">

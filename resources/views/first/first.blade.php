@@ -1,5 +1,14 @@
 <x-layout.layout>
 
+    {{-- @php
+    $admin = DB::table('user_roles')
+        ->join('roles', 'user_roles.role_id', '=', 'roles.id')
+        ->where('user_roles.user_id', auth()->id())
+        ->where('roles.name', 'admin')
+        ->exists();
+    @endphp --}}
+
+
 
     <div class="row mx-5">
 
@@ -29,6 +38,9 @@
         </div>
 
 
+
+
+        {{-- @if ($admin) --}}
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/storage" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center  card-shadow btn_icon inventory-color rounded-4 mt-4">
@@ -41,6 +53,9 @@
                 </div>
             </a>
         </div>
+
+            {{-- @endif --}}
+
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/buy" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center  card-shadow btn_icon product-color rounded-4 mt-4">
@@ -105,6 +120,7 @@
                 </div>
             </a>
         </div>
+        @if(auth()->user()->role === 'admin')
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/users" class=" link-underline link-underline-opacity-0">
                 <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon report-color mt-3  ">
@@ -115,7 +131,7 @@
 
                     {{ __('index.user') }}
                 </div>
-
+@endif
 
 
 

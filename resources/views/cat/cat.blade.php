@@ -1,6 +1,8 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
+
+
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
             <h1>{{ __('index.category_list') }}</h1>
@@ -60,6 +62,9 @@
             </div>
         </div>
     </div>
+
+
+
     @if ($errors->any())
     <script>
         $(document).ready(function() {

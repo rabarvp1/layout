@@ -6,7 +6,6 @@ use App\Http\Controllers\catController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\income;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\CustomerPayment;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\StorageController;
@@ -16,29 +15,41 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-Route::middleware(['lang'])->group(function () {    
+Route::middleware(['lang'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
+        Route::get('/product', [ProductController::class, 'product'])->name('product')->middleware('role_a');
+
         Route::get('/', [ProductController::class, 'first'])->name('first');
 
-        Route::get('/product', [ProductController::class, 'product'])->name('product');
+        Route::middleware('role_a:admin')->group(function () {
 
-        Route::get('/registration', [AuthController::class, 'registration'])->name('registration');
+            Route::get('/registration', [AuthController::class, 'registration'])->name('registration');
 
-        Route::post('/register', [AuthController::class, 'register'])->name('register');
+            Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-        Route::get('/users', [AuthController::class, 'users'])->name('users');
+            Route::get('/users', [AuthController::class, 'users'])->name('users');
 
-        Route::get('/users/edit/{id}', [AuthController::class, 'edit_user'])->name('edit_user');
+            Route::get('/users/edit/{id}', [AuthController::class, 'edit_user'])->name('edit_user');
 
-        Route::put('/users/{id}', [AuthController::class, 'update_user'])->name('update_user');
+            Route::put('/users/update/{id}', [AuthController::class, 'update_user'])->name('update_user');
 
-        Route::delete('/users/{id}', [AuthController::class, 'delete'])->name('delete_user');
+            Route::delete('/users/{id}', [AuthController::class, 'delete'])->name('delete_user');
+
+            Route::get('/users', [AuthController::class, 'user_index'])->name('user_index');
+
+        });
+
+
+
+
+
+
 
         Route::get('/product', [ProductController::class, 'index'])->name('products.index');
 
-        Route::post('/upload', [ProductController::class, 'upload']);
+        Route::post('/upload', [ProductController::class, 'upload']);;
 
         Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
 
@@ -46,9 +57,11 @@ Route::middleware(['lang'])->group(function () {
 
         Route::put('/product/{id}', [ProductController::class, 'updateProduct']); // Update product
 
+
+
         Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
 
-        Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
+        Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index')->middleware('role_a');
 
         Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
 
@@ -96,12 +109,9 @@ Route::middleware(['lang'])->group(function () {
 
         Route::put('/suplier/{id}', [SuplierController::class, 'update_suplier'])->name('edit_suplier');
 
-
         Route::get('/suplier/profile/edit/{paymentId}/{suplierId}', [PaymentController::class, 'edit_suplier_profile'])->name('edit_suplier_profile');
 
         Route::put('/suplier/profile/{paymentId}/{suplierId}', [PaymentController::class, 'update_suplier_profile']);
-
-
 
         Route::delete('/suplier/{id}', [SuplierController::class, 'delete_suplier'])->name('edit_suplier');
 
@@ -115,7 +125,6 @@ Route::middleware(['lang'])->group(function () {
 
         Route::delete('/suplier/payment/{id}', [PaymentController::class, 'delete_payment']);
 
-
         Route::get('/customer/profile/{id}', [PaymentController::class, 'profile_customer'])->name('profile_customer');
 
         Route::post('/customer/payment/{id}', [PaymentController::class, 'customer_payment']);
@@ -125,7 +134,6 @@ Route::middleware(['lang'])->group(function () {
         Route::get('/customer/profile/edit/{paymentId}/{customerId}', [PaymentController::class, 'edit_customer_profile'])->name('edit_customer_profile');
 
         Route::put('/customer/profile/{paymentId}/{customerId}', [PaymentController::class, 'update_customer_profile']);
-
 
         Route::post('/inputSuplier', [suplierController::class, 'inputSuplier']);
 
