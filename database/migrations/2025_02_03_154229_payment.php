@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('suplier_payment', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->unique();
+            $table->string('type');
             $table->foreignId('suplier_id')->constrained('suplier')->cascadeOnDelete();
             $table->datetime('created_at');
             $table->text('note')->nullable();

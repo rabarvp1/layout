@@ -85,17 +85,17 @@ class PaymentController extends Controller
             return back()->with('error', 'Payment not found!');
         }
 
-        $previousBalance = DB::table('suplier_payment')
-            ->where('suplier_id', $supplierId)
-            ->where('id', '<', $paymentId)
-            ->latest('id')
-            ->first()->balance ?? 0;
+        // $previousBalance = DB::table('suplier_payment')
+        //     ->where('suplier_id', $supplierId)
+        //     ->where('id', '<', $paymentId)
+        //     ->latest('id')
+        //     ->first()->balance ?? 0;
 
-        $transactions = DB::table('suplier_payment')
-            ->where('suplier_id', $supplierId)
-            ->where('id', '>=', $paymentId)
-            ->orderBy('id')
-            ->get();
+        // $transactions = DB::table('suplier_payment')
+        //     ->where('suplier_id', $supplierId)
+        //     ->where('id', '>=', $paymentId)
+        //     ->orderBy('id')
+        //     ->get();
 
         DB::table('suplier_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
@@ -104,26 +104,26 @@ class PaymentController extends Controller
             'note'       => $request->note,
         ]);
 
-        $newBalance = $previousBalance;
-        foreach ($transactions as $transaction) {
-            if ($transaction->id == $paymentId) {
-                $amount = $request->amount;
-                $type   = $request->type;
-            } else {
-                $amount = $transaction->amount;
-                $type   = $transaction->type;
-            }
+        // $newBalance = $previousBalance;
+        // foreach ($transactions as $transaction) {
+        //     if ($transaction->id == $paymentId) {
+        //         $amount = $request->amount;
+        //         $type   = $request->type;
+        //     } else {
+        //         $amount = $transaction->amount;
+        //         $type   = $transaction->type;
+        //     }
 
-            if ($type === 'Receiving money') {
-                $newBalance += $amount;
-            } elseif ($type === 'Payments') {
-                $newBalance -= $amount;
-            }
+        //     if ($type === 'Receiving money') {
+        //         $newBalance += $amount;
+        //     } elseif ($type === 'Payments') {
+        //         $newBalance -= $amount;
+        //     }
 
-            DB::table('suplier_payment')->where('id', $transaction->id)->update([
-                'balance' => $newBalance,
-            ]);
-        }
+        //     DB::table('suplier_payment')->where('id', $transaction->id)->update([
+        //         'balance' => $newBalance,
+        //     ]);
+        // }
 
         return redirect('/suplier/profile/' . $supplierId)->with('success', 'Profile updated successfully');
     }

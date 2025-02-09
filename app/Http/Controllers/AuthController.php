@@ -118,7 +118,7 @@ class AuthController extends Controller
             'name'       => $request->name,
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
-            'role'       => $request->role,
+            'roles'       => $request->role,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -163,7 +163,7 @@ class AuthController extends Controller
         $data = [
             'name'       => $request->name,
             'email'      => $request->email,
-            'role'       => $request->role,
+            'roles'       => $request->roles,
             'updated_at' => now(),
         ];
 

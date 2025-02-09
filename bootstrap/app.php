@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'role_a' => Role::class,
+            'role' => Role::class,
             'lang' => LocaleMiddleware::class,
         ]);
 
