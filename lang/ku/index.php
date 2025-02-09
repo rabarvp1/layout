@@ -63,6 +63,8 @@
         "name_of_customer"       => "ناوی کڕیار",
         "name_of_supplier"       => "ناوی دابینکەر",
         "receipts_sold"          => "وەسڵی فرۆشراو",
+        "sign_up"                => "ناو تۆمارکردن",
+
 
         // form labels
         "product_list"           => "لیستی کاڵا",
@@ -95,5 +97,15 @@
         "search_customer_name"   => "بە ناوی کڕیار بگەڕێ",
         "users_list"             => "لیستی بەکارهێنەرەکان",
         "add_user"               => "زیادکردنی بەکارهێنەر",
+        "confirm_password"       => " پشتڕاستکردنەوەی وشەی نهێنی",
+        "register"               => " تۆمارکردنی بەکارهێنەر",
+        "select_role"            => "ئەرک هەڵبژێرە",
+        "admin"                  => "بەڕێوەبەر",
+        "cashier"                => "کاشێر",
+        "the_register"               => "تۆمارکەر",
+
+
+
+
 
 ];

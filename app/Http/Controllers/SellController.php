@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use function Laravel\Prompts\alert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -29,6 +30,7 @@ class SellController extends Controller
     {
 
         DB::transaction(function () use ($request) {
+            $register=Auth::user()->name;
 
             $request->validate([
                 'customer_id.*' => 'required|numeric|exists:customer,id',
@@ -52,6 +54,7 @@ class SellController extends Controller
                 'order_number' => $maxOrderNumber + 1,
                 'discount'     => 0,
                 'created_at'   => now(),
+                'register'     => $register,
             ]);
 
             $totalSum = 0;
@@ -99,6 +102,7 @@ class SellController extends Controller
 
     public function getData_sell()
     {
+
         $search   = request('search');
         $products = DB::table('product')
             ->whereLike('name', '%' . $search . '%')
@@ -129,12 +133,13 @@ class SellController extends Controller
                     ),
                 ];
             });
-
+           
         return response()->json($products);
     }
     public function delete_row_sell(Request $request)
     {
-        $id = $request->input('id');
+        dd($request->all());
+        // $id = $request->input('id');
         return response()->json(['message' => 'Product deleted successfully.']);
     }
 
@@ -252,7 +257,7 @@ class SellController extends Controller
 
             $invoices = DB::table('invoice')
             ->leftJoin('customer', 'invoice.customer_id', '=', 'customer.id')
-            ->select('invoice.id', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at', 'invoice.total', 'invoice.sum')
+            ->select('invoice.id','invoice.register', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at', 'invoice.total', 'invoice.sum')
             ->when($request->search, function ($query, $search) {
                 $query->whereLike('invoice.order_number', "%{$search}%")
                     ->orWhereLike('customer.name', "%{$search}%");

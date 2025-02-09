@@ -3,9 +3,9 @@
 ]">
     <div class="container mt-4">
         <div class="card shadow-lg">
-            <div class="card-header bg-info text-white d-flex align-items-center justify-content-between">
+            <div class="card-header text-bg-light  d-flex align-items-center justify-content-between">
                 <h3 class="mb-0">{{ __('index.product_list') }}</h3>
-                <button class="btn btn-light text-primary fw-bold rounded-5 px-4 py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button class="btn btn-primary  rounded-5 px-4 py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     + {{ __('index.add_product') }}
                 </button>
             </div>
@@ -55,10 +55,8 @@
 
                             <div class="col-12">
                                 <label class="form-label fw-bold">{{ __('index.cat') }}</label>
-                                <select name="cat_id" class="form-select">
-                                    @foreach($cat as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
+                                <select name="cat_id" id="cat_id" class=" form-control ">
+
                                 </select>
                             </div>
                         </form>
@@ -88,7 +86,8 @@
                 processing: true,
                 serverSide: true,
                 searching: false,
-              
+                paging: false, // Disable pagination
+
                 ajax: {
                     url: '{{ url("/product") }}',
                     type: 'GET',
@@ -99,9 +98,9 @@
                 },
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'name', name: '{{ __('index.name') }}' },
-                    { data: 'category', name: '{{ __('index.cat') }}' },
-                    { data: 'actions', name: '{{ __('index.action') }}', orderable: false, searchable: false }
+                    { data: 'name', name: 'name' },
+                    { data: 'category', name: 'category' },
+                    { data: 'actions', name: 'actions', orderable: false, searchable: false } 
                 ],
                 dom: '<"top"l>rt<"bottom"ip>',
                 lengthMenu: [
@@ -122,5 +121,39 @@
             });
         });
     </script>
+
+
+
+<script>
+    $('#exampleModal').on('shown.bs.modal', function() {
+        $('#cat_id').select2({
+            ajax: {
+                url: "{{ route('search_cat') }}"
+                , type: 'get'
+                , dataType: 'json'
+                , delay: 250
+                , data: function(params) {
+                    return {
+                        search: params.term || ''
+                        , limit: 10
+                    };
+                }
+                , processResults: function(data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.id
+                            , text: item.name
+                        }))
+                    };
+                }
+                , cache: true
+            }
+            , placeholder: 'Chooase a category'
+            , minimumInputLength: 0
+            , dropdownParent: $("#exampleModal")
+        });
+    });
+
+</script>
 
 </x-layout.layout>

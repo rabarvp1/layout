@@ -61,6 +61,7 @@
         "name_of_customer"       => "Name of Customer",
         "name_of_supplier"       => "Name of Supplier",
         "receipts_sold"          => "Receipts Sold",
+        "sign_up"                => "Sign Up",
 
         // form labels
         "product_list"           => "Product List",
@@ -94,5 +95,12 @@
         "search_customer_name"   => "Search customer Name",
         "users_list"             => "Users List",
         "add_user"               => "Add User",
+        "confirm_password"       => "Confirm Password",
+        "register"               => "Register User",
+        "select_role"            => "Select Role",
+        "admin"                  => "Admin",
+        "cashier"                => "Cashier",
+        "the_register"               => "The Register",
+
 
     ];

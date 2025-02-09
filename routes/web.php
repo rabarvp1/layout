@@ -19,7 +19,7 @@ Route::middleware(['lang'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('/product', [ProductController::class, 'product'])->name('product')->middleware('role_a');
+        Route::get('/product', [ProductController::class, 'product']);
 
         Route::get('/', [ProductController::class, 'first'])->name('first');
 
@@ -49,6 +49,8 @@ Route::middleware(['lang'])->group(function () {
 
         Route::get('/product', [ProductController::class, 'index'])->name('products.index');
 
+        Route::get('/product/search', [ProductController::class, 'search_cat'])->name('search_cat');
+
         Route::post('/upload', [ProductController::class, 'upload']);;
 
         Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
@@ -61,7 +63,7 @@ Route::middleware(['lang'])->group(function () {
 
         Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
 
-        Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index')->middleware('role_a');
+        Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
 
         Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
 
@@ -113,7 +115,7 @@ Route::middleware(['lang'])->group(function () {
 
         Route::put('/suplier/profile/{paymentId}/{suplierId}', [PaymentController::class, 'update_suplier_profile']);
 
-        Route::delete('/suplier/{id}', [SuplierController::class, 'delete_suplier'])->name('edit_suplier');
+        Route::delete('/suplier/{paymentId}', [SuplierController::class, 'delete_suplier'])->name('edit_suplier');
 
         Route::get('/buy/getData', [BuyController::class, 'getData'])->name('getData');
 

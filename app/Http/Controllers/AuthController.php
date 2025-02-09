@@ -164,7 +164,6 @@ class AuthController extends Controller
             'name'       => $request->name,
             'email'      => $request->email,
             'role'       => $request->role,
-            // 'password' => $request->password,
             'updated_at' => now(),
         ];
 

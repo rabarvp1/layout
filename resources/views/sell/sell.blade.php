@@ -27,9 +27,10 @@
                         <th scope="col">{{ __('index.created_at') }}</th>
                         <th scope="col">{{ __('index.sum') }}</th>
                         <th scope="col">{{ __('index.discount')}}</th>
-                        <th scope="col">{{ __('index.note') }}</th>
                         <th scope="col">{{ __('index.total') }}</th>
-                        <th scope="col">{{ __('index.action') }}</th>
+                        <th scope="col">{{ __('index.note') }}</th>
+                        <th scope="col">{{ __('index.the_register') }}</th>
+                        <th scope="col"class="text-center">{{ __('index.action') }}</th>
 
 
 
@@ -40,12 +41,12 @@
                 </tbody>
             </table>
 
-            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade " id="exampleModal"  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header text-white bg-info">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('index.sell_product')}}</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
                             <form id="form-id" action="/insert_sell" class="vstack gap-3" method="POST">
@@ -102,6 +103,7 @@
 
     <script>
         $(document).on('click', '.delete-btn', function() {
+
             const row = $(this).closest('tr');
 
             row.remove();
@@ -112,7 +114,7 @@
                 type: 'POST'
                 , data: {
                     id: productId
-                    , _token: '{{ csrf_token() }}', /
+                    , _token: '{{ csrf_token() }}',
                 }
                 , success: function(response) {
                     console.log(response.message);
@@ -134,7 +136,7 @@
                         type: "GET"
                         , data: {
                             search: request.term
-                        }, // Send search term
+                        },
                         dataType: "json"
                         , success: function(data) {
                             response(data);
@@ -144,6 +146,10 @@
                 , minLength: 0,
                 select: function(event, ui) {
                     $('#productTableBody').append(ui.item.html);
+                    $('#search_product').val('');
+                    return false;
+
+
                 }
                 , appendTo: "#exampleModal",
             });
@@ -192,6 +198,7 @@
             processing: true
             , serverSide: true
             ,searching: false
+            ,lengthChange: false
             , ajax: {
                     url: '{{ url("/sell") }}',
                     type: 'GET',
@@ -226,15 +233,19 @@
                     , name: ' {{ __('index.discount')}}'
                 }
                 , {
-                    data: 'note'
-                    , name: ' {{ __('index.note')}}'
-                }
-
-
-                , {
                     data: 'total'
                     , name: ' {{ __('index.total')}}'
                 }
+                , {
+                    data: 'note'
+                    , name: ' {{ __('index.note')}}'
+                }
+                , {
+                    data: 'register'
+                    , name: 'register'
+                }
+
+
                 , {
                     data: 'actions'
                     , name: '{{ __('index.action') }}'

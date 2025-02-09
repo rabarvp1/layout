@@ -10,7 +10,7 @@ class BuyController extends Controller
 {
     public function buy()
     {
-       
+
         $supliers = DB::table('suplier')->get();
 
         $purchases = DB::table('purchase')
@@ -95,6 +95,7 @@ class BuyController extends Controller
         <td><input type="number" class="form-control" name="single_price[]" value="0"></td>
 
         <td><input type="number" class="form-control" name="multi_price[]" value="0"></td>
+
         <input type="hidden" name="product_id[]" value="%s">
 
 
@@ -113,6 +114,7 @@ class BuyController extends Controller
     }
     public function deleteRow(Request $request)
     {
+        dd($request->all());
         // $id = $request->input('id');
         return response()->json(['message' => 'Product deleted successfully.']);
     }

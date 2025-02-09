@@ -52,10 +52,11 @@ class PaymentController extends Controller
 
     }
 
-    public function delete_payment($id)
+    public function delete_payment(Request $request, $paymentId)
     {
 
-        DB::table('suplier_payment')->where('id', $id)->delete();
+       DB::table('suplier_payment')->where('id', $paymentId)->delete();
+
 
         return redirect()->back()->with('success', 'Payment deleted successfully');
     }
@@ -69,6 +70,8 @@ class PaymentController extends Controller
 
         return view('suplier.edit_profile', compact('suplier_payment', 'suplier'));
     }
+
+
     public function update_suplier_profile(Request $request, $paymentId, $supplierId)
     {
         $request->validate([
@@ -131,62 +134,7 @@ class PaymentController extends Controller
     public function profile_customer($id)
     {
 
-        // $products = DB::table('product')
-        // ->join('purchase_product', 'product.id', '=', 'purchase_product.product_id')
-        // ->join('cat', 'cat.id', '=', 'product.cat_id')
-        // ->leftJoin('sell_product', 'product.id', 'sell_product.product_id')
-        // ->selectRaw('
-        //     product.name as product_name,
-        //    (purchase_product.quantity) - SUM(sell_product.quantity) AS total_quantity,
-        //     AVG(purchase_product.cost) as avg_cost,
-        //     cat.name as category_name
-        // ')
-        // ->groupBy('product.id')
-        // ->havingRaw('SUM(purchase_product.quantity) > 0')
-        // ->get();
 
-        // $products = DB::table('product')
-        //     ->join('purchase_product as pp', 'product.id', '=', 'pp.product_id')
-        //     ->join('cat', 'cat.id', '=', 'product.cat_id')
-        //     ->leftJoin('sell_product as sp', 'product.id', '=', 'sp.product_id')
-        //     ->selectRaw('
-        //     product.name as product_name,
-        //     product.id as product_id,
-        //     product.name as product_name,
-        //     COALESCE(SUM(pp.quantity), 0) as total_purchased,
-        //     COALESCE(SUM(sp.quantity), 0) as total_sold,
-        //     COALESCE(SUM(pp.quantity), 0) - COALESCE(SUM(sp.quantity), 0) as total_quantity,
-        //     cat.name as category_name
-        // ')
-        //     ->groupBy('product.id', 'product.name', 'cat.name')
-        //     ->havingRaw('SUM(pp.quantity) > 0')
-        //     ->get();
-    
-
-
-        // $products = DB::table('product as p')
-        //     ->leftJoin('cat as c', 'p.cat_id', '=', 'c.id')
-        //     ->leftJoin('purchase_product as pp', 'p.id', '=', 'pp.product_id')
-        //     ->leftJoinSub(
-        //         DB::table('sell_product')
-        //             ->select('product_id', DB::raw('MAX(id) as last_sale_id'))
-        //             ->groupBy('product_id'),
-        //         'last_sale',
-        //         'p.id',
-        //         '=',
-        //         'last_sale.product_id'
-        //     )
-        //     ->leftJoin('sell_product as sp', 'last_sale.last_sale_id', '=', 'sp.id')
-        //     ->select(
-        //         'p.id as product_id',
-        //         'p.name as product_name',
-        //         'c.name as category_name',
-        //         DB::raw('COALESCE(SUM(pp.quantity), 0) as total_purchased'),
-        //         DB::raw('COALESCE(sp.quantity, 0) as last_sold_quantity'),
-        //         DB::raw('COALESCE(SUM(pp.quantity), 0) - COALESCE(sp.quantity, 0) as total_quantity'),
-        //     )
-        //     ->groupBy('p.id', 'p.name', 'c.name', 'sp.quantity')
-        //     ->get();
 
         $customer = DB::table('customer')->where('id', $id)->firstOrFail();
 
@@ -231,13 +179,16 @@ class PaymentController extends Controller
 
     }
 
-    public function delete_payment_customer($id)
+    public function delete_payment_customer(Request $request, $paymentId )
     {
 
-        DB::table('customer_payment')->where('id', $id)->delete();
+        DB::table('customer_payment')->where('id', $paymentId)->delete();
+
 
         return redirect()->back()->with('success', 'Payment deleted successfully');
     }
+
+
 
     public function edit_customer_profile($paymentId, $customerId)
     {

@@ -4,7 +4,6 @@
 
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <!-- Left side: Form -->
             <div class="col-md-6">
                 <div class="card shadow-lg p-4">
                     <div class="card-header bg-white">
@@ -21,7 +20,7 @@
 
 
                                 <div class="col-12">
-                                    <label for="name" class="form-label"> Name of User </label>
+                                    <label for="name" class="form-label"> {{ __('index.name') }} </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
@@ -60,12 +59,17 @@
                                 <div class="col-12">
                                     <label for="password_confirmation" class="form-label">{{ __('index.confirm_password') }}</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                        <span class="input-group-text">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
+                                            <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z" />
+                                            <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                          </svg>
+                                        </span>
                                         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <label for="role" class="form-label">selecte role</label>
+                                    <label for="role" class="form-label">{{ __('index.select_role')}}</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-user"></i>
@@ -90,7 +94,6 @@
                 </div>
             </div>
 
-            <!-- Right side: Logo -->
             <div class="col-md-6 d-flex justify-content-center align-items-center">
                 <img src="{{ asset('snawbar.png') }}" alt="Logo" class="img-fluid rounded shadow" width="400" height="400">
             </div>

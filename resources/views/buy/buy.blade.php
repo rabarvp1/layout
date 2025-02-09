@@ -1,5 +1,5 @@
 <x-layout.layout :navItems="[
-    ['label' => 'Back', 'url' => url('/'), 'active' => false],
+    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
@@ -100,6 +100,7 @@
 
     <script>
         $(document).on('click', '.delete-btn', function() {
+           
             const row = $(this).closest('tr');
 
             row.remove();

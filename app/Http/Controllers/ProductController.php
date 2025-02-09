@@ -132,5 +132,17 @@ class ProductController extends Controller
         $cat = DB::table('cat')->get();
         return view('product.product', ['cat' => $cat]);
     }
+    public function search_cat(Request $request)
+    {
+        $search = $request->get('search', '');
+
+        $cats = DB::table('cat')
+            ->select('id', 'name')
+            ->where('name', 'LIKE', '%' . $search . '%')
+            ->limit(10)
+            ->get();
+
+        return response()->json($cats);
+    }
 
 }

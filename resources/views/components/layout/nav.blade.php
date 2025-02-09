@@ -4,13 +4,16 @@
     <a class="navbar-brand px-3" href="/">
         <img src="{{ asset('snawbar.png') }}" alt="Logo" width="50">
     </a>
-    <div class="container-fluid">
+
+
+    {{-- <div class="container-fluid"> --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
+            <ul class="navbar-nav {{ in_array(app()->getLocale(), ['ku', 'ar']) ? 'ms-auto' : 'me-auto' }} mb-2 mb-lg-0 gap-4">
 
                 @foreach ($navItems as $item)
                 <li class="nav-item hover-enable {{ $item['active'] ? 'active' : '' }}">
@@ -21,12 +24,9 @@
             </ul>
 
             <ul class="navbar-nav">
-                <li class="nav-item ms-auto">
-                    <a class="nav-link" href="">@auth
-                        {{ Auth::user()->name }}
-                        @endauth</a>
-                </li>
-              
+
+
+
                 <li class="nav-item ms-3">
 
                     <div class="dropdown text-center">
@@ -49,15 +49,35 @@
                         </form>
                     </div>
                 </li>
-                <li class="nav-item ms-auto">
-                    <form action="/logout" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-danger">{{ __('index.logout') }}</button>
-                    </form>
+                <li class="nav-item dropdown ms-3">
+                    <div class="dropdown text-center">
+                        <button class="btn btn-dark btn-sm  dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                            {{ Auth::user()->name }}
+
+
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li>
+                                <form action="" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">Change Password</button>
+                                </form>
+                            </li>
+
+                            <li class="nav-item ms-auto">
+                                <form action="/logout" method="POST" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">{{ __('index.logout') }}</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
+
+
 
 
             </ul>
         </div>
-    </div>
+    {{-- </div> --}}
 </nav>

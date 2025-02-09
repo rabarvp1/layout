@@ -77,29 +77,49 @@
                                 <th class="text-center" rowspan="1" colspan="1"><i class="fas fa-sort-numeric-down"></i></th>
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.Receipt_type') }}</th>
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.created_at') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.Amount_of_money') }}</th>
+                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.add') }}</th>
+                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.minus') }}</th>
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.balance') }}</th>
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.note') }}</th>
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.action') }}</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
+                            @php
+                                $balance = 0;
+                            @endphp
                             @foreach ($payments as $payment )
+                            @php
+                            if ($payment->type == 'Payments') {
+                                $balance -= $payment->amount;
+                            } else {
+                                $balance += $payment->amount;
+                            }
+                        @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
 
                                     @if ($payment->type == 'Payments')
                                     {{ __('index.payment') }} ({{ $payment->id }})
-                                @elseif ($payment->type == 'Receiving money')
+                                    @elseif ($payment->type == 'Receiving money')
                                     {{ __('index.receiving_money') }} ({{ $payment->id }})
 
-                                @endif
+                                    @endif
 
-                            </td>
+                                </td>
                                 <td>{{ $payment->created_at }}</td>
-                                <td>${{ $payment->amount }}</td>
-                                <td>${{ $payment->balance }}</td>
+                                <td>
+                                    @if ($payment->type == 'Receiving money')
+                                    ${{ $payment->amount }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($payment->type == 'Payments')
+                                        ${{ $payment->amount }}
+                                    @endif
+                                </td>
+                                <td>${{ $balance }}</td>
                                 <td>{{ $payment->note }}</td>
                                 <td>
                                     <div class="dropdown text-center">
@@ -114,9 +134,12 @@
                                             </li>
 
                                             <li>
-                                                <form action="{{ url('/suplier/payment/' . $payment->id) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
+                                                <form action="{{ url('/suplier/payment/' . $payment->id ) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
                                                     @csrf
                                                     @method('DELETE')
+
+                                                    <input type="hidden" name="suplier_id" value="{{ $suplier->id }}">
+
 
                                                     <button type="submit" class="dropdown-item text-danger">{{ __('index.delete') }}</button>
                                                 </form>
