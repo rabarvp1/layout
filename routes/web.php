@@ -22,21 +22,23 @@ Route::middleware(['lang'])->group(function () {
         Route::get('/', [ProductController::class, 'first'])->name('first');
 
         // Product Routes
-        Route::get('/product/view', [ProductController::class, 'product']);
-        Route::get('/product', [ProductController::class, 'index'])->name('products.index');
-        Route::get('/product/search', [ProductController::class, 'search_cat'])->name('search_cat');
-        Route::post('/product/insert', [ProductController::class, 'insertProduct']);
-        Route::delete('/product/delete{id}', [ProductController::class, 'deleteProduct']);
-        Route::get('/product/edit/{id}', [ProductController::class, 'editProduct']);
-        Route::put('/product/update/{id}', [ProductController::class, 'updateProduct']);
+        Route::middleware('role:All Roles Of Product')->group(function () {
+            Route::get('/product/view', [ProductController::class, 'product']);
+            Route::get('/product', [ProductController::class, 'index'])->name('products.index');
+            Route::get('/product/search', [ProductController::class, 'search_cat'])->name('search_cat');
+            Route::post('/product/insert', [ProductController::class, 'insertProduct']);
+            Route::delete('/product/delete{id}', [ProductController::class, 'deleteProduct']);
+            Route::get('/product/edit/{id}', [ProductController::class, 'editProduct']);
+            Route::put('/product/update/{id}', [ProductController::class, 'updateProduct']);
+        });
 
         // Buy Routes
-        Route::middleware('role:buy')->group(function () {
+        Route::middleware('role:All Roles Of Purchasing')->group(function () {
 
             Route::get('/buy/view', [BuyController::class, 'buy'])->name('buy');
             Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
             Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
-            Route::get('/buy/single/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase')->middleware('role:purchase');
+            Route::get('/buy/single/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase')->middleware('role:View Purchases');
             Route::get('/buy/edit/{id}', [BuyController::class, 'edit_purchase'])->name('edit_purchase');
             Route::put('/buy/update/{id}', [BuyController::class, 'purchase_update']);
             Route::post('/buy/insert', [BuyController::class, 'buy_insert']);
@@ -46,7 +48,7 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Admin Routes
-        Route::middleware('role:admin')->group(function () {
+        Route::middleware('role:All Roles Of Users')->group(function () {
 
             Route::get('/users/view', [AuthController::class, 'users'])->name('users');
             Route::get('/users/view/create', [AuthController::class, 'user_create'])->name('user_create');
@@ -58,55 +60,66 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Sell Routes
-        Route::get('/sell/view', [SellController::class, 'sell'])->name('sell')->middleware('role:invoice');
-        Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index')->middleware('role:invoice');
-        Route::get('/sell/single/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
-        Route::get('/sell/edit/{id}', [SellController::class, 'edit_invoice'])->name('edit_invoice');
-        Route::put('/sell/update/{id}', [SellController::class, 'update_invoice']);
-        Route::get('/customer/search', [SellController::class, 'search_customer'])->name('search_customer');
-        Route::post('/insert_sell', [SellController::class, 'insert_sell']);
-        Route::post('/delete-sellProduct', [SellController::class, 'delete_row_sell']);
-        Route::get('/sell/getData_sell', [SellController::class, 'getData_sell'])->name('getData_sell');
-        Route::delete('/sell/delete/{id}', [SellController::class, 'deleteInvoice']);
+        Route::middleware('role:All Roles Of Selling')->group(function () {
+            Route::get('/sell/view', [SellController::class, 'sell'])->name('sell')->middleware('role:invoice');
+            Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index')->middleware('role:invoice');
+            Route::get('/sell/single/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
+            Route::get('/sell/edit/{id}', [SellController::class, 'edit_invoice'])->name('edit_invoice');
+            Route::put('/sell/update/{id}', [SellController::class, 'update_invoice']);
+            Route::get('/customer/search', [SellController::class, 'search_customer'])->name('search_customer');
+            Route::post('/insert_sell', [SellController::class, 'insert_sell']);
+            Route::post('/delete-sellProduct', [SellController::class, 'delete_row_sell']);
+            Route::get('/sell/getData_sell', [SellController::class, 'getData_sell'])->name('getData_sell');
+            Route::delete('/sell/delete/{id}', [SellController::class, 'deleteInvoice']);
+        });
 
         // Category Routes
 
-        Route::get('/cat/view', [catController::class, 'cat'])->name('cat');
-        Route::get('/cat', [catController::class, 'cat_index'])->name('cat.index');
-        Route::get('/cat/edit/{id}', [catController::class, 'cat_edit'])->name('cat_edit');
-        Route::put('/cat/update/{id}', [catController::class, 'cat_update'])->name('cat_update');
-        Route::delete('/cat/delete/{id}', [catController::class, 'cat_delete'])->name('cat_delete');
-        Route::post('/cat/insert', [catController::class, 'inputCat']);
+        Route::middleware('role:All Roles Of Category')->group(function () {
+            Route::get('/cat/view', [catController::class, 'cat'])->name('cat');
+            Route::get('/cat', [catController::class, 'cat_index'])->name('cat.index');
+            Route::get('/cat/edit/{id}', [catController::class, 'cat_edit'])->name('cat_edit');
+            Route::put('/cat/update/{id}', [catController::class, 'cat_update'])->name('cat_update');
+            Route::delete('/cat/delete/{id}', [catController::class, 'cat_delete'])->name('cat_delete');
+            Route::post('/cat/insert', [catController::class, 'inputCat']);
+        });
 
         // Supplier Routes
-        Route::get('/suplier/view', [suplierController::class, 'suplier'])->name('suplier');
-        Route::get('/suplier', [suplierController::class, 'suplier_index'])->name('suplier_index');
-        Route::post('/supplier/insert', [suplierController::class, 'inputSuplier']);
-        Route::get('/suplier/edit/{id}', [SuplierController::class, 'edit_suplier'])->name('edit_suplier');
-        Route::put('/suplier/update/{id}', [SuplierController::class, 'update_suplier'])->name('edit_suplier');
-        Route::get('/suplier/profile/{id}', [PaymentController::class, 'profile_suplier'])->name('profile_suplier');
-        Route::delete('/suplier/delete/{id}', [SuplierController::class, 'delete_suplier'])->name('delete_suplier');
-        Route::post('/suplier/payment/{id}', [PaymentController::class, 'suplier_payment']);
-        Route::put('/suplier/profile/update/{paymentId}/{suplierId}', [PaymentController::class, 'update_suplier_profile']);
-        Route::get('/suplier/profile/edit/{paymentId}/{suplierId}', [PaymentController::class, 'edit_suplier_profile'])->name('edit_suplier_profile');
-        Route::delete('/suplier/delete/payment/{paymentId}', [PaymentController::class, 'delete_payment']);
+        Route::middleware('role:All Roles Of Supplier')->group(function () {
+            Route::get('/suplier/view', [suplierController::class, 'suplier'])->name('suplier');
+            Route::get('/suplier', [suplierController::class, 'suplier_index'])->name('suplier_index');
+            Route::post('/supplier/insert', [suplierController::class, 'inputSuplier']);
+            Route::get('/suplier/edit/{id}', [SuplierController::class, 'edit_suplier'])->name('edit_suplier');
+            Route::put('/suplier/update/{id}', [SuplierController::class, 'update_suplier'])->name('edit_suplier');
+            Route::get('/suplier/profile/{id}', [PaymentController::class, 'profile_suplier'])->name('profile_suplier');
+            Route::delete('/suplier/delete/{id}', [SuplierController::class, 'delete_suplier'])->name('delete_suplier');
+            Route::post('/suplier/payment/{id}', [PaymentController::class, 'suplier_payment']);
+            Route::put('/suplier/profile/update/{paymentId}/{suplierId}', [PaymentController::class, 'update_suplier_profile']);
+            Route::get('/suplier/profile/edit/{paymentId}/{suplierId}', [PaymentController::class, 'edit_suplier_profile'])->name('edit_suplier_profile');
+            Route::delete('/suplier/delete/payment/{paymentId}', [PaymentController::class, 'delete_payment']);
+        });
 
         // Customer Routes
-        Route::get('/customer/view', [CustomerController::class, 'customer'])->name('customer');
-        Route::get('/customer', [CustomerController::class, 'customer_index'])->name('customer_index');
-        Route::get('/customer/edit/{id}', [CustomerController::class, 'edit_customer'])->name('edit_customer');
-        Route::put('/customer/update/{id}', [CustomerController::class, 'update_customer']);
-        Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete_customer']);
-        Route::get('/customer/profile/{id}', [PaymentController::class, 'profile_customer'])->name('profile_customer');
-        Route::post('/customer/payment/{id}', [PaymentController::class, 'customer_payment']);
-        Route::delete('/customer/delete/payment/{id}', [PaymentController::class, 'delete_payment_customer']);
-        Route::get('/customer/profile/edit/{paymentId}/{customerId}', [PaymentController::class, 'edit_customer_profile'])->name('edit_customer_profile');
-        Route::put('/customer/profile/update/{paymentId}/{customerId}', [PaymentController::class, 'update_customer_profile']);
-        Route::post('/customer/insert', [CustomerController::class, 'inputCustomer']);
+        Route::middleware('role:All Roles Of Customer')->group(function () {
+            Route::get('/customer/view', [CustomerController::class, 'customer'])->name('customer');
+            Route::get('/customer', [CustomerController::class, 'customer_index'])->name('customer_index');
+            Route::get('/customer/edit/{id}', [CustomerController::class, 'edit_customer'])->name('edit_customer');
+            Route::put('/customer/update/{id}', [CustomerController::class, 'update_customer']);
+            Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete_customer']);
+            Route::get('/customer/profile/{id}', [PaymentController::class, 'profile_customer'])->name('profile_customer');
+            Route::post('/customer/payment/{id}', [PaymentController::class, 'customer_payment']);
+            Route::delete('/customer/delete/payment/{id}', [PaymentController::class, 'delete_payment_customer']);
+            Route::get('/customer/profile/edit/{paymentId}/{customerId}', [PaymentController::class, 'edit_customer_profile'])->name('edit_customer_profile');
+            Route::put('/customer/profile/update/{paymentId}/{customerId}', [PaymentController::class, 'update_customer_profile']);
+            Route::post('/customer/insert', [CustomerController::class, 'inputCustomer']);
+        });
 
         // Storage Routes
-        Route::get('/storage', [StorageController::class, 'storage'])->name('storage');
-        Route::get('/storage/getData_storage', [StorageController::class, 'getData_storage'])->name('getData_storage');
+        // Storage Routes
+        Route::middleware('role:All Roles Of Storage')->group(function () {
+            Route::get('/storage/view', [StorageController::class, 'storage'])->name('storage');
+            Route::get('/storage/getData_storage', [StorageController::class, 'getData_storage'])->name('getData_storage');
+        });
 
         // Locale Route
         Route::post('/locale', function (HttpRequest $request) {
@@ -125,7 +138,7 @@ Route::middleware(['lang'])->group(function () {
     });
 
     // Auth Routes
-    Route::get('/login/view', [AuthController::class, 'index'])->name('login');
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

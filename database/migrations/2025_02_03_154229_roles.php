@@ -20,11 +20,17 @@ return new class extends Migration
             $table->string('name');
         });
         DB::table('name_of_roles')->insert([
-            ['name' => 'admin'],
-            ['name' => 'selling'],
-            ['name' => 'buy'],
-            ['name' => 'invoice'],
-            ['name' => 'purchase'],
+            ['name' => 'All Roles Of Users'],
+            ['name' => 'All Roles Of Selling'],
+            ['name' => 'All Roles Of Purchasing'],
+            ['name' => 'View Invoices'],
+            ['name' => 'View Purchases'],
+            ['name' => 'All Roles Of Storage'],
+            ['name' => 'All Roles Of Supplier'],
+            ['name' => 'All Roles Of Customer'],
+            ['name' => 'All Roles Of Product'],
+            ['name' => 'All Roles Of Category'],
+            ['name' => 'Renewals During The Sale'],
 
         ]);
     }

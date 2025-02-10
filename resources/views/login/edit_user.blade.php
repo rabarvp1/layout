@@ -68,44 +68,33 @@
                                         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
                                     </div>
                                 </div>
-                                <div class="row mt-3">
 
-                                    <label for="role" class="form-label">{{ __('index.select_role') }}</label>
-
-                                    <div class="col-xl-3 col-lg-6 col-12 mb-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="permission[]" value="invoce" id="selling">
-                                            <label class="form-check-label" for="selling">
-                                                Selling
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-3 col-lg-6 col-12 mb-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="permission[]" value="purchase" id="purchasing">
-                                            <label class="form-check-label" for="purchasing">
-                                                Purchasing
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-3 col-lg-6 col-12 mb-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="permission[]" value="buy" id="buy">
-                                            <label class="form-check-label" for="buy">
-                                                buy
-                                             </label>
-                                        </div>
-                                    </div>
-
-
+                        <div class="row mt-3">
+                            <label for="role" class="form-label mb-2">{{ __('index.select_role') }}</label>
+                            <div class="col-12 mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="select_all">
+                                    <label class="form-check-label" for="select_all">
+                                        <span class="user-select-none">Select all</span>
+                                    </label>
                                 </div>
-
-
-
                             </div>
-
+                            @foreach ($roles as $role)
+                            <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input role-checkbox"
+                                     type="checkbox" name="permission[]"
+                                     value="{{ $role->name }}"
+                                     id="{{ $role->name }}"
+                                     @if(in_array($role->name, $userRoles)) checked @endif>
+                                    <label class="form-check-label" for="{{ $role->name }}">
+                                        <span class="user-select-none">{{ $role->name }}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                            </div>
 
 
                             <button type="submit" class="btn btn-primary w-100 mt-3 mt-sm-3">{{ __('index.updateing') }}</button>
@@ -119,5 +108,41 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get 'Select All' checkbox and role checkboxes
+            const selectAllCheckbox = document.getElementById('select_all');
+            const roleCheckboxes = document.querySelectorAll('.role-checkbox');
+
+            // Ensure checkboxes are selected based on userRoles
+            const userRoles = @json($userRoles); // Get user roles from Blade
+
+            roleCheckboxes.forEach(checkbox => {
+                if (userRoles.includes(checkbox.value)) {
+                    checkbox.checked = true;
+                }
+            });
+
+            // Function to update 'Select All' state
+            function updateSelectAllState() {
+                const checkedCount = Array.from(roleCheckboxes).filter(checkbox => checkbox.checked).length;
+                selectAllCheckbox.checked = checkedCount === roleCheckboxes.length;
+                selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < roleCheckboxes.length;
+            }
+
+            // Add event listener for the 'Select All' checkbox
+            selectAllCheckbox.addEventListener('change', function() {
+                roleCheckboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+            });
+
+            // Add event listener to each role checkbox
+            roleCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectAllState);
+            });
+
+            // Ensure 'Select All' state is correct on page load
+            updateSelectAllState();
+        });
+    </script>
 
 </x-layout.layout>

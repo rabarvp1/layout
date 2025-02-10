@@ -1,18 +1,18 @@
 <x-layout.layout>
-@php
-$roles = DB::table('roles')
+    @php
+    $roles = DB::table('roles')
     ->where('user_id', auth()->user()->id)
     ->pluck('name');
-if ($roles->contains('admin')) {
-}
-@endphp
+
+    @endphp
 
 
     <div class="row mx-5">
 
+        @if ($roles->contains('All Roles Of Product'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/product" class=" link-underline link-underline-opacity-0">
+            <a href="/product/view" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center   card-shadow btn_icon product-color rounded-4 mt-4 ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 2048 2048">
                         <rect width="2048" height="2048" fill="none" />
@@ -22,9 +22,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
+
+        @if ($roles->contains('All Roles Of Category'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/cat" class=" link-underline link-underline-opacity-0">
+            <a href="/cat/view" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center  card-shadow btn_icon product-color rounded-4 mt-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
                         <rect width="32" height="32" fill="none" />
@@ -34,9 +37,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
+
+        @if ($roles->contains('All Roles Of Storage'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/storage" class=" link-underline link-underline-opacity-0">
+            <a href="/storage/view" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center  card-shadow btn_icon inventory-color rounded-4 mt-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16">
                         <rect width="16" height="16" fill="none" />
@@ -47,9 +53,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
+
+        @if ($roles->contains('All Roles Of Purchasing'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/buy" class=" link-underline link-underline-opacity-0">
+            <a href="/buy/view" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center  card-shadow btn_icon product-color rounded-4 mt-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
                         <rect width="32" height="32" fill="none" />
@@ -60,9 +69,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
+
+        @if ($roles->contains('All Roles Of Selling'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/sell" class=" link-underline link-underline-opacity-0">
+            <a href="/sell/view" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center card-shadow btn_icon sale-color rounded-4 mt-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 50 50">
                         <rect width="50" height="50" fill="none" />
@@ -74,9 +86,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
+
+        @if ($roles->contains('All Roles Of Customer'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/customer" class=" link-underline link-underline-opacity-0">
+            <a href="/customer/view" class=" link-underline link-underline-opacity-0">
                 <div class=" d-flex justify-content-between align-items-center card-shadow btn_icon sale-color rounded-4 mt-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
                         <rect width="32" height="32" fill="none" />
@@ -86,9 +101,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
+
+        @if ($roles->contains('All Roles Of Supplier'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/suplier" class=" link-underline link-underline-opacity-0">
+            <a href="/suplier/view" class=" link-underline link-underline-opacity-0">
                 <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon product-color mt-3  ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 14 14">
                         <rect width="14" height="14" fill="none" />
@@ -101,11 +119,12 @@ if ($roles->contains('admin')) {
                 </div>
             </a>
         </div>
+        @endif
 
-        @if ($roles->contains('admin'))
+        @if ($roles->contains('All Roles Of Users'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/users" class=" link-underline link-underline-opacity-0">
+            <a href="/users/view" class=" link-underline link-underline-opacity-0">
                 <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon report-color mt-3  ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 640 512">
                         <rect width="640" height="512" fill="none" />
@@ -114,7 +133,7 @@ if ($roles->contains('admin')) {
 
                     {{ __('index.user') }}
                 </div>
-@endif
+                @endif
 
 
 

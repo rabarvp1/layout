@@ -6,10 +6,10 @@
 
         <div class="card-header  d-flex align-items-center justify-content-between">
             <h1>{{ __('index.users_list') }}</h1>
-            <a href="/registration">
+            <a href="/users/view/create">
                 <button class="btn btn-primary w-70 h-70 rounded-5">{{ __('index.add_user')}}</button>
             </a>
-
+            
         </div>
         <div class="card-body">
             <div class="mb-3">

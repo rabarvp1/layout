@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             @foreach ($roles as $role)
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-4">
+                            <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
                                 <div class="form-check">
                                     <input class="form-check-input role-checkbox" type="checkbox" name="permission[]" value="{{ $role->name }}" id="{{ $role->name }}">
                                     <label class="form-check-label" for="{{ $role->name }}">

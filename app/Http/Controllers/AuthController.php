@@ -101,14 +101,13 @@ class AuthController extends Controller
 
     public function user_create()
     {
-$roles = DB::table('name_of_roles')->get();
+        $roles = DB::table('name_of_roles')->get();
 
-        return view('login.registration',compact('roles'));
+        return view('login.registration', compact('roles'));
     }
 
     public function create(Request $request)
     {
-
 
         $request->validate([
             'name'     => 'required|string|max:255',
@@ -123,18 +122,15 @@ $roles = DB::table('name_of_roles')->get();
             'created_at' => now(),
         ]);
 
-
         $selectedPermissions = $request->input('permission', []);
 
         foreach ($selectedPermissions as $permission) {
             DB::table('roles')->insert([
-            'user_id'    => $userId,
-            'name' => $permission,
+                'user_id' => $userId,
+                'name'    => $permission,
 
             ]);
         }
-
-
 
         if ($userId) {
 
@@ -154,13 +150,19 @@ $roles = DB::table('name_of_roles')->get();
 
     public function edit_user($id)
     {
-        $user = DB::table('users')->where('id', $id)->first();
+        $user  = DB::table('users')->where('id', $id)->first();
+        $roles = DB::table('name_of_roles')->get();
+
+        $userRoles = DB::table('roles')
+            ->where('user_id', $id)
+            ->pluck('name')
+            ->toArray();
 
         if (! $user) {
             return redirect()->route('edit_user')->with('error', 'User not found.');
         }
 
-        return view('login.edit_user', compact('user'));
+        return view('login.edit_user', compact('user', 'roles','userRoles'));
     }
 
     public function update_user(Request $request, $id)
@@ -170,7 +172,6 @@ $roles = DB::table('name_of_roles')->get();
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'required|min:6|confirmed',
-            'role'     => 'required|in:admin,cashier',
         ]);
 
         $data = [
