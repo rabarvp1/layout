@@ -61,8 +61,8 @@ Route::middleware(['lang'])->group(function () {
 
         // Sell Routes
         Route::middleware('role:All Roles Of Selling')->group(function () {
-            Route::get('/sell/view', [SellController::class, 'sell'])->name('sell')->middleware('role:invoice');
-            Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index')->middleware('role:invoice');
+            Route::get('/sell/view', [SellController::class, 'sell'])->name('sell');
+            Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index');
             Route::get('/sell/single/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
             Route::get('/sell/edit/{id}', [SellController::class, 'edit_invoice'])->name('edit_invoice');
             Route::put('/sell/update/{id}', [SellController::class, 'update_invoice']);

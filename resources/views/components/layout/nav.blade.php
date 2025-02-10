@@ -49,22 +49,18 @@
                         </form>
                     </div>
                 </li>
-                <li class="nav-item dropdown ms-3">
+                <li class="nav-item ms-3">
                     <div class="dropdown text-center">
-                        <button class="btn btn-dark btn-sm  dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-
-                            {{ Auth::user()->name }}
-
-
+                        <button class="btn btn-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ Auth::check() ? Auth::user()->name : __('Guest') }}
                         </button>
-                        <ul class="dropdown-menu dropdown-menu">
+                        <ul class="dropdown-menu {{ in_array(app()->getLocale(), ['ku', 'ar']) ? 'dropdown-menu-start' : 'dropdown-menu-end' }}">
                             <li>
                                 <form action="" method="GET" style="display: inline;">
                                     <button type="submit" class="dropdown-item">Change Password</button>
                                 </form>
                             </li>
-
-                            <li class="nav-item ms-auto">
+                            <li>
                                 <form action="/logout" method="POST" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger">{{ __('index.logout') }}</button>
