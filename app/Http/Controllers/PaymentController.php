@@ -26,18 +26,7 @@ class PaymentController extends Controller
 
         ]);
 
-        $currentBalance = DB::table('suplier_payment')
-            ->where('suplier_id', $id)
-            ->latest('id')
-            ->first()->balance ?? 0;
 
-        $newBalance = $currentBalance + $request->amount;
-
-        if ($request->type === 'Receiving money') {
-            $newBalance = $currentBalance + $request->amount;
-        } elseif ($request->type === 'Payments') {
-            $newBalance = $currentBalance - $request->amount;
-        }
 
         DB::table('suplier_payment')->insert([
             'type'       => $request->type,
@@ -45,7 +34,6 @@ class PaymentController extends Controller
             'created_at' => $request->created_at,
             'note'       => $request->note,
             'suplier_id' => $id,
-            'balance'    => $newBalance,
         ]);
 
         return redirect('suplier/profile/' . $id);
@@ -85,17 +73,7 @@ class PaymentController extends Controller
             return back()->with('error', 'Payment not found!');
         }
 
-        // $previousBalance = DB::table('suplier_payment')
-        //     ->where('suplier_id', $supplierId)
-        //     ->where('id', '<', $paymentId)
-        //     ->latest('id')
-        //     ->first()->balance ?? 0;
 
-        // $transactions = DB::table('suplier_payment')
-        //     ->where('suplier_id', $supplierId)
-        //     ->where('id', '>=', $paymentId)
-        //     ->orderBy('id')
-        //     ->get();
 
         DB::table('suplier_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
@@ -104,26 +82,7 @@ class PaymentController extends Controller
             'note'       => $request->note,
         ]);
 
-        // $newBalance = $previousBalance;
-        // foreach ($transactions as $transaction) {
-        //     if ($transaction->id == $paymentId) {
-        //         $amount = $request->amount;
-        //         $type   = $request->type;
-        //     } else {
-        //         $amount = $transaction->amount;
-        //         $type   = $transaction->type;
-        //     }
 
-        //     if ($type === 'Receiving money') {
-        //         $newBalance += $amount;
-        //     } elseif ($type === 'Payments') {
-        //         $newBalance -= $amount;
-        //     }
-
-        //     DB::table('suplier_payment')->where('id', $transaction->id)->update([
-        //         'balance' => $newBalance,
-        //     ]);
-        // }
 
         return redirect('/suplier/profile/' . $supplierId)->with('success', 'Profile updated successfully');
     }
@@ -153,18 +112,7 @@ class PaymentController extends Controller
 
         ]);
 
-        $currentBalance = DB::table('customer_payment')
-            ->where('customer_id', $id)
-            ->latest('id')
-            ->first()->balance ?? 0;
 
-        $newBalance = $currentBalance + $request->amount;
-
-        if ($request->type === 'Receiving money') {
-            $newBalance = $currentBalance + $request->amount;
-        } elseif ($request->type === 'Payments') {
-            $newBalance = $currentBalance - $request->amount;
-        }
 
         DB::table('customer_payment')->insert([
             'type'        => $request->type,
@@ -172,7 +120,6 @@ class PaymentController extends Controller
             'created_at'  => $request->created_at,
             'note'        => $request->note,
             'customer_id' => $id,
-            'balance'     => $newBalance,
         ]);
 
         return redirect('customer/profile/' . $id);
@@ -213,17 +160,6 @@ class PaymentController extends Controller
             return back()->with('error', 'Payment not found!');
         }
 
-        $previousBalance = DB::table('customer_payment')
-            ->where('customer_id', $customerId)
-            ->where('id', '<', $paymentId)
-            ->latest('id')
-            ->first()->balance ?? 0;
-
-        $transactions = DB::table('customer_payment')
-            ->where('customer_id', $customerId)
-            ->where('id', '>=', $paymentId)
-            ->orderBy('id')
-            ->get();
 
         DB::table('customer_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
@@ -232,26 +168,7 @@ class PaymentController extends Controller
             'note'       => $request->note,
         ]);
 
-        $newBalance = $previousBalance;
-        foreach ($transactions as $transaction) {
-            if ($transaction->id == $paymentId) {
-                $amount = $request->amount;
-                $type   = $request->type;
-            } else {
-                $amount = $transaction->amount;
-                $type   = $transaction->type;
-            }
-
-            if ($type === 'Receiving money') {
-                $newBalance -= $amount;
-            } elseif ($type === 'Payments') {
-                $newBalance += $amount;
-            }
-
-            DB::table('customer_payment')->where('id', $transaction->id)->update([
-                'balance' => $newBalance,
-            ]);
-        }
+      
 
         return redirect('/customer/profile/' . $customerId)->with('success', 'Profile updated successfully');
     }

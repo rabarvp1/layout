@@ -85,6 +85,8 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
+
+
                             @php
                                 $balance = 0;
                             @endphp
@@ -96,6 +98,8 @@
                                 $balance += $payment->amount;
                             }
                         @endphp
+
+
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
@@ -109,6 +113,7 @@
 
                                 </td>
                                 <td>{{ $payment->created_at }}</td>
+
                                 <td>
                                     @if ($payment->type == 'Receiving money')
                                     ${{ $payment->amount }}
@@ -134,7 +139,7 @@
                                             </li>
 
                                             <li>
-                                                <form action="{{ url('/suplier/delete/payment' . $payment->id ) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
+                                                <form action="{{ url('/suplier/delete/payment/' . $payment->id ) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
                                                     @csrf
                                                     @method('DELETE')
 

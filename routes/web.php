@@ -89,7 +89,7 @@ Route::middleware(['lang'])->group(function () {
         Route::post('/suplier/payment/{id}', [PaymentController::class, 'suplier_payment']);
         Route::put('/suplier/profile/update/{paymentId}/{suplierId}', [PaymentController::class, 'update_suplier_profile']);
         Route::get('/suplier/profile/edit/{paymentId}/{suplierId}', [PaymentController::class, 'edit_suplier_profile'])->name('edit_suplier_profile');
-        Route::delete('/suplier/delete/payment/{id}', [PaymentController::class, 'delete_payment']);
+        Route::delete('/suplier/delete/payment/{paymentId}', [PaymentController::class, 'delete_payment']);
 
         // Customer Routes
         Route::get('/customer/view', [CustomerController::class, 'customer'])->name('customer');
