@@ -20,7 +20,7 @@
 
 
             </div>
-            <table class="table  mx-auto table-hover"id="purchase-table">
+            <table class="table  mx-auto table-hover" id="purchase-table">
                 <thead>
                     <tr class="table-dark">
                         <th scope="col">#</th>
@@ -48,7 +48,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-                            <form id="form-id" action="/insert" class="vstack gap-3" method="POST">
+                            <form id="form-id" action="/buy/insert" class="vstack gap-3" method="POST">
                                 @csrf
 
                                 <label>{{ __('index.supplier') }}</label>
@@ -100,7 +100,7 @@
 
     <script>
         $(document).on('click', '.delete-btn', function() {
-           
+
             const row = $(this).closest('tr');
 
             row.remove();
@@ -195,7 +195,6 @@
                     url: '{{ url("/buy") }}',
                     type: 'GET',
                     data: function(d) {
-                        // Add custom search term to the request
                         d.search = $('#custom-search').val();
                     }
                 }

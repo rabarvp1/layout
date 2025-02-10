@@ -2,7 +2,7 @@
     ['label' => __('index.back'), 'url' => url('/buy'), 'active' => false],
 ]">
     <div class="modal-body">
-        <form id="form-id" action="{{ url('/buy/'.$purchase->id) }}" class="vstack gap-3" method="POST">
+        <form id="form-id" action="{{ url('/buy/update'.$purchase->id) }}" class="vstack gap-3" method="POST">
             @csrf
             @method('PUT')
 

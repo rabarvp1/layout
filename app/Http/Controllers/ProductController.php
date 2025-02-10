@@ -34,7 +34,7 @@ class ProductController extends Controller
         return view('product.product', ['products' => $products, 'cat' => $cat, 'navItems' => $navItems]);
     }
 
-    public function upload(Request $request)
+    public function insertProduct(Request $request)
     {
 
         $request->validate([
@@ -96,8 +96,8 @@ class ProductController extends Controller
 
             return DataTables::of($products)
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/product/' . $row->id . '/edit');
-                    $deleteUrl = url('/product/' . $row->id);
+                    $editUrl   = url('/product/edit/' . $row->id );
+                    $deleteUrl = url('/product/delete' . $row->id);
 
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');

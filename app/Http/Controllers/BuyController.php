@@ -21,7 +21,7 @@ class BuyController extends Controller
 
         return view('buy.buy', compact('purchases', 'supliers'));
     }
-    public function insert(Request $request)
+    public function buy_insert(Request $request)
     {
         $request->validate([
             'note'         => 'nullable|string|max:255',
@@ -112,12 +112,7 @@ class BuyController extends Controller
 
         return response()->json($products);
     }
-    public function deleteRow(Request $request)
-    {
-        dd($request->all());
-        // $id = $request->input('id');
-        return response()->json(['message' => 'Product deleted successfully.']);
-    }
+    
 
     // purchase view
 
@@ -248,9 +243,9 @@ class BuyController extends Controller
             return DataTables::of($purchases)
 
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/buy/' . $row->id . '/edit');
+                    $editUrl   = url('/buy/edit/' . $row->id);
                     $viewUrl= url('/buy/view/' .$row->id);
-                    $deleteUrl = url('/buy/' . $row->id);
+                    $deleteUrl = url('/buy/delete/' . $row->id);
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');
                     $viewlabel = __('index.view');

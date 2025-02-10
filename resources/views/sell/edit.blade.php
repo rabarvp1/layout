@@ -2,7 +2,7 @@
     ['label' => __('index.back'), 'url' => url('/sell'), 'active' => false],
 ]">
     <div class="">
-        <form id="form-id" action="{{ url('/sell/'.$invoices->id)  }}" class="vstack gap-3" method="POST">
+        <form id="form-id" action="{{ url('/sell/update/'.$invoices->id)  }}" class="vstack gap-3" method="POST">
             @csrf
             @method('PUT')
             <label>{{ __('index.customer') }}</label>

@@ -1,7 +1,7 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
-    <form action="{{ url('/product/'.$product->id) }}" method="POST">
+    <form action="{{ url('/product/update/'.$product->id) }}" method="POST">
         @csrf
         @method('PUT')
 

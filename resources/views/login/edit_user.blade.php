@@ -68,18 +68,38 @@
                                         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <label for="role" class="form-label">{{ __('index.select_role')}}</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                        <select class="form-select" name="role" id="role" required>
-                                            <option value="">{{ __('index.select_role') }}</option>
-                                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>{{ __('index.admin') }}</option>
-                                            <option value="cashier" {{ old('role', $user->role) == 'cashier' ? 'selected' : '' }}>{{ __('index.cashier') }}</option>
-                                        </select>
+                                <div class="row mt-3">
+
+                                    <label for="role" class="form-label">{{ __('index.select_role') }}</label>
+
+                                    <div class="col-xl-3 col-lg-6 col-12 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="permission[]" value="invoce" id="selling">
+                                            <label class="form-check-label" for="selling">
+                                                Selling
+                                            </label>
+                                        </div>
                                     </div>
+
+                                    <div class="col-xl-3 col-lg-6 col-12 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="permission[]" value="purchase" id="purchasing">
+                                            <label class="form-check-label" for="purchasing">
+                                                Purchasing
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-3 col-lg-6 col-12 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="permission[]" value="buy" id="buy">
+                                            <label class="form-check-label" for="buy">
+                                                buy
+                                             </label>
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
 

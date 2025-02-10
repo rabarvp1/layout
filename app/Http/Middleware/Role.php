@@ -11,6 +11,7 @@ class Role
 {
     public function handle(Request $request, Closure $next, string $role = null): Response
     {
+
         if (DB::table('roles')->where('name', $role)->where('user_id', Auth::user()?->id)->doesntExist()) {
             abort(403);
         }

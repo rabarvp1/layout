@@ -62,7 +62,7 @@ class AuthController extends Controller
 
                 ->addColumn('actions', function ($row) {
                     $editUrl   = url('/users/edit/' . $row->id);
-                    $deleteUrl = url('/users/' . $row->id);
+                    $deleteUrl = url('/users/delete' . $row->id);
 
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');
@@ -99,31 +99,44 @@ class AuthController extends Controller
 
     //-----------------Registration-----------------
 
-    public function registration()
+    public function user_create()
     {
-        return view('login.registration');
+$roles = DB::table('name_of_roles')->get();
+
+        return view('login.registration',compact('roles'));
     }
 
-    public function register(Request $request)
+    public function create(Request $request)
     {
+
 
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'role'     => 'required|in:admin,cashier',
         ]);
 
-        $user = DB::table('users')->insert([
+        $userId = DB::table('users')->insertGetId([
             'name'       => $request->name,
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
-            'roles'       => $request->role,
             'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
-        if ($user) {
+
+        $selectedPermissions = $request->input('permission', []);
+
+        foreach ($selectedPermissions as $permission) {
+            DB::table('roles')->insert([
+            'user_id'    => $userId,
+            'name' => $permission,
+
+            ]);
+        }
+
+
+
+        if ($userId) {
 
             return redirect('users')->with('success', 'Registration successful. Please login.');
         }
@@ -163,7 +176,7 @@ class AuthController extends Controller
         $data = [
             'name'       => $request->name,
             'email'      => $request->email,
-            'roles'       => $request->roles,
+            'roles'      => $request->roles,
             'updated_at' => now(),
         ];
 

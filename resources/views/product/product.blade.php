@@ -22,8 +22,8 @@
                 </div>
 
                 <div class="table-responsive mt-2">
-                    <table id="products-table" class="table mx-auto table-hover mt-2">
-                        <thead class="table-dark mt-2">
+                    <table id="products-table" class="table mx-auto table-hover">
+                        <thead class="table-dark">
                             <tr>
                                 <th>#</th>
                                 <th>{{ __('index.name') }}</th>
@@ -46,7 +46,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="product-form" action="/upload" method="POST" class="row g-3">
+                        <form id="product-form" action="/product/insert" method="POST" class="row g-3">
                             @csrf
                             <div class="col-12">
                                 <label class="form-label fw-bold">{{ __('index.product_name') }}</label>
@@ -78,7 +78,6 @@
 
     </script>
     @endif
-
     <script>
         $(document).ready(function() {
             // Initialize DataTable
@@ -86,13 +85,11 @@
                 processing: true,
                 serverSide: true,
                 searching: false,
-                paging: false, // Disable pagination
-
+                paging: false,
                 ajax: {
                     url: '{{ url("/product") }}',
                     type: 'GET',
                     data: function(d) {
-                        // Add custom search term to the request
                         d.search = $('#custom-search').val();
                     }
                 },
@@ -100,7 +97,7 @@
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
                     { data: 'category', name: 'category' },
-                    { data: 'actions', name: 'actions', orderable: false, searchable: false } 
+                    { data: 'actions', name: 'actions', orderable: false, searchable: false }
                 ],
                 dom: '<"top"l>rt<"bottom"ip>',
                 lengthMenu: [
@@ -111,13 +108,16 @@
                 language: {
                     searchPlaceholder: "Search products...",
                     lengthMenu: "Show _MENU_ entries"
-                }
+                },
+
+
             });
 
-            // Custom search input event
-            $('#custom-search').on('keyup', function() {
-                // Trigger DataTable search and redraw the table
-                table.search(this.value).draw();
+            $(document).on('shown.bs.dropdown', function() {
+            });
+
+             $('#custom-search').on('keyup', function() {
+                 table.search(this.value).draw();
             });
         });
     </script>

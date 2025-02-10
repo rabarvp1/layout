@@ -1,4 +1,12 @@
 <x-layout.layout>
+@php
+$roles = DB::table('roles')
+    ->where('user_id', auth()->user()->id)
+    ->pluck('name');
+if ($roles->contains('admin')) {
+}
+@endphp
+
 
     <div class="row mx-5">
 
@@ -94,7 +102,8 @@
             </a>
         </div>
 
-        @if(auth()->user()->roles === 'admin')
+        @if ($roles->contains('admin'))
+
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/users" class=" link-underline link-underline-opacity-0">
                 <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon report-color mt-3  ">
@@ -106,7 +115,6 @@
                     {{ __('index.user') }}
                 </div>
 @endif
-
 
 
 

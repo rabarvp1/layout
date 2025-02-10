@@ -18,37 +18,51 @@ Route::middleware(['lang'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
-        // Product Routes
-        Route::get('/product', [ProductController::class, 'product']);
+        //dashboard route
         Route::get('/', [ProductController::class, 'first'])->name('first');
+
+        // Product Routes
+        Route::get('/product/view', [ProductController::class, 'product']);
         Route::get('/product', [ProductController::class, 'index'])->name('products.index');
         Route::get('/product/search', [ProductController::class, 'search_cat'])->name('search_cat');
-        Route::post('/upload', [ProductController::class, 'upload']);
-        Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
-        Route::get('/product/{id}/edit', [ProductController::class, 'editProduct']);
-        Route::put('/product/{id}', [ProductController::class, 'updateProduct']);
+        Route::post('/product/insert', [ProductController::class, 'insertProduct']);
+        Route::delete('/product/delete{id}', [ProductController::class, 'deleteProduct']);
+        Route::get('/product/edit/{id}', [ProductController::class, 'editProduct']);
+        Route::put('/product/update/{id}', [ProductController::class, 'updateProduct']);
 
         // Buy Routes
         Route::middleware('role:buy')->group(function () {
-            Route::get('/buy', [BuyController::class, 'buy'])->name('buy');
+
+            Route::get('/buy/view', [BuyController::class, 'buy'])->name('buy');
             Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
             Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
             Route::get('/buy/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase')->middleware('role:purchase');
-            Route::get('/buy/{id}/edit', [BuyController::class, 'edit_purchase'])->name('edit_purchase');
-            Route::put('/buy/{id}', [BuyController::class, 'purchase_update']);
-            Route::post('/insert', [BuyController::class, 'insert']);
+            Route::get('/buy/edit/{id}', [BuyController::class, 'edit_purchase'])->name('edit_purchase');
+            Route::put('/buy/update/{id}', [BuyController::class, 'purchase_update']);
+            Route::post('/buy/insert', [BuyController::class, 'buy_insert']);
             Route::get('/buy/getData', [BuyController::class, 'getData'])->name('getData');
             Route::get('/suplier/search', [BuyController::class, 'search'])->name('search_suplier');
-            Route::delete('/buy/{id}', [BuyController::class, 'deletePurchase']);
-            Route::post('/delete-product', [BuyController::class, 'deleteRow']);
+            Route::delete('/buy/delete/{id}', [BuyController::class, 'deletePurchase']);
+        });
+
+        // Admin Routes
+        Route::middleware('role:admin')->group(function () {
+
+            Route::get('/users/view', [AuthController::class, 'users'])->name('users');
+            Route::get('/users/view/create', [AuthController::class, 'user_create'])->name('user_create');
+            Route::post('/users/create', [AuthController::class, 'create'])->name('create');
+            Route::get('/users/edit/{id}', [AuthController::class, 'edit_user'])->name('edit_user');
+            Route::put('/users/update/{id}', [AuthController::class, 'update_user'])->name('update_user');
+            Route::delete('/users/delete/{id}', [AuthController::class, 'delete'])->name('delete_user');
+            Route::get('/users', [AuthController::class, 'user_index'])->name('user_index');
         });
 
         // Sell Routes
-        Route::get('/sell', [SellController::class, 'sell'])->name('sell');
-        Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index');
+        Route::get('/sell/view', [SellController::class, 'sell'])->name('sell')->middleware('role:invoice');
+        Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index')->middleware('role:invoice');
         Route::get('/sell/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
         Route::get('/sell/{id}/edit', [SellController::class, 'edit_invoice'])->name('edit_invoice');
-        Route::put('/sell/{id}', [SellController::class, 'update_invoice']);
+        Route::put('/sell/update/{id}', [SellController::class, 'update_invoice']);
         Route::get('/customer/search', [SellController::class, 'search_customer'])->name('search_customer');
         Route::post('/insert_sell', [SellController::class, 'insert_sell']);
         Route::post('/delete-sellProduct', [SellController::class, 'delete_row_sell']);
@@ -95,7 +109,7 @@ Route::middleware(['lang'])->group(function () {
 
         // Locale Route
         Route::post('/locale', function (HttpRequest $request) {
-            $locale = $request->input('locale', 'en'); // Default to 'en' if no locale is provided
+            $locale           = $request->input('locale', 'en'); // Default to 'en' if no locale is provided
             $availableLocales = ['en', 'ar', 'ku'];
 
             if (in_array($locale, $availableLocales)) {
@@ -113,16 +127,5 @@ Route::middleware(['lang'])->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    // Admin Routes
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/registration', [AuthController::class, 'registration'])->name('registration');
-        Route::post('/register', [AuthController::class, 'register'])->name('register');
-        Route::get('/users', [AuthController::class, 'users'])->name('users');
-        Route::get('/users/edit/{id}', [AuthController::class, 'edit_user'])->name('edit_user');
-        Route::put('/users/update/{id}', [AuthController::class, 'update_user'])->name('update_user');
-        Route::delete('/users/{id}', [AuthController::class, 'delete'])->name('delete_user');
-        Route::get('/users', [AuthController::class, 'user_index'])->name('user_index');
-    });
 
 });
