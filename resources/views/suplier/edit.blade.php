@@ -4,7 +4,7 @@
     <div class="card mt-4">
         <div class="card-header  d-flex align-items-center justify-content-between">
             <div class="modal-body ">
-                <form id="form-id" action="{{ url('/suplier/'.$suplier->id) }}" class="vstack gap-3" method="POST">
+                <form id="form-id" action="{{ url('/suplier/update'.$suplier->id) }}" class="vstack gap-3" method="POST">
                     @csrf
                     @method('PUT')
                     <label>{{ __('index.name_of_supplier') }}</label>

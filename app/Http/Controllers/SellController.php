@@ -133,7 +133,7 @@ class SellController extends Controller
                     ),
                 ];
             });
-           
+
         return response()->json($products);
     }
     public function delete_row_sell(Request $request)
@@ -257,7 +257,7 @@ class SellController extends Controller
 
             $invoices = DB::table('invoice')
             ->leftJoin('customer', 'invoice.customer_id', '=', 'customer.id')
-            ->select('invoice.id','invoice.register', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at', 'invoice.total', 'invoice.sum')
+            ->select('invoice.id', 'customer.name as customer', 'invoice.order_number', 'invoice.discount', 'invoice.note', 'invoice.created_at', 'invoice.total', 'invoice.sum')
             ->when($request->search, function ($query, $search) {
                 $query->whereLike('invoice.order_number', "%{$search}%")
                     ->orWhereLike('customer.name', "%{$search}%");
@@ -266,9 +266,9 @@ class SellController extends Controller
             return DataTables::of($invoices)
 
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/sell/' . $row->id . '/edit');
-                    $viewUrl   = url('/sell/view/' . $row->id);
-                    $deleteUrl = url('/sell/' . $row->id);
+                    $editUrl   = url('/sell/edit/' . $row->id );
+                    $viewUrl   = url('/sell/single/view/' . $row->id);
+                    $deleteUrl = url('/sell/delete/' . $row->id);
 
                     $editLabel   = __('index.edit');
                     $deleteLabel = __('index.delete');

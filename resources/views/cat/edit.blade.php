@@ -3,7 +3,7 @@
 ]">
 
 <div class="modal-body ">
-    <form id="form-id" action="{{ url('/cat/'.$cat->id) }}" class="vstack gap-3" method="POST">
+    <form id="form-id" action="{{ url('/cat/update'.$cat->id) }}" class="vstack gap-3" method="POST">
         @csrf
         @method('PUT')
         <label>{{ __('index.name_of_category')}}</label>

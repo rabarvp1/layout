@@ -44,7 +44,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-                            <form id="form-id" action="/inputSuplier" class="vstack gap-3" method="POST">
+                            <form id="form-id" action="/supplier/insert" class="vstack gap-3" method="POST">
                                 @csrf
                                 <label>{{ __('index.name_of_supplier') }}</label>
                                 <input type="text" name="name" class="form-control">

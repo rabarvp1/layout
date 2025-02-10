@@ -42,7 +42,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-                            <form id="form-id" action="/inputCat" class="vstack gap-3" method="POST">
+                            <form id="form-id" action="/cat/insert" class="vstack gap-3" method="POST">
                                 @csrf
                                 <label>{{ __('index.Add Category') }}</label>
                                 <input type="text" name="name" class="form-control">

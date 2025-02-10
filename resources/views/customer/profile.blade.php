@@ -134,7 +134,7 @@
                                             </li>
 
                                             <li>
-                                                <form action="{{ url('/customer/payment/' . $payment->id) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
+                                                <form action="{{ url('/customer/delete/payment/' . $payment->id) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <input type="hidden" name="suplier_id" value="{{ $customer->id }}">

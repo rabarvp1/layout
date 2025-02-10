@@ -87,14 +87,14 @@ class CustomerController extends Controller
 
                 });
 
-                
+
 
 
             return DataTables::of($customers)
 
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/customer/' . $row->id . '/edit');
-                    $deleteUrl = url('/customer/' . $row->id);
+                    $editUrl   = url('/customer/edit/' . $row->id );
+                    $deleteUrl = url('/customer/delete' . $row->id);
 
                     $editLabel   = __('index.edit');
                     $deleteLabel = __('index.delete');

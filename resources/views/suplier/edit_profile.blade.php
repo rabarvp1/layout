@@ -13,7 +13,7 @@
 
         ({{ $suplier_payment->id }})</h4>
 
-    <form id="form-id" action="{{ url('/suplier/profile/'.$suplier_payment->id.'/'.$suplier->id) }}" class="vstack gap-3" method="POST">
+    <form id="form-id" action="{{ url('/suplier/profile/update/'.$suplier_payment->id.'/'.$suplier->id) }}" class="vstack gap-3" method="POST">
 
         @csrf
         @method('PUT')

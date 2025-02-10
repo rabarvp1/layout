@@ -112,7 +112,7 @@ class BuyController extends Controller
 
         return response()->json($products);
     }
-    
+
 
     // purchase view
 
@@ -244,7 +244,7 @@ class BuyController extends Controller
 
                 ->addColumn('actions', function ($row) {
                     $editUrl   = url('/buy/edit/' . $row->id);
-                    $viewUrl= url('/buy/view/' .$row->id);
+                    $viewUrl= url('/buy/single/view/' .$row->id);
                     $deleteUrl = url('/buy/delete/' . $row->id);
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');

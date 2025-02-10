@@ -69,7 +69,7 @@ class suplierController extends Controller
 
         DB::table('suplier')->where('id', $id)->delete();
 
-        return redirect('customer')->with('success', 'suplier deleted successfully!');
+        return redirect('suplier')->with('success', 'suplier deleted successfully!');
     }
 
     public function suplier_index(Request $request)
@@ -85,13 +85,13 @@ class suplierController extends Controller
 
             });
 
-         
+
 
             return DataTables::of($supliers)
 
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/suplier/' . $row->id . '/edit');
-                    $deleteUrl = url('/suplier/' . $row->id);
+                    $editUrl   = url('/suplier/edit/' . $row->id );
+                    $deleteUrl = url('/suplier/delete' . $row->id);
                     $editLabel   = __('index.edit');
                     $deleteLabel = __('index.delete');
 

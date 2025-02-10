@@ -29,8 +29,7 @@
                         <th scope="col">{{ __('index.discount')}}</th>
                         <th scope="col">{{ __('index.total') }}</th>
                         <th scope="col">{{ __('index.note') }}</th>
-                        <th scope="col">{{ __('index.the_register') }}</th>
-                        <th scope="col"class="text-center">{{ __('index.action') }}</th>
+                         <th scope="col"class="text-center">{{ __('index.action') }}</th>
 
 
 
@@ -240,10 +239,7 @@
                     data: 'note'
                     , name: ' {{ __('index.note')}}'
                 }
-                , {
-                    data: 'register'
-                    , name: 'register'
-                }
+
 
 
                 , {
