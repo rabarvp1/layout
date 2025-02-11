@@ -69,6 +69,16 @@
                 <div class="col-sm-12 col-md-6"></div>
             </div>
             <div class="row">
+                <div class="col-md-6">
+                    <label for="start_date">Start Date:</label>
+                    <input id="start_date" type="datetime-local" step="1" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="end_date">End Date:</label>
+                    <input type="datetime-local" step="1" class="form-control" id="end_date">
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-12">
                     <table id="mytable" class="table  w-100    table-hover" role="grid" aria-describedby="mytable_info" style="width: 1450px;">
                         <thead>
@@ -107,49 +117,26 @@
 
     </script>
     @endif
-
-    {{-- <script>
-        $(document).ready(function () {
-            $('#mytable_suplier').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{{ url("/suplier/payment/get") }}',
-                    type: 'GET',
-                    data: function (d) {
-                        d.suplier_id = '{{ $suplier->id }}';
-                    }
-                },
-                columns: [
-                    { data: 'receipt type', name: '{{ __('index.Receipt_type') }}' },
-                    { data: 'created_at', name: '{{ __('index.created_at') }}' },
-                    { data: 'add', name: '{{ __('index.add') }}' },
-                    { data: 'minus', name: '{{ __('index.minus') }}' },
-                    { data: 'balance', name: '{{ __('index.balance') }}' },
-                    { data: 'note', name: '{{ __('index.note') }}' },
-                    { data: 'action', name: '{{ __('index.action') }}', orderable: false, searchable: false }
-                ]
-            });
-        });
-    </script> --}}
-
     <script>
 
         $(document).ready(function () {
-            let supplierId = "{{ $suplier->id }}"; // Ensure supplier ID is available
-
+            let supplierId = "{{ $suplier->id }}";
             $('#mytable').DataTable({
                 processing: true,
                 serverSide: true,
+                searching: false,
+
                 ajax: {
                     url: '{{ url("/suplier/payment/get") }}',
                     type: "GET",
                     data: function (d) {
-                        d.supplier_id = supplierId; // Send supplier ID
+                        d.supplier_id = supplierId;
+                        d.start_date = $('#start_date').val();
+                        d.end_date = $('#end_date').val();
                     }
                 },
                 columns: [
-                    { data: null, render: (data, type, row, meta) => meta.row + 1 }, // Auto index
+                    { data: null, render: (data, type, row, meta) => meta.row + 1 },
                     { data: 'receipt_type', name: 'receipt_type' },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'add', name: 'add' },
@@ -158,6 +145,10 @@
                     { data: 'note', name: 'note' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
+            });
+
+            $('#start_date, #end_date').on('change', function() {
+                table.ajax.reload();
             });
         });
         </script>

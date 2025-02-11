@@ -86,7 +86,7 @@
                                      type="checkbox" name="permission[]"
                                      value="{{ $role->name }}"
                                      id="{{ $role->name }}"
-                                     @if(in_array($role->name, $userRoles)) checked @endif>
+                                     @if(in_array($role->prefix, $userRoles)) checked @endif>
                                     <label class="form-check-label" for="{{ $role->name }}">
                                         <span class="user-select-none">{{ $role->name }}</span>
                                     </label>

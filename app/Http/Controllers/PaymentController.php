@@ -27,8 +27,6 @@ class PaymentController extends Controller
 
         ]);
 
-
-
         DB::table('suplier_payment')->insert([
             'type'       => $request->type,
             'amount'     => $request->amount,
@@ -44,8 +42,7 @@ class PaymentController extends Controller
     public function delete_payment(Request $request, $paymentId)
     {
 
-       DB::table('suplier_payment')->where('id', $paymentId)->delete();
-
+        DB::table('suplier_payment')->where('id', $paymentId)->delete();
 
         return redirect()->back()->with('success', 'Payment deleted successfully');
     }
@@ -60,7 +57,6 @@ class PaymentController extends Controller
         return view('suplier.edit_profile', compact('suplier_payment', 'suplier'));
     }
 
-
     public function update_suplier_profile(Request $request, $paymentId, $supplierId)
     {
         $request->validate([
@@ -74,16 +70,12 @@ class PaymentController extends Controller
             return back()->with('error', 'Payment not found!');
         }
 
-
-
         DB::table('suplier_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
             'amount'     => $request->amount,
-            'created_at' => now(),
+            'created_at' => $request->created_at,
             'note'       => $request->note,
         ]);
-
-
 
         return redirect('/suplier/profile/' . $supplierId)->with('success', 'Profile updated successfully');
     }
@@ -92,45 +84,54 @@ class PaymentController extends Controller
     {
         $supplierId = $request->supplier_id;
 
-
-
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             return response()->json(['error' => 'Invalid request'], 400);
         }
-
 
         // Ensure supplier ID is provided
         if (empty($supplierId)) {
             return response()->json(['error' => 'Supplier ID is missing'], 400);
         }
 
-        try {
-            $payments = DB::table('suplier_payment')
-                ->where('suplier_id', $supplierId)
-                ->select('id', 'type', 'created_at', 'amount', 'note')
-                ->get();
 
-            return DataTables::of($payments)
-                ->addIndexColumn()
-                ->addColumn('receipt_type', function ($row) {
-                    return $row->type == 'Payments'
-                        ? __('index.payment') . " ({$row->id})"
-                        : __('index.receiving_money') . " ({$row->id})";
-                })
-                ->addColumn('add', fn ($row) => $row->type == 'Receiving money' ? '$' . number_format($row->amount, 2) : '')
-                ->addColumn('minus', fn ($row) => $row->type == 'Payments' ? '$' . number_format($row->amount, 2) : '')
-                ->addColumn('balance', function ($row) {
-                    static $balance = 0;
-                    $balance += ($row->type == 'Receiving money') ? $row->amount : -$row->amount;
-                    return '$' . number_format($balance, 2);
-                })
 
-                ->addColumn('action', function ($row) {
-                    $editUrl   = url('/suplier/edit/' . $row->id);
-                    $deleteUrl = url('/suplier/delete/' . $row->id );
-                    $editLabel      = __('index.edit');
-                    $deleteLabel    = __('index.delete');
-                    return '
+        $payments = DB::table('suplier_payment')
+            ->where('suplier_id', $supplierId)
+            ->select('id', 'type', 'created_at', 'amount', 'note');
+
+        // Apply date filter if start_date is provided
+        if ($request->has('start_date') && $request->start_date) {
+            $payments->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        // Apply date filter if end_date is provided
+        if ($request->has('end_date') && $request->end_date) {
+            $payments->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $payments = $payments->get();
+
+        return DataTables::of($payments)
+            ->addIndexColumn()
+            ->addColumn('receipt_type', function ($row) {
+                return $row->type == 'Payments'
+                ? __('index.payment') . " ({$row->id})"
+                : __('index.receiving_money') . " ({$row->id})";
+            })
+            ->addColumn('add', fn($row) => $row->type == 'Receiving money' ? '$' . number_format($row->amount, 2) : '')
+            ->addColumn('minus', fn($row) => $row->type == 'Payments' ? '$' . number_format($row->amount, 2) : '')
+            ->addColumn('balance', function ($row) {
+                static $balance = 0;
+                $balance += ($row->type == 'Receiving money') ? $row->amount : -$row->amount;
+                return '$' . number_format($balance, 2);
+            })
+
+            ->addColumn('action', function ($row) {
+                $editUrl     = url('/suplier/edit/' . $row->id);
+                $deleteUrl   = url('/suplier/delete/' . $row->id);
+                $editLabel   = __('index.edit');
+                $deleteLabel = __('index.delete');
+                return '
                     <div class="dropdown text-center">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ' . __('index.action') . '
@@ -152,21 +153,17 @@ class PaymentController extends Controller
                             </li>
                         </ul>
                     </div>';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error fetching data: ' . $e->getMessage()], 500);
-        }
-      }
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+    }
 
     //--------------------------------------------------------------------------------
     // customer payment
 
     public function profile_customer($id)
     {
-
-
 
         $customer = DB::table('customer')->where('id', $id)->firstOrFail();
 
@@ -185,8 +182,6 @@ class PaymentController extends Controller
 
         ]);
 
-
-
         DB::table('customer_payment')->insert([
             'type'        => $request->type,
             'amount'      => $request->amount,
@@ -199,16 +194,13 @@ class PaymentController extends Controller
 
     }
 
-    public function delete_payment_customer(Request $request, $paymentId )
+    public function delete_payment_customer(Request $request, $paymentId)
     {
 
         DB::table('customer_payment')->where('id', $paymentId)->delete();
 
-
         return redirect()->back()->with('success', 'Payment deleted successfully');
     }
-
-
 
     public function edit_customer_profile($paymentId, $customerId)
     {
@@ -233,7 +225,6 @@ class PaymentController extends Controller
             return back()->with('error', 'Payment not found!');
         }
 
-
         DB::table('customer_payment')->where('id', $paymentId)->update([
             'type'       => $request->type,
             'amount'     => $request->amount,
@@ -241,55 +232,55 @@ class PaymentController extends Controller
             'note'       => $request->note,
         ]);
 
-
-
         return redirect('/customer/profile/' . $customerId)->with('success', 'Profile updated successfully');
     }
 
     public function customer_payment_index(Request $request)
     {
 
-        $supplierId = $request->supplier_id;
+        $customerId = $request->customer_id;
 
-
-
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             return response()->json(['error' => 'Invalid request'], 400);
         }
 
+        $payments = DB::table('customer_payment')
+            ->where('customer_id', $customerId)
+            ->select('id', 'type', 'created_at', 'amount', 'note');
 
-        // Ensure supplier ID is provided
-        if (empty($supplierId)) {
-            return response()->json(['error' => 'Supplier ID is missing'], 400);
+        // Apply date filter if start_date is provided
+        if ($request->has('start_date') && $request->start_date) {
+            $payments->whereDate('created_at', '>=', $request->start_date);
         }
 
-        try {
-            $payments = DB::table('suplier_payment')
-                ->where('suplier_id', $supplierId)
-                ->select('id', 'type', 'created_at', 'amount', 'note')
-                ->get();
+        // Apply date filter if end_date is provided
+        if ($request->has('end_date') && $request->end_date) {
+            $payments->whereDate('created_at', '<=', $request->end_date);
+        }
 
-            return DataTables::of($payments)
-                ->addIndexColumn()
-                ->addColumn('receipt_type', function ($row) {
-                    return $row->type == 'Payments'
-                        ? __('index.payment') . " ({$row->id})"
-                        : __('index.receiving_money') . " ({$row->id})";
-                })
-                ->addColumn('add', fn ($row) => $row->type == 'Receiving money' ? '$' . number_format($row->amount, 2) : '')
-                ->addColumn('minus', fn ($row) => $row->type == 'Payments' ? '$' . number_format($row->amount, 2) : '')
-                ->addColumn('balance', function ($row) {
-                    static $balance = 0;
-                    $balance += ($row->type == 'Receiving money') ? $row->amount : -$row->amount;
-                    return '$' . number_format($balance, 2);
-                })
+        $payments = $payments->get();
 
-                ->addColumn('action', function ($row) {
-                    $editUrl   = url('/customer/edit/' . $row->id);
-                    $deleteUrl = url('/customer/delete/' . $row->id );
-                    $editLabel      = __('index.edit');
-                    $deleteLabel    = __('index.delete');
-                    return '
+        return DataTables::of($payments)
+            ->addIndexColumn()
+            ->addColumn('receipt_type', function ($row) {
+                return $row->type == 'Payments'
+                ? __('index.payment') . " ({$row->id})"
+                : __('index.receiving_money') . " ({$row->id})";
+            })
+            ->addColumn('add', fn($row) => $row->type == 'Payments' ? '$' . number_format($row->amount, 2) : '')
+            ->addColumn('minus', fn($row) => $row->type == 'Receiving money' ? '$' . number_format($row->amount, 2) : '')
+            ->addColumn('balance', function ($row) {
+                static $balance = 0;
+                $balance -= ($row->type == 'Receiving money') ? $row->amount : -$row->amount;
+                return '$' . number_format($balance, 2);
+            })
+
+            ->addColumn('action', function ($row) {
+                $editUrl     = url('/suplier/edit/' . $row->id);
+                $deleteUrl   = url('/suplier/delete/' . $row->id);
+                $editLabel   = __('index.edit');
+                $deleteLabel = __('index.delete');
+                return '
                     <div class="dropdown text-center">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ' . __('index.action') . '
@@ -311,11 +302,9 @@ class PaymentController extends Controller
                             </li>
                         </ul>
                     </div>';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error fetching data: ' . $e->getMessage()], 500);
-        }
-        }
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+    }
 }

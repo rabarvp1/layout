@@ -69,8 +69,19 @@
                 <div class="col-sm-12 col-md-6"></div>
             </div>
             <div class="row">
+                <div class="col-md-6">
+                    <label for="start_date">Start Date:</label>
+                    <input id="start_date" type="datetime-local" step="1" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="end_date">End Date:</label>
+                    <input type="datetime-local" step="1" class="form-control" id="end_date">
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-12">
-                    <table id="mytable" class="table  w-100    table-hover" role="grid" aria-describedby="mytable_info" style="width: 1450px;">
+
+                    <table id="mytable" id="mytable" class="table  w-100    table-hover" role="grid" aria-describedby="mytable_info" style="width: 1450px;">
                         <thead>
 
                             <tr role="row" class="table-dark">
@@ -84,7 +95,7 @@
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.action') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="text-center" id="customer_table">
+                        <tbody class="text-center">
 
                         </tbody>
                     </table>
@@ -105,29 +116,64 @@
 
     </script>
     @endif
+    <script>
+        $(document).ready(function() {
+            let customerId = "{{ $customer->id }}";
 
-<script>
-    $(document).ready(function() {
-        $('#customer_table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ url("/customer/payment/get") }}',
-                data: function(d) {
-                    d.customer_id = "{{ $customer->id }}";
-                }
-            },
-            columns: [
-                    { data: null, render: (data, type, row, meta) => meta.row + 1 }, // Auto index
-                    { data: 'receipt_type', name: 'receipt_type' },
-                    { data: 'created_at', name: 'created_at' },
-                    { data: 'add', name: 'add' },
-                    { data: 'minus', name: 'minus' },
-                    { data: 'balance', name: 'balance' },
-                    { data: 'note', name: 'note' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false }
+            var table = $('#mytable').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                ajax: {
+                    url: '{{ url("/customer/payment/get") }}',
+                    type: "GET",
+                    data: function(d) {
+                        d.customer_id = customerId;
+                        d.start_date = $('#start_date').val();
+                        d.end_date = $('#end_date').val();
+                    }
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: (data, type, row, meta) => meta.row + 1
+                    },
+                    {
+                        data: 'receipt_type',
+                        name: 'receipt_type'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'add',
+                        name: 'add'
+                    },
+                    {
+                        data: 'minus',
+                        name: 'minus'
+                    },
+                    {
+                        data: 'balance',
+                        name: 'balance'
+                    },
+                    {
+                        data: 'note',
+                        name: 'note'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
+            });
+
+            $('#start_date, #end_date').on('change', function() {
+                table.ajax.reload();
+            });
         });
-    });
-</script>
+    </script>
 </x-layout.layout>
