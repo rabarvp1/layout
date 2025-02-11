@@ -9,7 +9,7 @@
 
     <div class="row mx-5">
 
-        @if ($roles->contains('All Roles Of Product'))
+        @if (checkPermission('product'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/product/view" class=" link-underline link-underline-opacity-0">
@@ -24,7 +24,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Category'))
+        @if (checkPermission('cat'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/cat/view" class=" link-underline link-underline-opacity-0">
@@ -39,7 +39,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Storage'))
+        @if (checkPermission('storage'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/storage/view" class=" link-underline link-underline-opacity-0">
@@ -55,7 +55,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Purchasing'))
+        @if (checkPermission('purchase'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/buy/view" class=" link-underline link-underline-opacity-0">
@@ -71,7 +71,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Selling'))
+        @if (checkPermission('sell'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/sell/view" class=" link-underline link-underline-opacity-0">
@@ -88,7 +88,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Customer'))
+        @if (checkPermission('customer'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/customer/view" class=" link-underline link-underline-opacity-0">
@@ -103,7 +103,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Supplier'))
+        @if (checkPermission('supplier'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/suplier/view" class=" link-underline link-underline-opacity-0">
@@ -121,7 +121,7 @@
         </div>
         @endif
 
-        @if ($roles->contains('All Roles Of Users'))
+        @if (checkPermission('user'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
             <a href="/users/view" class=" link-underline link-underline-opacity-0">

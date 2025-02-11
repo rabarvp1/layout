@@ -123,7 +123,6 @@ class AuthController extends Controller
         ]);
 
         $selectedPermissions = $request->input('permission', []);
-
         foreach ($selectedPermissions as $permission) {
             DB::table('roles')->insert([
                 'user_id' => $userId,

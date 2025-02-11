@@ -25,10 +25,7 @@
         </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
 
     <script>
         $(document).ready(function() {
@@ -37,7 +34,7 @@
                 , serverSide: true
                 , searching: false,
                 lengthChange: false,
-          
+
 
                 ajax: {
                     url: '{{ url("/storage/getData_storage") }}'
@@ -79,12 +76,6 @@
                 ]
                 , pageLength: 10, // default page length
                 lengthMenu: [10, 25, 50, 100], // pagination options
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-chevron-left"></i>'
-                        , next: '<i class="fa fa-chevron-right"></i>'
-                    }
-                }
             });
             $('#custom-search').on('keyup', function() {
                 // Trigger DataTable search and redraw the table

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class PaymentController extends Controller
 {
@@ -31,7 +32,7 @@ class PaymentController extends Controller
         DB::table('suplier_payment')->insert([
             'type'       => $request->type,
             'amount'     => $request->amount,
-            'created_at' => $request->created_at,
+            'created_at' => now(),
             'note'       => $request->note,
             'suplier_id' => $id,
         ]);
@@ -86,6 +87,78 @@ class PaymentController extends Controller
 
         return redirect('/suplier/profile/' . $supplierId)->with('success', 'Profile updated successfully');
     }
+
+    public function suplier_payment_index(Request $request)
+    {
+        $supplierId = $request->supplier_id;
+
+
+
+        if (!$request->ajax()) {
+            return response()->json(['error' => 'Invalid request'], 400);
+        }
+
+
+        // Ensure supplier ID is provided
+        if (empty($supplierId)) {
+            return response()->json(['error' => 'Supplier ID is missing'], 400);
+        }
+
+        try {
+            $payments = DB::table('suplier_payment')
+                ->where('suplier_id', $supplierId)
+                ->select('id', 'type', 'created_at', 'amount', 'note')
+                ->get();
+
+            return DataTables::of($payments)
+                ->addIndexColumn()
+                ->addColumn('receipt_type', function ($row) {
+                    return $row->type == 'Payments'
+                        ? __('index.payment') . " ({$row->id})"
+                        : __('index.receiving_money') . " ({$row->id})";
+                })
+                ->addColumn('add', fn ($row) => $row->type == 'Receiving money' ? '$' . number_format($row->amount, 2) : '')
+                ->addColumn('minus', fn ($row) => $row->type == 'Payments' ? '$' . number_format($row->amount, 2) : '')
+                ->addColumn('balance', function ($row) {
+                    static $balance = 0;
+                    $balance += ($row->type == 'Receiving money') ? $row->amount : -$row->amount;
+                    return '$' . number_format($balance, 2);
+                })
+
+                ->addColumn('action', function ($row) {
+                    $editUrl   = url('/suplier/edit/' . $row->id);
+                    $deleteUrl = url('/suplier/delete/' . $row->id );
+                    $editLabel      = __('index.edit');
+                    $deleteLabel    = __('index.delete');
+                    return '
+                    <div class="dropdown text-center">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ' . __('index.action') . '
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
+                                </form>
+                            </li>
+
+                            <li>
+                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                    ' . csrf_field() . '
+                                    ' . method_field('DELETE') . '
+                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error fetching data: ' . $e->getMessage()], 500);
+        }
+      }
 
     //--------------------------------------------------------------------------------
     // customer payment
@@ -168,9 +241,81 @@ class PaymentController extends Controller
             'note'       => $request->note,
         ]);
 
-      
+
 
         return redirect('/customer/profile/' . $customerId)->with('success', 'Profile updated successfully');
     }
 
+    public function customer_payment_index(Request $request)
+    {
+
+        $supplierId = $request->supplier_id;
+
+
+
+        if (!$request->ajax()) {
+            return response()->json(['error' => 'Invalid request'], 400);
+        }
+
+
+        // Ensure supplier ID is provided
+        if (empty($supplierId)) {
+            return response()->json(['error' => 'Supplier ID is missing'], 400);
+        }
+
+        try {
+            $payments = DB::table('suplier_payment')
+                ->where('suplier_id', $supplierId)
+                ->select('id', 'type', 'created_at', 'amount', 'note')
+                ->get();
+
+            return DataTables::of($payments)
+                ->addIndexColumn()
+                ->addColumn('receipt_type', function ($row) {
+                    return $row->type == 'Payments'
+                        ? __('index.payment') . " ({$row->id})"
+                        : __('index.receiving_money') . " ({$row->id})";
+                })
+                ->addColumn('add', fn ($row) => $row->type == 'Receiving money' ? '$' . number_format($row->amount, 2) : '')
+                ->addColumn('minus', fn ($row) => $row->type == 'Payments' ? '$' . number_format($row->amount, 2) : '')
+                ->addColumn('balance', function ($row) {
+                    static $balance = 0;
+                    $balance += ($row->type == 'Receiving money') ? $row->amount : -$row->amount;
+                    return '$' . number_format($balance, 2);
+                })
+
+                ->addColumn('action', function ($row) {
+                    $editUrl   = url('/customer/edit/' . $row->id);
+                    $deleteUrl = url('/customer/delete/' . $row->id );
+                    $editLabel      = __('index.edit');
+                    $deleteLabel    = __('index.delete');
+                    return '
+                    <div class="dropdown text-center">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ' . __('index.action') . '
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
+                                </form>
+                            </li>
+
+                            <li>
+                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
+                                    ' . csrf_field() . '
+                                    ' . method_field('DELETE') . '
+                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error fetching data: ' . $e->getMessage()], 500);
+        }
+        }
 }

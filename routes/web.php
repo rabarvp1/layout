@@ -22,7 +22,7 @@ Route::middleware(['lang'])->group(function () {
         Route::get('/', [ProductController::class, 'first'])->name('first');
 
         // Product Routes
-        Route::middleware('role:All Roles Of Product')->group(function () {
+        Route::middleware('role:Product')->group(function () {
             Route::get('/product/view', [ProductController::class, 'product']);
             Route::get('/product', [ProductController::class, 'index'])->name('products.index');
             Route::get('/product/search', [ProductController::class, 'search_cat'])->name('search_cat');
@@ -33,7 +33,7 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Buy Routes
-        Route::middleware('role:All Roles Of Purchasing')->group(function () {
+        Route::middleware('role:purchase')->group(function () {
 
             Route::get('/buy/view', [BuyController::class, 'buy'])->name('buy');
             Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
@@ -48,7 +48,7 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Admin Routes
-        Route::middleware('role:All Roles Of Users')->group(function () {
+        Route::middleware('role:user')->group(function () {
 
             Route::get('/users/view', [AuthController::class, 'users'])->name('users');
             Route::get('/users/view/create', [AuthController::class, 'user_create'])->name('user_create');
@@ -60,7 +60,7 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Sell Routes
-        Route::middleware('role:All Roles Of Selling')->group(function () {
+        Route::middleware('role:sell')->group(function () {
             Route::get('/sell/view', [SellController::class, 'sell'])->name('sell');
             Route::get('/sell', [SellController::class, 'sell_index'])->name('sell_index');
             Route::get('/sell/single/view/{id}', [SellController::class, 'view_invoice'])->name('view_invoice');
@@ -75,7 +75,7 @@ Route::middleware(['lang'])->group(function () {
 
         // Category Routes
 
-        Route::middleware('role:All Roles Of Category')->group(function () {
+        Route::middleware('role:cat')->group(function () {
             Route::get('/cat/view', [catController::class, 'cat'])->name('cat');
             Route::get('/cat', [catController::class, 'cat_index'])->name('cat.index');
             Route::get('/cat/edit/{id}', [catController::class, 'cat_edit'])->name('cat_edit');
@@ -85,7 +85,7 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Supplier Routes
-        Route::middleware('role:All Roles Of Supplier')->group(function () {
+        Route::middleware('role:supplier')->group(function () {
             Route::get('/suplier/view', [suplierController::class, 'suplier'])->name('suplier');
             Route::get('/suplier', [suplierController::class, 'suplier_index'])->name('suplier_index');
             Route::post('/supplier/insert', [suplierController::class, 'inputSuplier']);
@@ -97,10 +97,11 @@ Route::middleware(['lang'])->group(function () {
             Route::put('/suplier/profile/update/{paymentId}/{suplierId}', [PaymentController::class, 'update_suplier_profile']);
             Route::get('/suplier/profile/edit/{paymentId}/{suplierId}', [PaymentController::class, 'edit_suplier_profile'])->name('edit_suplier_profile');
             Route::delete('/suplier/delete/payment/{paymentId}', [PaymentController::class, 'delete_payment']);
+            Route::get('/suplier/payment/get', [PaymentController::class, 'suplier_payment_index'])->name('payments.get');
         });
 
         // Customer Routes
-        Route::middleware('role:All Roles Of Customer')->group(function () {
+        Route::middleware('role:customer')->group(function () {
             Route::get('/customer/view', [CustomerController::class, 'customer'])->name('customer');
             Route::get('/customer', [CustomerController::class, 'customer_index'])->name('customer_index');
             Route::get('/customer/edit/{id}', [CustomerController::class, 'edit_customer'])->name('edit_customer');
@@ -112,11 +113,13 @@ Route::middleware(['lang'])->group(function () {
             Route::get('/customer/profile/edit/{paymentId}/{customerId}', [PaymentController::class, 'edit_customer_profile'])->name('edit_customer_profile');
             Route::put('/customer/profile/update/{paymentId}/{customerId}', [PaymentController::class, 'update_customer_profile']);
             Route::post('/customer/insert', [CustomerController::class, 'inputCustomer']);
+            Route::get('/customer/payment/get', [PaymentController::class, 'customer_payment_index'])->name('customer.get');
+
         });
 
         // Storage Routes
         // Storage Routes
-        Route::middleware('role:All Roles Of Storage')->group(function () {
+        Route::middleware('role:storage')->group(function () {
             Route::get('/storage/view', [StorageController::class, 'storage'])->name('storage');
             Route::get('/storage/getData_storage', [StorageController::class, 'getData_storage'])->name('getData_storage');
         });

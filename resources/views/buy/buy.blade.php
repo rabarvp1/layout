@@ -158,7 +158,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
       $('#exampleModal').on('shown.bs.modal', function() {
-    $('#suplier').select2({
+      $('#suplier').select2({
         ajax: {
             url: "{{ route('search_suplier') }}",
             type: 'get',

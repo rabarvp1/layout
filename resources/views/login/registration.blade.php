@@ -74,8 +74,8 @@
                             @foreach ($roles as $role)
                             <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input role-checkbox" type="checkbox" name="permission[]" value="{{ $role->name }}" id="{{ $role->name }}">
-                                    <label class="form-check-label" for="{{ $role->name }}">
+                                    <input class="form-check-input role-checkbox" type="checkbox" name="permission[]" value="{{ $role->prefix }}" id="{{ $role->prefix }}">
+                                    <label class="form-check-label" for="{{ $role->prefix }}">
                                         <span class="user-select-none">{{ $role->name }}</span>
                                     </label>
                                 </div>

@@ -84,76 +84,9 @@
                                 <th class="text-center" rowspan="1" colspan="1">{{ __('index.action') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody class="text-center" >
 
 
-                            @php
-                                $balance = 0;
-                            @endphp
-                            @foreach ($payments as $payment )
-                            @php
-                            if ($payment->type == 'Payments') {
-                                $balance -= $payment->amount;
-                            } else {
-                                $balance += $payment->amount;
-                            }
-                        @endphp
-
-
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-
-                                    @if ($payment->type == 'Payments')
-                                    {{ __('index.payment') }} ({{ $payment->id }})
-                                    @elseif ($payment->type == 'Receiving money')
-                                    {{ __('index.receiving_money') }} ({{ $payment->id }})
-
-                                    @endif
-
-                                </td>
-                                <td>{{ $payment->created_at }}</td>
-
-                                <td>
-                                    @if ($payment->type == 'Receiving money')
-                                    ${{ $payment->amount }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($payment->type == 'Payments')
-                                        ${{ $payment->amount }}
-                                    @endif
-                                </td>
-                                <td>${{ $balance }}</td>
-                                <td>{{ $payment->note }}</td>
-                                <td>
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {{ __('index.action') }}
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <form action="{{ url('/suplier/profile/edit/' . $payment->id . '/' . $suplier->id) }}" method="GET" style="display: inline;">
-                                                    <button type="submit" class="dropdown-item" >{{ __('index.edit') }}  </button>
-                                                </form>
-                                            </li>
-
-                                            <li>
-                                                <form action="{{ url('/suplier/delete/payment/' . $payment->id ) }}" method="POST" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this payment?\')">
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <input type="hidden" name="suplier_id" value="{{ $suplier->id }}">
-
-
-                                                    <button type="submit" class="dropdown-item text-danger">{{ __('index.delete') }}</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
 
                         </tbody>
                     </table>
@@ -174,4 +107,59 @@
 
     </script>
     @endif
+
+    {{-- <script>
+        $(document).ready(function () {
+            $('#mytable_suplier').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ url("/suplier/payment/get") }}',
+                    type: 'GET',
+                    data: function (d) {
+                        d.suplier_id = '{{ $suplier->id }}';
+                    }
+                },
+                columns: [
+                    { data: 'receipt type', name: '{{ __('index.Receipt_type') }}' },
+                    { data: 'created_at', name: '{{ __('index.created_at') }}' },
+                    { data: 'add', name: '{{ __('index.add') }}' },
+                    { data: 'minus', name: '{{ __('index.minus') }}' },
+                    { data: 'balance', name: '{{ __('index.balance') }}' },
+                    { data: 'note', name: '{{ __('index.note') }}' },
+                    { data: 'action', name: '{{ __('index.action') }}', orderable: false, searchable: false }
+                ]
+            });
+        });
+    </script> --}}
+
+    <script>
+
+        $(document).ready(function () {
+            let supplierId = "{{ $suplier->id }}"; // Ensure supplier ID is available
+
+            $('#mytable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ url("/suplier/payment/get") }}',
+                    type: "GET",
+                    data: function (d) {
+                        d.supplier_id = supplierId; // Send supplier ID
+                    }
+                },
+                columns: [
+                    { data: null, render: (data, type, row, meta) => meta.row + 1 }, // Auto index
+                    { data: 'receipt_type', name: 'receipt_type' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'add', name: 'add' },
+                    { data: 'minus', name: 'minus' },
+                    { data: 'balance', name: 'balance' },
+                    { data: 'note', name: 'note' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ]
+            });
+        });
+        </script>
+
 </x-layout.layout>

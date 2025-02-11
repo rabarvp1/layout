@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('roles');
+            $table->string('is_super');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -39,13 +39,13 @@ return new class extends Migration
         });
 
         DB::table('users')->insert([
-            'name' => 'RaBaR',
-            'email' => 'rabar@gmail.com',
-            'password' => bcrypt('rabar'),
-            'roles' => 'admin',
+            'name' => 'SUPER',
+            'email' => 'super@snawber.net',
+            'password' => bcrypt('super'),
+            'is_super' =>'SUPER',
             'created_at' => now(),
-            'updated_at' => now(),
         ]);
+
     }
 
     /**
