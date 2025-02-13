@@ -2,7 +2,7 @@
     <div class="page-header-content">
         <div class="d-flex justify-content-between">
             <h4 class="page-title mb-0">
-                {{ $attributes['name'] }}
+                {{ __('index.'.$attributes['name']) }}
             </h4>
 
             @if ($attributes['modal'])

@@ -4,7 +4,7 @@
         // dashboard page
         "welcome"                => "Welcome",
         "product"                => "Products",
-        "cat"                    => "Categories",
+        "Category list"                    => "Categories List",
         "storage"                => "Storage",
         "purchase"               => "Purchase",
         "sell"                   => "Sell",

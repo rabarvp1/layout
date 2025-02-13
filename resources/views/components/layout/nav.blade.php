@@ -1,3 +1,4 @@
+@props(['navItems'])
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg">
 
     <!-- Sidebar content -->
@@ -24,95 +25,68 @@
         <div class="sidebar-section">
             <ul class="nav nav-sidebar" data-nav-type="accordion">
 
-                <!-- Main -->
-                <li class="nav-item-header pt-0">
-                    <div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Main</div>
-                    <i class="ph-dots-three sidebar-resize-show"></i>
-                </li>
-                {{-- <li class="nav-item">
-                    <a href="/" class="nav-link ">
+
+                <li class="nav-item">
+                    <a href="/" class="nav-link" class="nav-link">
                         <i class="ph-house"></i>
                         <span>
-                            Dashboard
+                            {{ __('index.dashboard') }}
                         </span>
                     </a>
-                </li> --}}
+                </li>
                 <li class="nav-item nav-item-submenu">
                     <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-layout"></i>
+                        <i class="fa-solid fa-layer-group"></i> <!-- Solid (Free) -->
                         <span>{{ __('index.product') }}</span>
                     </a>
                     <ul class="nav-group-sub collapse">
                         <li class="nav-item"><a href="/product/view" class="nav-link ">{{ __('index.product') }}</a></li>
-                        <li class="nav-item"><a href="/cat/view" class="nav-link">{{ __('index.cat') }}</a></li>
+                        <li class="nav-item"><a href="/cat/view" class="nav-link">{{ __('index.Catigories') }}</a></li>
                     </ul>
                 </li>
-                <li class="nav-item nav-item-submenu">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-swatches"></i>
+
+                <li class="nav-item">
+                    <a href="/sell/view" class="nav-link">
+                        <i class="fa-solid fa-bag-shopping"></i>
                         <span>{{ __('index.sell') }}</span>
                     </a>
-                    <ul class="nav-group-sub collapse">
-                        <li class="nav-item"><a href="/sell/view" class="nav-link ">{{ __('index.sell') }}</a></li>
-                    </ul>
                 </li>
 
-                <li class="nav-item nav-item-submenu">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-note-blank"></i>
+                <li class="nav-item">
+                    <a href="/buy/view" class="nav-link">
+                        <i class="bi bi-bag"></i>
                         <span>{{ __('index.purchase') }}</span>
                     </a>
-                    <ul class="nav-group-sub collapse">
-                        <li class="nav-item"><a href="/buy/view" class="nav-link">{{ __('index.buy') }}</a></li>
-                    </ul>
                 </li>
 
-
-                <li class="nav-item nav-item-submenu">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-list-numbers"></i>
+                <li class="nav-item">
+                    <a href="/storage/view" class="nav-link">
+                        <i class="fa-solid fa-box-open"></i>
                         <span>{{ __('index.storage') }}</span>
                     </a>
-                    <ul class="nav-group-sub collapse">
-                        <li class="nav-item"><a href="/storage/view" class="nav-link">{{ __('index.storage') }}</a></li>
-                    </ul>
                 </li>
 
-                <li class="nav-item nav-item-submenu">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-note-pencil"></i>
+                <li class="nav-item">
+                    <a href="/suplier/view" class="nav-link">
+                        <i class="fa-solid fa-truck"></i>
                         <span>{{ __('index.supplier') }}</span>
                     </a>
-                    <ul class="nav-group-sub collapse">
-                        <li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">{{ __('index.supplier') }}</a></li>
-                    </ul>
                 </li>
-                <li class="nav-item nav-item-submenu">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-text-aa"></i>
+
+                <li class="nav-item">
+                    <a href="/customer/view" class="nav-link">
+                        <i class="fa-solid fa-address-card"></i>
+
                         <span>{{ __('index.customer') }}</span>
                     </a>
-                    <ul class="nav-group-sub collapse">
-
-                        <li class="nav-item"><a href="/customer/view" class="nav-link">{{ __('index.customer') }}</a></li>
-
-                    </ul>
                 </li>
-                <li class="nav-item nav-item-submenu">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="ph-hand-pointing"></i>
+
+                <li class="nav-item">
+                    <a href="/users/view" class="nav-link">
+                        <i class="fa-regular fa-user"></i>
                         <span>{{ __('index.user') }}</span>
                     </a>
-                    <ul class="nav-group-sub collapse">
-                        <li class="nav-item"><a href="/users/view" class="nav-link">{{ __('index.user') }}</a></li>
-                    </ul>
                 </li>
-
-                </li>
-
-
-
-            </ul>
         </div>
 
     </div>

@@ -97,7 +97,7 @@ class ProductController extends Controller
             return DataTables::of($products)
                 ->addColumn('actions', function ($row) {
                     $editUrl   = url('/product/edit/' . $row->id );
-                    $deleteUrl = url('/product/delete' . $row->id);
+                    $deleteUrl = url('/product/delete/' . $row->id);
 
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');

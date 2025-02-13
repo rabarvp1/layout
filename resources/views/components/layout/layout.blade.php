@@ -12,12 +12,34 @@
 	<link href="/resources/icons/phosphor/styles.min.css" rel="stylesheet" type="text/css">
 	<link href="/resources/assets/css/{{ session('direction') }}/all.min.css" id="stylesheet" rel="stylesheet" type="text/css">
 	<!-- /global stylesheets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/YOUR-KIT-ID.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
 
 	<!-- Core JS files -->
     <script src="/resources/js/jquery/jquery.min.js"></script>
 	<script src="/resources/js/bootstrap/bootstrap.bundle.min.js"></script>
 	<script src="/resources/assets/js/app.js"></script>
 	<script src="/resources/js/vendor/tables/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" href="/css/dashbord.css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script src="/resources/demo/demo_configurator.js"></script>
+	<script src="/resources/js/bootstrap/bootstrap.bundle.min.js"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script src="/resources/js/vendor/forms/selects/select2.min.js"></script>
+
+	{{-- <script src="/resources/js/app.js"></script> --}}
+	<script src="/resources/demo/pages/form_select2.js"></script>
 
     <x-layout.global-datatables />
 
@@ -39,6 +61,16 @@
                     <img src="/snawbar.png" class="-32px h-32px rounded-pill">
 				</a>
 			</div>
+            @props(['navItems' => []])
+
+            <ul class="nav">
+                @foreach ($navItems as $item)
+                    <li class="nav-item hover-enable {{ $item['active'] ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ $item['url'] }}">{{ $item['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+
 
 			<ul class="nav flex-row justify-content-end order-1 order-lg-2">
 				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
@@ -74,6 +106,7 @@
 	<div class="page-content">
 
 		<!-- Main sidebar -->
+
         <x-layout.nav />
 		<!-- /main sidebar -->
 
@@ -92,46 +125,12 @@
 
 
 				<!-- Content area -->
-				<div class="content">
+				<div class="content mt-3">
                     {{ $slot }}
 				</div>
 				<!-- /content area -->
 
 
-				<!-- Footer -->
-				<div class="navbar navbar-sm navbar-footer border-top">
-					<div class="container-fluid">
-						<span>&copy; 2022 <a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328">Limitless Web App Kit</a></span>
-
-						<ul class="nav">
-							<li class="nav-item">
-								<a href="https://kopyov.ticksy.com/" class="navbar-nav-link navbar-nav-link-icon rounded" target="_blank">
-									<div class="d-flex align-items-center mx-md-1">
-										<i class="ph-lifebuoy"></i>
-										<span class="d-none d-md-inline-block ms-2">Support</span>
-									</div>
-								</a>
-							</li>
-							<li class="nav-item ms-md-1">
-								<a href="https://themes.kopyov.com/limitless/demo/Documentation/index.html" class="navbar-nav-link navbar-nav-link-icon rounded" target="_blank">
-									<div class="d-flex align-items-center mx-md-1">
-										<i class="ph-file-text"></i>
-										<span class="d-none d-md-inline-block ms-2">Docs</span>
-									</div>
-								</a>
-							</li>
-							<li class="nav-item ms-md-1">
-								<a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link navbar-nav-link-icon text-primary bg-primary bg-opacity-10 fw-semibold rounded" target="_blank">
-									<div class="d-flex align-items-center mx-md-1">
-										<i class="ph-shopping-cart"></i>
-										<span class="d-none d-md-inline-block ms-2">Purchase</span>
-									</div>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<!-- /footer -->
 
 			</div>
 			<!-- /inner content -->

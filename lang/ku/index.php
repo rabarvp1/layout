@@ -5,7 +5,7 @@
         // dashboard page
         "welcome"                => "بەخێربێیت",
         "product"                => "کاڵا",
-        "cat"                    => "جۆر",
+        "Category list"                    => "لیستی جۆرەکان",
         "storage"                => "کۆگا",
         "purchase"               => "کڕین",
         "sell"                   => "فرۆشتن",
@@ -109,7 +109,8 @@
         "bo"=>"بۆ",
         "la"=>"لە",
         "fltar krawa"=>"فلتەر کراوە",
-        "hich datayak la xshtada bardast nia"=>"هیچ داتایەک لە خشتەکەدا بەردەست نیە"
+        "hich datayak la xshtada bardast nia"=>"هیچ داتایەک لە خشتەکەدا بەردەست نیە",
+        "dashboard"=>"داشبۆرد"
 
 
 ];

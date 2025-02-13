@@ -1,7 +1,7 @@
 <x-layout.layout>
 
     <x-slot:header>
-        <x-layout.page-header name="Category" modal="exampleModal" />
+        <x-layout.page-header name="Category list" modal="exampleModal" />
     </x-slot:header>
 
     <div class="card">
@@ -14,7 +14,7 @@
 
 
             </div>
-       
+
             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
 
@@ -22,17 +22,6 @@
                 <!-- Table Body -->
                 <div class="datatable-scroll">
                     <table id="DataTables_Table_0" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
-                        {{-- <thead>
-                            <tr>
-                                <th class="sorting">First Name</th>
-                                <th class="sorting">Last Name</th>
-                                <th class="sorting">Job Title</th>
-                                <th class="sorting">DOB</th>
-                                <th class="sorting">Status</th>
-                                <th class="text-center sorting_disabled" style="width: 100px;">Actions</th>
-                            </tr>
-                        </thead> --}}
-
                     </table>
                 </div>
 

@@ -47,8 +47,8 @@ class catController extends Controller
             return DataTables::of($cats)
 
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/cat/edit' . $row->id );
-                    $deleteUrl = url('/cat/delete' . $row->id);
+                    $editUrl   = url('/cat/edit/' . $row->id );
+                    $deleteUrl = url('/cat/delete/' . $row->id);
 
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');
