@@ -9,12 +9,14 @@ class LocaleMiddleware
 {
     public function handle($request, Closure $next)
     {
-       
-        // Check if the session has a 'locale' value, otherwise default to 'en'
-        $locale = Session::get('locale', 'en');
+        if (blank(session('locale'))) {
+            session([
+                'locale'    => 'ku',
+                'direction' => 'rtl',
+            ]);
+        }
 
-        // Set the locale for the application
-        App::setLocale($locale);
+        App::setLocale(session('locale'));
 
         return $next($request);
     }

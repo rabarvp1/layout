@@ -34,7 +34,7 @@ class AuthController extends Controller
         Auth::loginUsingId($user->id);
 
         $request->session()->regenerate();
-        return redirect('/');
+        return redirect('/buy/view');
         // return redirect()->route('first');
     }
 

@@ -9,10 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\suplierController;
-use Illuminate\Http\Request as HttpRequest;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 Route::middleware(['lang'])->group(function () {
 
@@ -125,17 +122,16 @@ Route::middleware(['lang'])->group(function () {
         });
 
         // Locale Route
-        Route::post('/locale', function (HttpRequest $request) {
-            $locale           = $request->input('locale', 'en'); // Default to 'en' if no locale is provided
-            $availableLocales = ['en', 'ar', 'ku'];
+        Route::get('/locale/{locale}/{direction}', function ($locale, $direction) {
+            abort_unless(in_array($locale, ['en', 'ar', 'ku']), 404);
+            abort_unless(in_array($direction, ['rtl', 'ltr']), 404);
 
-            if (in_array($locale, $availableLocales)) {
-                // Set the locale in the session
-                Session::put('locale', $locale);
-            }
+            session([
+                'locale'    => $locale,
+                'direction' => $direction,
+            ]);
 
-            // Redirect back to the previous page or homepage
-            return Redirect::back();
+            return back();
         })->name('change-lang');
 
     });

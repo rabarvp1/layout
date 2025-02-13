@@ -101,6 +101,9 @@
         "admin"                  => "Admin",
         "cashier"                => "Cashier",
         "the_register"               => "The Register",
+        "next"                   => "Next",
+        "prev"                   => "Prev",
+
 
 
     ];

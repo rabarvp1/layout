@@ -1,38 +1,47 @@
-<x-layout.layout :navItems="[
-    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
-]">
+<x-layout.layout>
 
+    <x-slot:header>
+        <x-layout.page-header name="Category" modal="exampleModal" />
+    </x-slot:header>
 
-    <div class="card mt-4">
-        <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>{{ __('index.category_list') }}</h1>
-            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
-        </div>
+    <div class="card">
         <div class="card-body">
             <div class="mb-3">
-                <div class="input-group {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-start-pill' : 'rounded-end-pill' }}">
-                    <span class="input-group-text bg-light {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-end-pill' : 'rounded-start-pill' }}">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <input type="text" id="custom-search" class="form-control" placeholder="{{ __('index.search_product_name') }}...">
+                <div class="input-group ">
+
+                    <input type="text" id="custom-search" class="form-control rounded-5" placeholder="{{ __('index.search_product_name') }}...">
                 </div>
 
 
             </div>
-            <table class="table  mx-auto table-hover" id="cats-table">
-                <thead>
-                    <tr class="table-dark">
-                        <th scope="col">#</th>
-                        <th scope="col">{{ __('index.name') }}</th>
-                        <th scope="col">{{ __('index.action')}}</th>
-
-                    </tr>
-                </thead>
-                <tbody>
+       
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
 
-                </tbody>
-            </table>
+
+                <!-- Table Body -->
+                <div class="datatable-scroll">
+                    <table id="DataTables_Table_0" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                        {{-- <thead>
+                            <tr>
+                                <th class="sorting">First Name</th>
+                                <th class="sorting">Last Name</th>
+                                <th class="sorting">Job Title</th>
+                                <th class="sorting">DOB</th>
+                                <th class="sorting">Status</th>
+                                <th class="text-center sorting_disabled" style="width: 100px;">Actions</th>
+                            </tr>
+                        </thead> --}}
+
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="datatable-footer">
+                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+                </div>
+            </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -63,70 +72,6 @@
         </div>
     </div>
 
-
-
-    @if ($errors->any())
-    <script>
-        $(document).ready(function() {
-            $('#exampleModal').modal('show');
-        });
-
-    </script>
-    @endif
-
-    <script>
-        $(document).ready(function() {
-            var table = $('#cats-table').DataTable({
-                processing: true
-                , serverSide: true
-                ,searching: false
-                ,ajax: {
-                    url: '{{ url("/cat") }}',
-                    type: 'GET',
-                    data: function(d) {
-                        // Add custom search term to the request
-                        d.search = $('#custom-search').val();
-                    }
-                }
-                , columns: [{
-                        data: 'id'
-                        , name: 'id'
-                    }
-                    , {
-                        data: 'name'
-                        , name: '{{ __('index.name') }}'
-                    }
-
-                    , {
-                        data: 'actions'
-                        , name: '{{ __('index.action') }}'
-                        , orderable: false
-                        , searchable: false
-
-                    }
-                ]
-                , dom: '<"top"l>rt<"bottom"ip>'
-                , lengthMenu: [
-                    [5, 10, 25, 50, -1]
-                    , [5, 10, 25, 50, "All"]
-                ]
-                , pageLength: 5
-                , language: {
-                    searchPlaceholder: "Search products..."
-                    , lengthMenu: "Show _MENU_ entries"
-                }
-            });
-
-            $(document).on('shown.bs.dropdown', function() {
-            });
-
-
-            $('#custom-search').on('keyup', function() {
-                // Trigger DataTable search and redraw the table
-                table.search(this.value).draw();
-            });
-        });
-
-    </script>
+    @include('cat.datatatble')
 
 </x-layout.layout>

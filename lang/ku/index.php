@@ -65,7 +65,6 @@
         "receipts_sold"          => "وەسڵی فرۆشراو",
         "sign_up"                => "ناو تۆمارکردن",
 
-
         // form labels
         "product_list"           => "لیستی کاڵا",
         "category_list"          => "لیستی جۆر",
@@ -102,10 +101,15 @@
         "select_role"            => "ئەرک هەڵبژێرە",
         "admin"                  => "بەڕێوەبەر",
         "cashier"                => "کاشێر",
-        "the_register"               => "تۆمارکەر",
-
-
-
+        "the_register"           => "تۆمارکەر",
+        "next"                   => "دواتر",
+        "prev"                   => "پێشوو",
+        "hich_tomarek_nadozrayawa"=>"هیچ تۆمارێک نەدۆزراوەتەوە",
+        "nishandani"=>"نیشاندانی",
+        "bo"=>"بۆ",
+        "la"=>"لە",
+        "fltar krawa"=>"فلتەر کراوە",
+        "hich datayak la xshtada bardast nia"=>"هیچ داتایەک لە خشتەکەدا بەردەست نیە"
 
 
 ];

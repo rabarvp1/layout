@@ -1,79 +1,120 @@
-@props(['navItems'])
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg">
 
-<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-    <a class="navbar-brand px-3" href="/">
-        <img src="{{ asset('snawbar.png') }}" alt="Logo" width="50">
-    </a>
+    <!-- Sidebar content -->
+    <div class="sidebar-content">
+
+        <!-- Sidebar header -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-body d-flex justify-content-center">
+                <h5 class="sidebar-resize-hide flex-grow-1 my-auto">Super Market</h5>
+
+                <div>
+                    <button type="button" class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-control sidebar-main-resize d-none d-lg-inline-flex">
+                        <i class="ph-arrows-left-right"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-lg-none">
+                        <i class="ph-x"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
 
-    {{-- <div class="container-fluid"> --}}
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="sidebar-section">
+            <ul class="nav nav-sidebar" data-nav-type="accordion">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-            <ul class="navbar-nav {{ in_array(app()->getLocale(), ['ku', 'ar']) ? 'ms-auto' : 'me-auto' }} mb-2 mb-lg-0 gap-4">
-
-                @foreach ($navItems as $item)
-                <li class="nav-item hover-enable {{ $item['active'] ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ $item['url'] }}">{{ $item['label'] }}</a>
+                <!-- Main -->
+                <li class="nav-item-header pt-0">
+                    <div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Main</div>
+                    <i class="ph-dots-three sidebar-resize-show"></i>
                 </li>
-                @endforeach
-
-            </ul>
-
-            <ul class="navbar-nav">
-
-
-
-                <li class="nav-item ms-3">
-
-                    <div class="dropdown text-center">
-                        <button class="btn btn-dark  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ __('index.language') }}
-                        </button>
-                        <form action="{{ route('change-lang') }}" method="POST">
-                            @csrf
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <button type="submit" name="locale" value="en" class="dropdown-item">English</button>
-                                </li>
-                                <li>
-                                    <button type="submit" name="locale" value="ku" class="dropdown-item">کوردی</button>
-                                </li>
-                                <li>
-                                    <button type="submit" name="locale" value="ar" class="dropdown-item">العربية</button>
-                                </li>
-                            </ul>
-                        </form>
-                    </div>
+                {{-- <li class="nav-item">
+                    <a href="/" class="nav-link ">
+                        <i class="ph-house"></i>
+                        <span>
+                            Dashboard
+                        </span>
+                    </a>
+                </li> --}}
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-layout"></i>
+                        <span>{{ __('index.product') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+                        <li class="nav-item"><a href="/product/view" class="nav-link ">{{ __('index.product') }}</a></li>
+                        <li class="nav-item"><a href="/cat/view" class="nav-link">{{ __('index.cat') }}</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item ms-3">
-                    <div class="dropdown text-center">
-                        <button class="btn btn-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::check() ? Auth::user()->name : __('Guest') }}
-                        </button>
-                        <ul class="dropdown-menu {{ in_array(app()->getLocale(), ['ku', 'ar']) ? 'dropdown-menu-start' : 'dropdown-menu-end' }}">
-                            <li>
-                                <form action="" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">Change Password</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="/logout" method="POST" style="display: inline;">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger">{{ __('index.logout') }}</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-swatches"></i>
+                        <span>{{ __('index.sell') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+                        <li class="nav-item"><a href="/sell/view" class="nav-link ">{{ __('index.sell') }}</a></li>
+                    </ul>
                 </li>
 
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-note-blank"></i>
+                        <span>{{ __('index.purchase') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+                        <li class="nav-item"><a href="/buy/view" class="nav-link">{{ __('index.buy') }}</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-list-numbers"></i>
+                        <span>{{ __('index.storage') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+                        <li class="nav-item"><a href="/storage/view" class="nav-link">{{ __('index.storage') }}</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-note-pencil"></i>
+                        <span>{{ __('index.supplier') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+                        <li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">{{ __('index.supplier') }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-text-aa"></i>
+                        <span>{{ __('index.customer') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+
+                        <li class="nav-item"><a href="/customer/view" class="nav-link">{{ __('index.customer') }}</a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-item nav-item-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="ph-hand-pointing"></i>
+                        <span>{{ __('index.user') }}</span>
+                    </a>
+                    <ul class="nav-group-sub collapse">
+                        <li class="nav-item"><a href="/users/view" class="nav-link">{{ __('index.user') }}</a></li>
+                    </ul>
+                </li>
+
+                </li>
 
 
 
             </ul>
         </div>
-    {{-- </div> --}}
-</nav>
+
+    </div>
+
+</div>
