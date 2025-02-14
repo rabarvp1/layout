@@ -1,44 +1,43 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<x-slot:header>
+    <x-layout.page-header name="purchase_list" modal="exampleModal" />
+</x-slot:header>
+
+{{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
 
 
-<div class="card mt-4">
-        <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>{{ __('index.purchase')}}</h1>
-            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">{{ __('index.buy_product') }}</button></a>
-        </div>
+<div class="card mt-3">
+
         <div class="card-body">
             <div class="mb-3">
-                <div class="input-group {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-start-pill' : 'rounded-end-pill' }}">
-                    <span class="input-group-text bg-light {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-end-pill' : 'rounded-start-pill' }}">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <input type="text" id="custom-search" class="form-control" placeholder="{{ __('index.search_product_name') }}...">
+                <div class="input-group ">
+
+                    <input type="text" id="custom-search" class="form-control rounded-5" placeholder="{{ __('index.search_product_name') }}...">
                 </div>
 
 
             </div>
-            <table class="table  mx-auto table-hover" id="purchase-table">
-                <thead>
-                    <tr class="table-dark">
-                        <th scope="col">#</th>
-                        <th scope="col">{{ __('index.supplier') }}</th>
-                        <th scope="col">{{ __('index.order_no') }}</th>
-                        <th scope="col">{{ __('index.discount') }}</th>
-                        <th scope="col">{{ __('index.note') }}</th>
-                        <th scope="col">{{ __('index.created_at') }}</th>
-                        <th scope="col">{{ __('index.action') }}</th>
 
 
-                    </tr>
-                </thead>
-                <tbody>
+
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
 
-                </tbody>
-            </table>
+
+                <!-- Table Body -->
+                <div class="datatable-scroll">
+                    <table id="DataTables_Table_1" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="datatable-footer">
+                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+                </div>
+            </div>
 
             <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -93,9 +92,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-
+   
 
 
     <script>
@@ -187,11 +184,9 @@
     </script>
 <script>
     $(document).ready(function() {
-        var table = $('#purchase-table').DataTable({
-            processing: true
-            , serverSide: true
-            ,searching: false
-            , ajax: {
+        var table = $('#DataTables_Table_1').DataTable({
+
+           ajax: {
                     url: '{{ url("/buy") }}',
                     type: 'GET',
                     data: function(d) {
@@ -200,47 +195,38 @@
                 }
             , columns: [{
                     data: 'id'
-                    , name: 'id'
+                    , title: '#'
                 }
                 , {
                     data: 'suplier'
-                    , name: '{{ __('index.supplier') }}'
+                    , title: '{{ __('index.supplier') }}'
                 }
                 , {
                     data: 'order_number'
-                    , name: '{{ __('index.order_no') }}'
+                    , title: '{{ __('index.order_no') }}'
                 }
                 , {
                     data: 'discount'
-                    , name: '{{ __('index.discount') }}'
+                    , title: '{{ __('index.discount') }}'
                 }
                 , {
                     data: 'note'
-                    , name: '{{ __('index.note') }}'
+                    , title: '{{ __('index.note') }}'
                 }
                 , {
                     data: 'created_at'
-                    , name: '{{ __('index.created_at') }}'
+                    , title: '{{ __('index.created_at') }}'
                 }
                 , {
                     data: 'actions'
-                    , name: '{{ __('index.action') }}'
+                    , title: '{{ __('index.action') }}'
                     , orderable: false
                     , searchable: false
 
                 }
 
             ]
-            , dom: '<"top"l>rt<"bottom"ip>'
-            , lengthMenu: [
-                [5, 10, 25, 50, -1]
-                , [5, 10, 25, 50, "All"]
-            ]
-            , pageLength: 5
-            , language: {
-                searchPlaceholder: "Search products..."
-                , lengthMenu: "Show _MENU_ entries"
-            }
+
         });
 
         $(document).on('shown.bs.dropdown', function() {
@@ -253,6 +239,7 @@
     });
 
 </script>
+
 
 
 

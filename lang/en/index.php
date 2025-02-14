@@ -104,6 +104,7 @@
         "next"                   => "Next",
         "prev"                   => "Prev",
 
+        "dashboard"                           => "داشبۆرد",
 
 
     ];

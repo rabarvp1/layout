@@ -35,7 +35,7 @@ Route::middleware(['lang'])->group(function () {
             Route::get('/buy/view', [BuyController::class, 'buy'])->name('buy');
             Route::get('/buy', [BuyController::class, 'buy_index'])->name('buy_index');
             Route::get('/buy/data', [BuyController::class, 'getPurchases'])->name('buy.data');
-            Route::get('/buy/single/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase')->middleware('role:View Purchases');
+            Route::get('/buy/single/view/{id}', [BuyController::class, 'view_purchase'])->name('view_purchase');
             Route::get('/buy/edit/{id}', [BuyController::class, 'edit_purchase'])->name('edit_purchase');
             Route::put('/buy/update/{id}', [BuyController::class, 'purchase_update']);
             Route::post('/buy/insert', [BuyController::class, 'buy_insert']);

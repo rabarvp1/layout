@@ -30,7 +30,6 @@ class SellController extends Controller
     {
 
         DB::transaction(function () use ($request) {
-            $register=Auth::user()->name;
 
             $request->validate([
                 'customer_id.*' => 'required|numeric|exists:customer,id',
@@ -54,7 +53,6 @@ class SellController extends Controller
                 'order_number' => $maxOrderNumber + 1,
                 'discount'     => 0,
                 'created_at'   => now(),
-                'register'     => $register,
             ]);
 
             $totalSum = 0;
@@ -273,32 +271,34 @@ class SellController extends Controller
                     $editLabel   = __('index.edit');
                     $deleteLabel = __('index.delete');
                     $viewlabel   = __('index.view');
+                    $confirmMessage = __('index.confirm_delete_cat');
 
-                    return '
-                    <div class="dropdown text-center">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ' . __('index.action') . '
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="' . $viewUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">' . $viewlabel . '</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
-                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
-                                    ' . csrf_field() . '
-                                    ' . method_field('DELETE') . '
-                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
-                                </form>
-                            </li>
-                        </ul>
+
+
+                    return     '<div class="dropdown text-center">
+                    <a href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                       <i class="ph-list"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                       <li>
+                           <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                               <button type="submit" class="dropdown-item">' . $editLabel . '</button>
+                               </form>
+                               </li>
+                               <li>
+                                   <form action="' . $viewUrl . '" method="GET" style="display: inline;">
+                                       <button type="submit" class="dropdown-item">' . $viewlabel . '</button>
+                                   </form>
+                                 </li>
+                             <li>
+                             <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                                 onsubmit="return confirm(\'' . $confirmMessage . '\')">
+                               ' . csrf_field() . '
+                               ' . method_field('DELETE') . '
+                               <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
+                           </form>
+                       </li>
+                    </ul>
                     </div>';
                 })
                 ->rawColumns(['actions'])
