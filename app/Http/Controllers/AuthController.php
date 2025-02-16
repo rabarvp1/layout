@@ -69,10 +69,10 @@ class AuthController extends Controller
                     $confirmMessage = __('index.confirm_delete_cat');
 
                     return '
-                    <div class="dropdown text-center">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ' . __('index.action') . '
-                        </button>
+                   <div class="dropdown text-center">
+                        <a href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="ph-list"></i>
+                        </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <form action="' . $editUrl . '" method="GET" style="display: inline;">
@@ -81,7 +81,6 @@ class AuthController extends Controller
                             </li>
                             <li>
                                 <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
-                                      onsubmit="return confirm(\'' . $confirmMessage . '\')">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
                                     <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
@@ -145,8 +144,9 @@ class AuthController extends Controller
     {
 
         $users = DB::table('users')->get();
+        $roles = DB::table('name_of_roles')->get();
 
-        return view('login.list_users', compact('users'));
+        return view('login.list_users', compact('users','roles'));
     }
 
     public function edit_user($id)

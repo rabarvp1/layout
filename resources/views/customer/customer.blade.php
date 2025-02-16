@@ -1,34 +1,41 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
+<x-slot:header>
+    <x-layout.page-header name="invoice_list" modal="exampleModal" />
+</x-slot:header>
+
+
     <div class="card mt-4">
-        <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>{{ __('index.customer_list') }}</h1>
-            <button class="btn btn-primary w-70 h-70 rounded-5 " data-bs-toggle="modal" data-bs-target="#exampleModal">+</button></a>
-        </div>
+
         <div class="card-body">
             <div class="mb-3">
-                <div class="input-group {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-start-pill' : 'rounded-end-pill' }}">
-                    <span class="input-group-text bg-light {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-end-pill' : 'rounded-start-pill' }}">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <input type="text" id="custom-search" class="form-control" placeholder="{{ __('index.search_customer_name') }}...">
+                <div class="mb-3">
+                    <div class="input-group ">
+
+                        <input type="text" id="custom-search" class="form-control rounded-5" placeholder="{{ __('index.search_product_name') }}...">
+                    </div>
+
+
                 </div>
-            <table class="table  mx-auto table-hover" id="customer-table">
-                <thead>
-                    <tr class="table-dark">
-                        <th scope="col">#</th>
-                        <th scope="col">{{ __('index.name') }}</th>
-                        <th scope="col">{{ __('index.address') }}</th>
-                        <th scope="col">{{ __('index.phone_no') }}</th>
-                        <th scope="col" class="text-center">{{ __('index.action') }}</th>
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
-                    </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-            </table>
+
+                    <!-- Table Body -->
+                    <div class="datatable-scroll">
+                        <table id="customer-table" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                        </table>
+                    </div>
+
+                    <!-- Table Footer -->
+                    <div class="datatable-footer">
+                        <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                        <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+                    </div>
+                </div>
+
+                
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -83,10 +90,8 @@
     <script>
         $(document).ready(function() {
             var table = $('#customer-table').DataTable({
-                processing: true
-                , serverSide: true
-                ,searching: false
-                ,  ajax: {
+
+                 ajax: {
                     url: '{{ url("/customer") }}',
                     type: 'GET',
                     data: function(d) {
@@ -95,44 +100,37 @@
                 }
                 , columns: [{
                         data: 'id'
-                        , name: 'id'
+                        , title: '#'
                     }
                     , {
                         data: 'name'
-                        , name: 'name'
+                        , title: '{{ __('index.name') }}'
                         , render: function(data, type, row) {
                             return `<a href="/customer/profile/${row.id}" class="text-primary">${data}</a>`;
                         }
                     }
                     , {
                         data: 'address'
-                        , name: 'address'
+                        , title: '{{ __('index.address')}}'
                     }
                     , {
                         data: 'phone_number'
-                        , name: 'phone_number'
+                        , title: '{{ __('index.phone_no') }}'
                     }
 
 
                     , {
                         data: 'actions'
-                        , name: 'actions'
+                        , title: '{{ __('index.action') }}'
+                        , className: 'text-center'
+
                         , orderable: false
                         , searchable: false
 
                     }
 
                 ]
-                , dom: '<"top"l>rt<"bottom"ip>'
-                , lengthMenu: [
-                    [5, 10, 25, 50, -1]
-                    , [5, 10, 25, 50, "All"]
-                ]
-                , pageLength: 5
-                , language: {
-                    searchPlaceholder: "Search products..."
-                    , lengthMenu: "Show _MENU_ entries"
-                }
+
             });
 
             $(document).on('shown.bs.dropdown', function() {

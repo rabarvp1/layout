@@ -1,26 +1,38 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
+<x-slot:header>
+    <x-layout.page-header name="users_list" url="/users/view/create" />
+</x-slot:header>
 
     <div class="card mt-4">
 
-        <div class="card-header  d-flex align-items-center justify-content-between">
-            <h1>{{ __('index.users_list') }}</h1>
-            <a href="/users/view/create">
-                <button class="btn btn-primary w-70 h-70 rounded-5">{{ __('index.add_user')}}</button>
-            </a>
-            
-        </div>
         <div class="card-body">
             <div class="mb-3">
-                <div class="input-group {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-start-pill' : 'rounded-end-pill' }}">
-                    <span class="input-group-text bg-light {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rounded-end-pill' : 'rounded-start-pill' }}">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <input type="text" id="custom-search" class="form-control" placeholder="{{ __('index.search') }}...">
+                <div class="input-group ">
+
+                    <input type="text" id="custom-search" class="form-control rounded-5" placeholder="{{ __('index.search_product_name') }}...">
+                </div>
+
+
+            </div>
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+
+
+
+                <!-- Table Body -->
+                <div class="datatable-scroll">
+                    <table id="users-table" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="datatable-footer">
+                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
                 </div>
             </div>
-            <div class=" mt-2">
+            {{-- <div class=" mt-2">
                 <table id="users-table" class="table ms-auto table-hover mt-2">
                     <thead class="table-dark mt-2">
                         <tr>
@@ -35,16 +47,16 @@
 
 
             </tbody>
-        </div>
+        </div> --}}
+
+
     </div>
     </div>
     <script>
         $(document).ready(function() {
             var table = $('#users-table').DataTable({
-                processing: true
-                , serverSide: true
-                ,searching: false
-                ,ajax: {
+
+                ajax: {
                     url: '{{ url("/users") }}',
                     type: 'GET',
                     data: function(d) {
@@ -54,35 +66,28 @@
                 }
                 , columns: [{
                         data: 'id'
-                        , name: 'id'
+                        , title: '#'
                     }
                     , {
                         data: 'name'
-                        , name: '{{ __('index.name') }}'
+                        , title: '{{ __('index.name') }}'
                     }
                     , {
                         data: 'email'
-                        , name: '{{ __('index.email') }}'
+                        , title: '{{ __('index.email') }}'
                     }
 
                     , {
                         data: 'actions'
-                        , name: '{{ __('index.action') }}'
+                        , title: '{{ __('index.action') }}'
+                        , className: 'text-center'
+
                         , orderable: false
                         , searchable: false
 
                     }
                 ]
-                , dom: '<" top"l>rt<"bottom"ip>'
-                                    , lengthMenu: [
-                                    [5, 10, 25, 50, -1]
-                                    , [5, 10, 25, 50, "All"]
-                                    ]
-                                    , pageLength: 5
-                                    , language: {
-                                    searchPlaceholder: "Search products..."
-                                    , lengthMenu: "Show _MENU_ entries"
-                                    }
+
                                     });
 
                                     $(document).on('shown.bs.dropdown', function() {
@@ -96,7 +101,5 @@
                                     });
 
                                     </script>
-
-
 
 </x-layout.layout>
