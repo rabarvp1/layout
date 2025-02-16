@@ -38,9 +38,14 @@
 
 	<!-- Theme JS files -->
 	<script src="/resources/js/vendor/forms/selects/select2.min.js"></script>
+	<script src="/resources/demo/pages/form_autocomplete.js"></script>
 
 	{{-- <script src="/resources/js/app.js"></script> --}}
 	<script src="/resources/demo/pages/form_select2.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
+
 
     <x-layout.global-datatables />
 

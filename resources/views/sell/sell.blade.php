@@ -56,10 +56,14 @@
                                 @enderror
 
                                 <label>{{ __('index.search_product_name')}}</label>
-                                <input type="text" name="search_product" id="tags" class="form-control">
+                                {{-- <input type="text" name="search_product" id="tags" class="form-control">
                                 @error('search_product')
                                 {{ $message }}
-                                @enderror
+                                @enderror --}}
+                                <div class="mb-4">
+                                    <div class="fw-bold border-bottom pb-2 mb-2">Basic usage</div>
+                                    <input type="search" class="form-control" id="tags" placeholder="Search product">
+                                </div>
 
                                 <table class="table  mx-auto table-hover input">
 

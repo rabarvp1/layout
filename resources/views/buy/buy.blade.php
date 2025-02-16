@@ -5,7 +5,6 @@
     <x-layout.page-header name="purchase_list" modal="exampleModal" />
 </x-slot:header>
 
-{{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
 
 
 <div class="card mt-3">
@@ -43,23 +42,33 @@
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('index.new_purchase_order') }}</h1>
+                            <h1 class="modal-title" id="exampleModalLabel">{{ __('index.new_purchase_order') }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-                            <form id="form-id" action="/buy/insert" class="vstack gap-3" method="POST">
+                            <form id="form-id" action="/buy/insert" class="row g-3" method="POST">
                                 @csrf
 
-                                <label>{{ __('index.supplier') }}</label>
-                                <select name="suplier" id="suplier" class=" form-control ">
+                                <div class="col-12">
+                                    <label>{{ __('index.supplier') }}</label>
 
-                                </select>
+                                    <div class="col-lg-9 mt-2" data-select2-id="247">
+                                        <select  class="form-control" name="suplier" id="suplier"  tabindex="-1"  >
+
+                                        </select>
+                                    </div>
+
+                                </div>
+
 
                                 <label>{{ __('index.note') }}</label>
                                 <input type="text" name="note" class="form-control">
 
                                 <label>{{ __('index.search_product_name') }}</label>
-                                <input type="text" name="search_product" id="search_product" class="form-control">
+                                <div class="mb-4">
+                                    <div class="fw-bold border-bottom pb-2 mb-2">Basic usage</div>
+                                    <input type="search" class="form-control" id="autocomplete_basic" placeholder="Search product">
+                                </div>
 
 
                                 <table class="table  mx-auto table-hover">
@@ -92,7 +101,7 @@
         </div>
     </div>
 
-   
+
 
 
     <script>
@@ -123,7 +132,8 @@
 
     <script>
         $(document).ready(function() {
-            $("#search_product").autocomplete({
+            $("#autocomplete_basic").autocomplete({
+
                 source: function(request, response) {
                     $.ajax({
                         url: "/buy/getData",
@@ -140,7 +150,7 @@
                 , minLength: 0,
                 select: function(event, ui) {
                     $('#productTableBody').append(ui.item.html);
-                    $('#search_product').val('');
+                    $('#autocomplete_basic').val('');
                     return false;
 
                 }

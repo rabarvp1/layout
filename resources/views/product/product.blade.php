@@ -8,12 +8,7 @@
 
     <div class="container mt-1">
         <div class="card shadow-lg">
-            {{-- <div class="card-header text-bg-light  d-flex align-items-center justify-content-between">
-                <h3 class="mb-0">{{ __('index.product_list') }}</h3>
-                <button class="btn btn-primary  rounded-5 px-4 py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    + {{ __('index.add_product') }}
-                </button>
-            </div> --}}
+
             <div class="card-body">
                 <div class="mb-3">
                     <div class="input-group ">
@@ -39,28 +34,14 @@
                         <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
                     </div>
                 </div>
-                {{--
-                <div class="table-responsive mt-2">
-                    <table id="products-table" class="table mx-auto table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>{{ __('index.name') }}</th>
-                <th>{{ __('index.cat') }}</th>
-                <th class="text-center"">{{ __('index.action') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div> --}}
+
             </div>
         </div>
 
         <div class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header text-white bg-info">
+                            <div class="modal-header ">
                                 <h5 class="modal-title" id="exampleModalLabel">{{ __('index.add_product') }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
@@ -74,9 +55,7 @@
 
                                     <div class="col-12">
                                         <label class="form-label fw-bold">{{ __('index.Catigories') }}</label>
-                                        {{-- <select name="cat_id" id="cat_id" class=" form-control ">
 
-                                        </select> --}}
 
                                             <div class="col-lg-9" data-select2-id="247">
                                                 <select  class="form-control" id="cat_id"  tabindex="-1" name="cat_id" >

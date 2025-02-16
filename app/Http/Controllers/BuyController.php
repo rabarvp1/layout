@@ -3,7 +3,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
 
 class BuyController extends Controller
@@ -63,7 +62,7 @@ class BuyController extends Controller
 
             }
 
-             DB::table('purchase')->where('id', $purchaseId)->update([
+            DB::table('purchase')->where('id', $purchaseId)->update([
                 'sum'   => $totalSum,
                 'total' => $totalSum - ($request->discount ?? 0),
             ]);
@@ -87,7 +86,7 @@ class BuyController extends Controller
                     'label' => $item->name,
                     'html'  => sprintf(
                         '<tr>
-                        <td>%s</td>
+                    <td>%s</td>
         <td><input type="number" class="form-control" name="quantity[]" value="1"></td>
 
         <td><input type="number" class="form-control" name="cost[]" value="0"></td>
@@ -102,7 +101,7 @@ class BuyController extends Controller
         <td>
             <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">Delete</button>
         </td>
-    </tr>',
+        </tr>',
                         htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'),
                         htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'),
                         htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
@@ -112,7 +111,6 @@ class BuyController extends Controller
 
         return response()->json($products);
     }
-
 
     // purchase view
 
@@ -222,37 +220,32 @@ class BuyController extends Controller
         return response()->json($products);
     }
 
-
-
     public function buy_index(Request $request)
     {
-
 
         if ($request->ajax()) {
 
             $purchases = DB::table('purchase')
-            ->leftJoin('suplier', 'purchase.suplier_id', '=', 'suplier.id')
-            ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at')
-            ->when($request->search, function ($query, $search) {
-                $query->whereLike('purchase.order_number', "%{$search}%")
-                ->orWhereLike('suplier.name', "%{$search}%");
+                ->leftJoin('suplier', 'purchase.suplier_id', '=', 'suplier.id')
+                ->select('purchase.id', 'suplier.name as suplier', 'purchase.order_number', 'purchase.discount', 'purchase.note', 'purchase.created_at')
+                ->when($request->search, function ($query, $search) {
+                    $query->whereLike('purchase.order_number', "%{$search}%")
+                        ->orWhereLike('suplier.name', "%{$search}%");
 
-            });
-
+                });
 
             return DataTables::of($purchases)
 
                 ->addColumn('actions', function ($row) {
-                    $editUrl   = url('/buy/edit/' . $row->id);
-                    $viewUrl= url('/buy/single/view/' .$row->id);
-                    $deleteUrl = url('/buy/delete/' . $row->id);
+                    $editUrl        = url('/buy/edit/' . $row->id);
+                    $viewUrl        = url('/buy/single/view/' . $row->id);
+                    $deleteUrl      = url('/buy/delete/' . $row->id);
                     $editLabel      = __('index.edit');
                     $deleteLabel    = __('index.delete');
-                    $viewlabel = __('index.view');
+                    $viewlabel      = __('index.view');
                     $confirmMessage = __('index.confirm_delete_cat');
 
-
-                    return     '<div class="dropdown text-center">
+                    return '<div class="dropdown text-center">
                     <a href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
                        <i class="ph-list"></i>
                     </a>
@@ -281,7 +274,6 @@ class BuyController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-
 
         return view('buy.buy');
     }
