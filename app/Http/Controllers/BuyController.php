@@ -87,13 +87,13 @@ class BuyController extends Controller
                     'html'  => sprintf(
                         '<tr>
                     <td>%s</td>
-        <td><input type="number" class="form-control" name="quantity[]" value="1"></td>
+        <td><input type="number" class="form-control text-center" name="quantity[]" value="1"></td>
 
-        <td><input type="number" class="form-control" name="cost[]" value="0"></td>
+        <td><input type="number" class="form-control text-center" name="cost[]" value="0"></td>
 
-        <td><input type="number" class="form-control" name="single_price[]" value="0"></td>
+        <td><input type="number" class="form-control text-center" name="single_price[]" value="0"></td>
 
-        <td><input type="number" class="form-control" name="multi_price[]" value="0"></td>
+        <td><input type="number" class="form-control text-center" name="multi_price[]" value="0"></td>
 
         <input type="hidden" name="product_id[]" value="%s">
 

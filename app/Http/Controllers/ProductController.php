@@ -104,10 +104,10 @@ class ProductController extends Controller
                     $confirmMessage = __('index.confirm_delete_product');
 
                     return '
-                    <div class="dropdown text-center">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ' . __('index.action') . '
-                        </button>
+                   <div class="dropdown text-center">
+                        <a href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="ph-list"></i>
+                        </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <form action="' . $editUrl . '" method="GET" style="display: inline;">

@@ -6,51 +6,73 @@
             @csrf
             @method('PUT')
             <label>{{ __('index.customer') }}</label>
-            <select name="customer_id" id="customer_id" class=" form-control ">
+            <select name="customer_id" id="customer_id" class=" form-control">
                 <option value="{{ $invoices->customer_id }}">{{ $invoices->customer_name }}</option>
 
             </select>
+
+
             <label>{{ __('index.note') }}</label>
             <input type="text" name="note" class="form-control" value="{{$invoices->note }}">
 
 
-            <label>{{ __('index.search_product_name') }}</label>
-            <input type="text" name="search_product" id="tags" class="form-control">
-
-
-            <table class="table  mx-auto table-hover input">
-
-                <thead>
-                    @foreach ($sell_products as $sell_product )
-
-
-                    <tr class="table-dark">
-                        <th scope="col">{{ __('index.product_name') }}</th>
-                        <th scope="col">{{ __('index.quantity') }}</th>
-                        <th scope="col">{{ __('index.selling price') }}</th>
-                        <th scope="col">{{ __('index.action') }}</th>
-
-                    </tr>
-                </thead>
-                <tbody id="productTableBody">
-
-                    <tr>
-                        <td>{{ $sell_product->product_name}}</td>
-                        <td><input type="number" class="form-control" name="quantity[]" value="{{ $sell_product->quantity }}"></td>
-
-                        <td><input type="number" class="form-control" name="sell_price[]" value="{{ $sell_product->sell_price }}"></td>
+            <label>{{ __('index.search_product_name')}}</label>
+            <input type="search" class="form-control mt-2" id="tags" placeholder="{{ __('index.search_product_name')}}">
 
 
 
-                        <input type="hidden" name="product_id[]" value="{{ $sell_product->product_id }}">
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">{{ __('index.delete') }}</button>
-                        </td>
-                    </tr>
-                    @endforeach
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
-                </tbody>
-            </table>
+
+
+                <!-- Table Body -->
+                <div class="datatable-scroll">
+                    <table id="productTableBody" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+
+
+                        <thead>
+                            @foreach ($sell_products as $sell_product )
+
+
+                            <tr class="text-center align-middle">
+                                <th scope="col">{{ __('index.product_name') }}</th>
+                                <th scope="col">{{ __('index.quantity') }}</th>
+                                <th scope="col">{{ __('index.selling price') }}</th>
+                                <th scope="col">{{ __('index.action') }}</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+
+                            <tr >
+                                <td class="text-center">{{ $sell_product->product_name}}</td>
+                                <td><input type="number" class="form-control text-center" name="quantity[]" value="{{ $sell_product->quantity }}"></td>
+
+                                <td><input type="number" class="form-control text-center" name="sell_price[]" value="{{ $sell_product->sell_price }}"></td>
+
+
+
+                                <input type="hidden" name="product_id[]" value="{{ $sell_product->product_id }}">
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">{{ __('index.delete') }}</button>
+                                </td>
+                            </tr>
+                            @endforeach
+
+                        </tbody>
+
+
+
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="datatable-footer">
+                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-primary w-25 ">{{ __('index.updateing') }}</button>
 
         </form>
@@ -101,6 +123,10 @@
                 , minLength: 0,
                 select: function(event, ui) {
                     $('#productTableBody').append(ui.item.html);
+                    $('#productTableBody').val('');
+                    return false;
+
+
                 }
                 , appendTo: "#exampleModal",
             });
@@ -139,6 +165,7 @@
                 , placeholder: 'Search for a Customer'
                 , minimumInputLength: 0
             });
+
         });
 
     </script>

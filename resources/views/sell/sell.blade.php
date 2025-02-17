@@ -55,31 +55,44 @@
                                 {{ $message }}
                                 @enderror
 
-                                <label>{{ __('index.search_product_name')}}</label>
-                                {{-- <input type="text" name="search_product" id="tags" class="form-control">
-                                @error('search_product')
-                                {{ $message }}
-                                @enderror --}}
-                                <div class="mb-4">
-                                    <div class="fw-bold border-bottom pb-2 mb-2">Basic usage</div>
-                                    <input type="search" class="form-control" id="tags" placeholder="Search product">
+
+                                    <label>{{ __('index.search_product_name')}}</label>
+                                    <input type="search" class="form-control mt-2" id="tags" placeholder="{{ __('index.search_product_name')}}">
+
+
+
+
+                                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+
+
+
+                                    <!-- Table Body -->
+                                    <div class="datatable-scroll">
+                                        <table id="productTableBody" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                                            <thead>
+                                                <tr class="text-center align-middle">
+                                                    <th scope="col">{{ __('index.product_name')}}</th>
+                                                    <th scope="col">{{ __('index.quantity') }}</th>
+                                                    <th scope="col">{{ __('index.selling price')}}</th>
+                                                    <th scope="col">{{ __('index.action') }}</th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                            </tbody>
+
+
+                                        </table>
+                                    </div>
+
+                                    <!-- Table Footer -->
+                                    <div class="datatable-footer">
+                                        <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                                        <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+                                    </div>
                                 </div>
-
-                                <table class="table  mx-auto table-hover input">
-
-                                    <thead>
-                                        <tr class="table-dark">
-                                            <th scope="col">{{ __('index.product_name')}}</th>
-                                            <th scope="col">{{ __('index.quantity') }}</th>
-                                            <th scope="col">{{ __('index.selling price')}}</th>
-                                            <th scope="col">{{ __('index.action') }}</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="productTableBody">
-
-                                    </tbody>
-                                </table>
 
                             </form>
                         </div>
@@ -196,42 +209,58 @@
                     url: '{{ url("/sell") }}',
                     type: 'GET',
                     data: function(d) {
-                        // Add custom search term to the request
+
                         d.search = $('#custom-search').val();
                     }
                 }
               ,  columns: [{
                     data: 'id'
                     , title: '#'
+                    ,className:'text-center align-middle'
+
                 }
 
                 , {
                     data: 'order_number'
                     , title: '{{ __('index.order_no')}}'
+                    ,className:'text-center align-middle'
                 }
                 , {
                     data: 'customer'
                     , title: ' {{ __('index.customer')}}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'created_at'
                     , title: '{{ __('index.created_at')}}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'sum'
                     , title: ' {{ __('index.sum') }} '
+                    ,className:'text-center align-middle'
+
+
                 }
                 , {
                     data: 'discount'
                     , title: ' {{ __('index.discount')}}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'total'
                     , title: ' {{ __('index.total')}}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'note'
                     , title: ' {{ __('index.note')}}'
+                    ,className:'text-center align-middle'
+
                 }
 
 
@@ -239,6 +268,8 @@
                 , {
                     data: 'actions'
                     , title: '{{ __('index.action') }}'
+                    ,className:'text-center align-middle'
+
                     , orderable: false
                     , searchable: false
 

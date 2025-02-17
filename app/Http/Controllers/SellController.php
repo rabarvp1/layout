@@ -108,29 +108,32 @@ class SellController extends Controller
             ->limit(10)
             ->get()
             ->map(function ($item) {
-                return [
-                    'value' => $item->name,
-                    'label' => $item->name,
+                     $deleteLabel = __('index.delete');
+                 return [
+                    'value' => htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'),
+                    'label' => htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'),
                     'html'  => sprintf(
-                        '<tr>
-                        <td>%s</td>
-        <td><input type="number" class="form-control" name="quantity[]" value="1"></td>
 
-        <td><input type="number" class="form-control" name="sell_price[]" value="0"></td>
-
-
-
-        <input type="hidden" name="product_id[]" value="%s">
-        <td>
-            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">Delete</button>
-        </td>
-    </tr>',
-                        htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'),
-                        htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'),
-                        htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
+                        '<tr class="text-center">
+                            <td class="align-middle">%s</td>
+                            <td class="align-middle">
+                                <input type="number" class="form-control text-center" name="quantity[]" value="1">
+                            </td>
+                            <td class="align-middle">
+                                <input type="number" class="form-control text-center" name="sell_price[]" value="0">
+                            </td>
+                            <td class="align-middle">
+                                <input type="hidden" name="product_id[]" value="%s">
+                                <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">' . $deleteLabel . '</button>
+                            </td>
+                        </tr>',
+                        htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'), // First %s (Product Name)
+                        htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'), // Second %s (Hidden Product ID)
+                        htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')  // Third %s (Button Data ID)
                     ),
                 ];
             });
+
 
         return response()->json($products);
     }

@@ -1,13 +1,16 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/users'), 'active' => false],
 ]">
+<x-slot:header>
+    <x-layout.page-header name="register"  />
+</x-slot:header>
 
-    <div class="container mt-5">
+    <div class="container mt-2">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="d-flex justify-content-between col-12 bg-white">
                 <div class="bg-white p-4 p-md-5 rounded shadow-sm">
                     <h2 class="text-center mb-4">{{ __('index.register') }}</h2>
-                    <form action="/users/create" method="POST">
+                    <form action="/users/create" method="POST" id="form">
                         @csrf
                         <div class="row gy-3">
 
@@ -61,8 +64,23 @@
                                 </div>
                             </div>
 
+
+
+
+
+
+                </div>
+            </div>
+            {{-- nnnnnnnnnnnnnnnnnnnnn --}}
+            <div class="col-md-6">
+                <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+                    <h2 class="text-center mb-4">{{ __('index.select_role') }}</h2>
+
+                    <div class="row gy-3">
+
+
+
                         <div class="row mt-3">
-                            <label for="role" class="form-label mb-2">{{ __('index.select_role') }}</label>
                             <div class="col-12 mb-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="select_all">
@@ -85,21 +103,24 @@
 
 
 
-                        <div class="col-12">
-                            <div class="d-grid">
-                                <button class="btn btn-primary  w-100 mt-3 mt-sm-3" type="submit">{{ __('index.sign_up')}}</button>
-                            </div>
-                        </div>
-                </div>
+
+                    </div>
+
                 </form>
+
             </div>
+
         </div>
 
-        <div class="col-md-5 d-flex align-items-center justify-content-center">
+        {{-- <div class="col-md-5 d-flex align-items-center justify-content-center">
             <img src="{{ asset('snawbar.png') }}" alt="Logo" class="img-fluid rounded shadow" width="400" height="400">
+        </div> --}}
+       </div>  <div class="col-12">
+        <div class="d-grid">
+            <button class="btn btn-primary  w-100 mt-3 mt-sm-3" type="submit" form="form">{{ __('index.sign_up')}}</button>
         </div>
     </div>
-    </div>
+      </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get 'Select All' checkbox and role checkboxes

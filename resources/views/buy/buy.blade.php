@@ -74,7 +74,7 @@
                                 <table class="table  mx-auto table-hover">
 
                                     <thead>
-                                        <tr class="table-dark">
+                                        <tr class="text-center align-middle">
                                             <th scope="col">{{ __('index.product_name') }}</th>
                                             <th scope="col">{{ __('index.quantity') }}</th>
                                             <th scope="col">{{ __('index.price') }}</th>
@@ -206,30 +206,45 @@
             , columns: [{
                     data: 'id'
                     , title: '#'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'suplier'
                     , title: '{{ __('index.supplier') }}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'order_number'
                     , title: '{{ __('index.order_no') }}'
+                   ,className:'text-center align-middle'
+
+
                 }
                 , {
                     data: 'discount'
                     , title: '{{ __('index.discount') }}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'note'
                     , title: '{{ __('index.note') }}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'created_at'
                     , title: '{{ __('index.created_at') }}'
+                    ,className:'text-center align-middle'
+
                 }
                 , {
                     data: 'actions'
                     , title: '{{ __('index.action') }}'
+                    ,className:'text-center align-middle'
+
                     , orderable: false
                     , searchable: false
 
