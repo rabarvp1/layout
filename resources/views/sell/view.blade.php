@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="card-body text-center table-responsive">
-            <table class="table table-bordered table-sm w-100 table-hover">
+            <table class="table table-bordered table-sm w-100 table-hover w-100">
                 <thead>
                     <tr class="table-secondary">
                         <th class="text-center"><i class="fas fa-sort-numeric-down"></i></th>

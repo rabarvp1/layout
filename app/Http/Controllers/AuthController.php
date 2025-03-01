@@ -14,6 +14,39 @@ class AuthController extends Controller
     {
         return view('login.login');
     }
+    public function test(){
+
+        $data = DB::table('suplier')->orderByDesc('id')->get();
+
+        $table = '
+                    <table class="table  table-hover  ">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone No.</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+        foreach ($data as $item) {
+            $table .= '<tr>
+                            <td>'. $item->id .'</td>
+                            <td>'. $item->name .'</td>
+                            <td>'. $item->address .'</td>
+                            <td>'. $item->phone_number .'</td>
+                        </tr>';
+        }
+
+        $table .= '</tbody>
+                </table>';
+
+        return response()->json(['table' => $table]);
+
+
+           }
+
 
     public function login(Request $request)
     {
@@ -109,10 +142,10 @@ class AuthController extends Controller
     {
 
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'permission' => 'required|array',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|string|email|max:255|unique:users',
+            'password'     => 'required|min:6|confirmed',
+            'permission'   => 'required|array',
             'permission.*' => 'required|string',
         ]);
 
@@ -146,7 +179,7 @@ class AuthController extends Controller
         $users = DB::table('users')->get();
         $roles = DB::table('name_of_roles')->get();
 
-        return view('login.list_users', compact('users','roles'));
+        return view('login.list_users', compact('users', 'roles'));
     }
 
     public function edit_user($id)
@@ -163,7 +196,7 @@ class AuthController extends Controller
             return redirect()->route('edit_user')->with('error', 'User not found.');
         }
 
-        return view('login.edit_user', compact('user', 'roles','userRoles'));
+        return view('login.edit_user', compact('user', 'roles', 'userRoles'));
     }
 
     public function update_user(Request $request, $id)
@@ -204,5 +237,36 @@ class AuthController extends Controller
 
         return redirect('users')->with('success', 'User deleted successfully.');
     }
+    public function change_password()
+    {
+
+        // Auth::loginUsingId($user->id);
+        return view("login.change-password");
+    }
+
+    public function change_password_update(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:3|confirmed',
+        ]);
+
+        $user = Auth::user();
+         // dd($user->password);
+        // if (!Hash::check($request->current_password, $user->password)) {
+        //     return back()->withErrors(['current_password' => 'The current password is incorrect.']);
+        // }
+
+        $user->password = Hash::make($request->new_password);
+        $pass=DB::table('users')->where('id',$user->id)->update([
+            'password'       => $user->password = Hash::make($request->new_password)
+
+        ]);
+        // $user->save();
+
+        return back()->with('status', 'Password successfully changed!');
+    }
 
 }
+
+

@@ -1,9 +1,9 @@
 <x-layout.layout :navItems="[
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
-<x-slot:header>
-    <x-layout.page-header name="users_list" url="/users/view/create" />
-</x-slot:header>
+    <x-slot:header>
+        <x-layout.page-header name="users_list" url="/users/view/create" />
+    </x-slot:header>
 
     <div class="card mt-4">
 
@@ -22,7 +22,7 @@
 
                 <!-- Table Body -->
                 <div class="datatable-scroll">
-                    <table id="users-table" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                    <table id="users-table" class="table datatable-basic dataTable no-footer w-100" aria-describedby="DataTables_Table_0_info">
                     </table>
                 </div>
 
@@ -32,34 +32,18 @@
                     <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
                 </div>
             </div>
-            {{-- <div class=" mt-2">
-                <table id="users-table" class="table ms-auto table-hover mt-2">
-                    <thead class="table-dark mt-2">
-                        <tr>
-                            <th>#</th>
-                            <th>{{ __('index.name') }}</th>
-                            <th>{{ __('index.email') }}</th>
-                            <th class="text-center"">{{ __('index.action') }}</th>
-            </tr>
-
-        </thead>
-        <tbody>
 
 
-            </tbody>
-        </div> --}}
-
-
-    </div>
+        </div>
     </div>
     <script>
         $(document).ready(function() {
             var table = $('#users-table').DataTable({
 
                 ajax: {
-                    url: '{{ url("/users") }}',
-                    type: 'GET',
-                    data: function(d) {
+                    url: '{{ url("/users") }}'
+                    , type: 'GET'
+                    , data: function(d) {
                         // Add custom search term to the request
                         d.search = $('#custom-search').val();
                     }
@@ -88,18 +72,17 @@
                     }
                 ]
 
-                                    });
+            });
 
-                                    $(document).on('shown.bs.dropdown', function() {
-                                    });
+            $(document).on('shown.bs.dropdown', function() {});
 
 
-                                    $('#custom-search').on('keyup', function() {
-                                    // Trigger DataTable search and redraw the table
-                                    table.search(this.value).draw();
-                                    });
-                                    });
+            $('#custom-search').on('keyup', function() {
+                // Trigger DataTable search and redraw the table
+                table.search(this.value).draw();
+            });
+        });
 
-                                    </script>
+    </script>
 
 </x-layout.layout>

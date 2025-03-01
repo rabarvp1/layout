@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\catController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
@@ -17,6 +18,8 @@ Route::middleware(['lang'])->group(function () {
 
         //dashboard route
         Route::get('/', [ProductController::class, 'first'])->name('first');
+
+        Route::get('/test', [AuthController::class, 'test'])->name('test');
 
         // Product Routes
         Route::middleware('role:Product')->group(function () {
@@ -54,6 +57,8 @@ Route::middleware(['lang'])->group(function () {
             Route::put('/users/update/{id}', [AuthController::class, 'update_user'])->name('update_user');
             Route::delete('/users/delete/{id}', [AuthController::class, 'delete'])->name('delete_user');
             Route::get('/users', [AuthController::class, 'user_index'])->name('user_index');
+            Route::get('/users/change-password', [AuthController::class, 'change_password']);
+            Route::post('/users/change_password/update', [AuthController::class, 'change_password_update']);
         });
 
         // Sell Routes

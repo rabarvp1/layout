@@ -79,25 +79,49 @@
                 </div>
             </div>
             <div class="row">
+
+
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer mt-4">
+
+
+
+                    <!-- Table Body -->
+                    <div class="datatable-scroll">
+                        <table id="mytable" class="table datatable-basic dataTable no-footer table-hover w-100" aria-describedby="DataTables_Table_0_info">
+
+                            <thead>
+
+                                <tr role="row" class="">
+                                    <th class="text-center" rowspan="1" colspan="1"><i class="fas fa-sort-numeric-down"></i></th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.Receipt_type') }}</th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.created_at') }}</th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.add') }}</th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.minus') }}</th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.balance') }}</th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.note') }}</th>
+                                    <th class="text-center" rowspan="1" colspan="1">{{ __('index.action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Table Footer -->
+                    <div class="datatable-footer">
+                        <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+                        <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+                    </div>
+                </div>
+
+
                 <div class="col-sm-12">
 
-                    <table id="mytable" id="mytable" class="table  w-100    table-hover" role="grid" aria-describedby="mytable_info" style="width: 1450px;">
-                        <thead>
 
-                            <tr role="row" class="table-dark">
-                                <th class="text-center" rowspan="1" colspan="1"><i class="fas fa-sort-numeric-down"></i></th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.Receipt_type') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.created_at') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.add') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.minus') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.balance') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.note') }}</th>
-                                <th class="text-center" rowspan="1" colspan="1">{{ __('index.action') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
 
-                        </tbody>
+                    <table id="" id="" class="table  w-100    " role="grid" aria-describedby="mytable_info" style="width: 1450px;">
+
                     </table>
                 </div>
             </div>
@@ -121,9 +145,7 @@
             let customerId = "{{ $customer->id }}";
 
             var table = $('#mytable').DataTable({
-                processing: true,
-                serverSide: true,
-                searching: false,
+
                 ajax: {
                     url: '{{ url("/customer/payment/get") }}',
                     type: "GET",

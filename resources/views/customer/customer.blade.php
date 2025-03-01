@@ -2,13 +2,33 @@
     ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
 ]">
 <x-slot:header>
-    <x-layout.page-header name="invoice_list" modal="exampleModal" />
+    <x-layout.page-header name="customer_list" modal="exampleModal" />
 </x-slot:header>
 
 
     <div class="card mt-4">
 
         <div class="card-body">
+            <div class="remove">
+
+                <input type="text" class="input-title">
+                <button id="btn"class="btn">delete</button>
+
+            </div>
+            <div class="remove">
+
+                <input type="text" class="input-title">
+                <button id="btn"class="btn">delete</button>
+
+            </div>
+            <div class="remove">
+
+                <input type="text" class="input-title">
+                <button id="btn"class="btn">delete</button>
+
+            </div>
+
+
             <div class="mb-3">
                 <div class="mb-3">
                     <div class="input-group ">
@@ -24,7 +44,7 @@
 
                     <!-- Table Body -->
                     <div class="datatable-scroll">
-                        <table id="customer-table" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                        <table id="customer-table" class="table datatable-basic dataTable no-footer w-100" aria-describedby="DataTables_Table_0_info">
                         </table>
                     </div>
 
@@ -35,7 +55,7 @@
                     </div>
                 </div>
 
-                
+
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -140,8 +160,48 @@
             $('#custom-search').on('keyup', function() {
                 table.search(this.value).draw();
             });
+
         });
 
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            // $('.page-title').hide();
+            $('.a1').hide();
+            $('.a2').hide();
+
+
+            // $('.a2').delay(2000).fadeIn(2000);
+            $('.page-title').animate( {
+                "margin-right":"+=500px",
+
+
+            },3000,function () {
+                // $('.a1').fadeIn(2000);
+
+            });
+
+            // $('.a1').delay(2000).fadeIn(1000).animate( {
+            //     "margin-left":"+=200px",
+
+
+            // },3000);
+            // $('.a2').animate( {
+            //     "margin-left":"+=500px",
+
+
+            // },3000);
+            $(".btn").click(function(index){
+    //    $(this).remove();
+    console.log(index);
+       $(this).closest('.remove').fadeOut(2000);
+
+        // alert("Input Value: " + value);
+    });
+
+        })
     </script>
 
 

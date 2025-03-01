@@ -17,24 +17,7 @@
 
 
             </div>
-            {{-- <table class="table  mx-auto table-hover" id="suplier-table">
-                <thead>
-                    <tr class="table-dark">
-                        <th scope="col">#</th>
-                        <th scope="col">{{ __('index.name') }}</th>
-                        <th scope="col">{{ __('index.address') }}</th>
-                        <th scope="col">{{ __('index.phone_no') }}</th>
-                        <th scope="col" class="text-center">{{ __('index.action') }}</th>
 
-
-
-                    </tr>
-                </thead>
-                <tbody>
-
-
-                </tbody>
-            </table> --}}
 
             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
@@ -42,7 +25,7 @@
 
                 <!-- Table Body -->
                 <div class="datatable-scroll">
-                    <table id="suplier-table" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                    <table id="suplier-table" class="table datatable-basic dataTable no-footer w-100" aria-describedby="DataTables_Table_0_info">
                     </table>
                 </div>
 
@@ -139,7 +122,7 @@
                         , title: '{{ __('index.action') }}'
                         , className: 'text-center'
 
-                     
+
 
                     }
 

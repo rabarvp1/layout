@@ -57,5 +57,5 @@ $(document).ready(function() {
                 direction: rtl;
             }
         @endif
-        
+
         </style>

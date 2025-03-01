@@ -64,10 +64,9 @@
                                 <label>{{ __('index.note') }}</label>
                                 <input type="text" name="note" class="form-control">
 
-                                <label>{{ __('index.search_product_name') }}</label>
                                 <div class="mb-4">
-                                    <div class="fw-bold border-bottom pb-2 mb-2">Basic usage</div>
-                                    <input type="search" class="form-control" id="autocomplete_basic" placeholder="Search product">
+                                    <label>{{ __('index.search_product_name') }}</label>
+                                    <input type="search" class="form-control mt-2" id="autocomplete_basic" placeholder="Search product">
                                 </div>
 
 

@@ -133,6 +133,10 @@ return [
     ],
 
     'attributes' => [
+        'type'=>'جۆر',
+        'amount'=>'بڕی پارە',
+        'permission'=>'ئەرک',
+        'name' =>'ناو',
         'email' => 'ئیمەیڵ',
         'password' => 'وشەی نهێنی',
         'full_name' => 'ناوی تەواو',

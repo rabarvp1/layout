@@ -1,4 +1,6 @@
-<x-layout.layout>
+<x-layout.layout :navItems="[
+    ['label' => __('index.back'), 'url' => url('/'), 'active' => false],
+]">
 
     <x-slot:header>
         <x-layout.page-header name="Category list" modal="exampleModal" />
@@ -21,7 +23,7 @@
 
                 <!-- Table Body -->
                 <div class="datatable-scroll">
-                    <table id="DataTables_Table_0" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                    <table id="DataTables_Table_0" class="table datatable-basic dataTable no-footer w-100" aria-describedby="DataTables_Table_0_info">
                     </table>
                 </div>
 

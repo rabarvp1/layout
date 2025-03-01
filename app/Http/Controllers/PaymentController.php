@@ -87,29 +87,21 @@ class PaymentController extends Controller
         if (! $request->ajax()) {
             return response()->json(['error' => 'Invalid request'], 400);
         }
-
-        // Ensure supplier ID is provided
-        if (empty($supplierId)) {
-            return response()->json(['error' => 'Supplier ID is missing'], 400);
-        }
-
-
-
         $payments = DB::table('suplier_payment')
-            ->where('suplier_id', $supplierId)
-            ->select('id', 'type', 'created_at', 'amount', 'note');
+        ->where('suplier_id', $supplierId)
+        ->select('id', 'type', 'created_at', 'amount', 'note');
 
-        // Apply date filter if start_date is provided
-        if ($request->has('start_date') && $request->start_date) {
-            $payments->whereDate('created_at', '>=', $request->start_date);
-        }
+    // Apply date filter if start_date is provided
+    if ($request->has('start_date_1') && $request->start_date_1) {
+        $payments->whereDate('created_at', '>=', $request->start_date_1);
+    }
 
-        // Apply date filter if end_date is provided
-        if ($request->has('end_date') && $request->end_date) {
-            $payments->whereDate('created_at', '<=', $request->end_date);
-        }
+    // Apply date filter if end_date is provided
+    if ($request->has('end_date_1') && $request->end_date_1) {
+        $payments->whereDate('created_at', '<=', $request->end_date_1);
+    }
 
-        $payments = $payments->get();
+    $payments = $payments->get();
 
         return DataTables::of($payments)
             ->addIndexColumn()
@@ -131,31 +123,29 @@ class PaymentController extends Controller
                 $deleteUrl   = url('/suplier/delete/' . $row->id);
                 $editLabel   = __('index.edit');
                 $deleteLabel = __('index.delete');
-                return '
-                    <div class="dropdown text-center">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ' . __('index.action') . '
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
-                                </form>
-                            </li>
-
-                            <li>
-                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
-                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
-                                    ' . csrf_field() . '
-                                    ' . method_field('DELETE') . '
-                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>';
+                return '<div class="dropdown text-center">
+                <a href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ph-list"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                            <button type="submit" class="dropdown-item">' . $editLabel . '</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>';
             })
             ->rawColumns(['action'])
             ->make(true);
+
 
     }
 
@@ -276,32 +266,29 @@ class PaymentController extends Controller
             })
 
             ->addColumn('action', function ($row) {
-                $editUrl     = url('/suplier/edit/' . $row->id);
-                $deleteUrl   = url('/suplier/delete/' . $row->id);
+                $editUrl     = url('/customer/edit/' . $row->id);
+                $deleteUrl   = url('/customer/delete/' . $row->id);
                 $editLabel   = __('index.edit');
                 $deleteLabel = __('index.delete');
-                return '
-                    <div class="dropdown text-center">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ' . __('index.action') . '
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form action="' . $editUrl . '" method="GET" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">' . $editLabel . '</button>
-                                </form>
-                            </li>
-
-                            <li>
-                                <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
-                                      onsubmit="return confirm(\'Are you sure you want to delete this product?\')">
-                                    ' . csrf_field() . '
-                                    ' . method_field('DELETE') . '
-                                    <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>';
+                return '<div class="dropdown text-center">
+                <a href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ph-list"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form action="' . $editUrl . '" method="GET" style="display: inline;">
+                            <button type="submit" class="dropdown-item">' . $editLabel . '</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="' . $deleteUrl . '" method="POST" style="display: inline;"
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="submit" class="dropdown-item text-danger">' . $deleteLabel . '</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>';
             })
             ->rawColumns(['action'])
             ->make(true);

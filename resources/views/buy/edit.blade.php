@@ -17,33 +17,51 @@
             <label>{{ __('index.search_product_name') }}</label>
             <input type="text" name="search_product" id="search_product" class="form-control">
 
-            <table class="table mx-auto table-hover">
-                <thead>
-                    <tr class="table-dark">
-                        <th>{{ __('index.product_name') }}</th>
-                        <th>{{ __('index.quantity') }}</th>
-                        <th>{{ __('index.price') }}</th>
-                        <th>{{ __('index.single_price') }}</th>
-                        <th>{{ __('index.multi_price') }}</th>
-                        <th>{{ __('index.action') }}</th>
-                    </tr>
-                </thead>
-                <tbody id="productTableBody">
-                    @foreach ($purchase_product as $purchase)
-                        <tr>
-                            <td>{{ $purchase->product_name }}</td>
-                            <td><input type="number" class="form-control" name="quantity[]" value="{{ $purchase->quantity }}"></td>
-                            <td><input type="number" class="form-control" name="cost[]" value="{{ $purchase->cost }}"></td>
-                            <td><input type="number" class="form-control" name="single_price[]" value="0"></td>
-                            <td><input type="number" class="form-control" name="multi_price[]" value="0"></td>
-                            <input type="hidden" name="product_id[]" value="{{ $purchase->product_id }}">
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $purchase->product_id }}">{{ __('index.delete') }}</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+  <!-- Table Body -->
+  <div class="datatable-scroll">
+    <table id="productTableBody" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+
+        <thead>
+            <tr class="text-center align-middle">
+                <th>{{ __('index.product_name') }}</th>
+                <th>{{ __('index.quantity') }}</th>
+                <th>{{ __('index.price') }}</th>
+                <th>{{ __('index.single_price') }}</th>
+                <th>{{ __('index.multi_price') }}</th>
+                <th>{{ __('index.action') }}</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            @foreach ($purchase_product as $purchase)
+                <tr>
+                    <td class="text-center">{{ $purchase->product_name }}</td>
+                    <td><input type="number" class="form-control text-center" name="quantity[]" value="{{ $purchase->quantity }}"></td>
+                    <td><input type="number" class="form-control text-center" name="cost[]" value="{{ $purchase->cost }}"></td>
+                    <td><input type="number" class="form-control text-center" name="single_price[]" value="0"></td>
+                    <td><input type="number" class="form-control text-center" name="multi_price[]" value="0"></td>
+                    <input type="hidden" name="product_id[]" value="{{ $purchase->product_id }}">
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $purchase->product_id }}">{{ __('index.delete') }}</button>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+
+
+    </table>
+</div>
+
+<!-- Table Footer -->
+<div class="datatable-footer">
+    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div>
+    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"></div>
+</div>
+</div>
+
+
+
+
             <br>
             <button type="submit" class="btn btn-primary w-25">{{ __('index.updateing') }}</button>
         </form>

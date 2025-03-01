@@ -81,6 +81,8 @@ class BuyController extends Controller
             ->limit(10)
             ->get()
             ->map(function ($item) {
+                $deleteLabel = __('index.delete');
+
                 return [
                     'value' => $item->name,
                     'label' => $item->name,
@@ -99,7 +101,7 @@ class BuyController extends Controller
 
 
         <td>
-            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">Delete</button>
+            <button type="button" class="btn btn-danger btn-sm sale-color delete-btn" data-id="%s">' . $deleteLabel . '</button>
         </td>
         </tr>',
                         htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'),

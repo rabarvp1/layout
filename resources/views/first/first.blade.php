@@ -7,7 +7,7 @@
     @endphp
 
 
-    <div class="row mx-5">
+    <div class="row mx-5" id="body">
 
         @if (checkPermission('product'))
 
@@ -106,7 +106,61 @@
         @if (checkPermission('supplier'))
 
         <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
-            <a href="/suplier/view" class=" link-underline link-underline-opacity-0">
+            <a href="/suplier/view" id="btn" class=" link-underline link-underline-opacity-0 supp">
+                <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon product-color mt-3  ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 14 14">
+                        <rect width="14" height="14" fill="none" />
+                        <g fill="none" stroke="#f4efef" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.159 10.89V4.104a1 1 0 0 0-1-1H1.702a1 1 0 0 0-1 1v6.626a1 1 0 0 0 1 1h.75m10.846-3.893H9.16m2.792 3.706h.345a1 1 0 0 0 1-1v-3L11.904 4.69a1 1 0 0 0-.898-.56H9.339" />
+                            <path d="M2.502 11.76a1.396 1.396 0 1 0 2.792 0a1.396 1.396 0 1 0-2.792 0m6.337 0a1.396 1.396 0 1 0 2.792 0a1.396 1.396 0 1 0-2.792 0m-.262-.03H5.64" />
+                        </g>
+                    </svg>
+                    <span class=" mt-2">{{ __('index.supplier') }}</span>
+                </div>
+            </a>
+        </div>
+        @endif
+
+        @if (checkPermission('supplier'))
+
+        <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
+            <a href="/suplier/view" id="btn" class=" link-underline link-underline-opacity-0 supp">
+                <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon product-color mt-3  ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 14 14">
+                        <rect width="14" height="14" fill="none" />
+                        <g fill="none" stroke="#f4efef" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.159 10.89V4.104a1 1 0 0 0-1-1H1.702a1 1 0 0 0-1 1v6.626a1 1 0 0 0 1 1h.75m10.846-3.893H9.16m2.792 3.706h.345a1 1 0 0 0 1-1v-3L11.904 4.69a1 1 0 0 0-.898-.56H9.339" />
+                            <path d="M2.502 11.76a1.396 1.396 0 1 0 2.792 0a1.396 1.396 0 1 0-2.792 0m6.337 0a1.396 1.396 0 1 0 2.792 0a1.396 1.396 0 1 0-2.792 0m-.262-.03H5.64" />
+                        </g>
+                    </svg>
+                    <span class=" mt-2">{{ __('index.supplier') }}</span>
+                </div>
+            </a>
+        </div>
+        @endif
+
+        @if (checkPermission('supplier'))
+
+        <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
+            <a href="/suplier/view" id="btn" class=" link-underline link-underline-opacity-0 supp">
+                <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon product-color mt-3  ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 14 14">
+                        <rect width="14" height="14" fill="none" />
+                        <g fill="none" stroke="#f4efef" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.159 10.89V4.104a1 1 0 0 0-1-1H1.702a1 1 0 0 0-1 1v6.626a1 1 0 0 0 1 1h.75m10.846-3.893H9.16m2.792 3.706h.345a1 1 0 0 0 1-1v-3L11.904 4.69a1 1 0 0 0-.898-.56H9.339" />
+                            <path d="M2.502 11.76a1.396 1.396 0 1 0 2.792 0a1.396 1.396 0 1 0-2.792 0m6.337 0a1.396 1.396 0 1 0 2.792 0a1.396 1.396 0 1 0-2.792 0m-.262-.03H5.64" />
+                        </g>
+                    </svg>
+                    <span class=" mt-2">{{ __('index.supplier') }}</span>
+                </div>
+            </a>
+        </div>
+        @endif
+
+        @if (checkPermission('supplier'))
+
+        <div class="col-xl-3 col-lg-3 col-6 text-center mb-4 ">
+            <a href="/suplier/view" id="btn" class=" link-underline link-underline-opacity-0 supp">
                 <div class=" dash-card d-flex justify-content-between align-items-center card-shadow btn_icon product-color mt-3  ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 14 14">
                         <rect width="14" height="14" fill="none" />
@@ -133,8 +187,42 @@
 
                     {{ __('index.user') }}
                 </div>
-                @endif
+            </a>
+         </div>
 
+         @endif
+
+           <div class="mt-5" id="div-test"></div>
+
+
+         </div>
+
+
+    <script>
+        $(document).ready(function() {
+
+            $(".supp").click(function() {
+                console.log("hello");
+                $(this).attr("href","#");
+
+
+
+                $.ajax({
+
+                    url: "/test"
+                    , type: "GET"
+                    , success: function(response) {
+                        $("#div-test").html(response.table);
+                    }
+                });
+
+
+            });
+
+
+        });
+
+    </script>
 
 
 </x-layout.layout>

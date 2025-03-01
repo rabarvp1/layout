@@ -23,7 +23,7 @@
 
                 <!-- Table Body -->
                 <div class="datatable-scroll">
-                    <table id="DataTables_Table_2" class="table datatable-basic dataTable no-footer" aria-describedby="DataTables_Table_0_info">
+                    <table id="DataTables_Table_2" class="table datatable-basic dataTable no-footer w-100" aria-describedby="DataTables_Table_0_info">
                     </table>
                 </div>
 

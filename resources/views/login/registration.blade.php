@@ -23,7 +23,7 @@
                                             <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12z" />
                                         </svg>
                                     </span>
-                                    <input type="text" class="form-control" name="name" id="name">
+                                    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}">
                                 </div>
                             </div>
 
@@ -35,7 +35,7 @@
                                             <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
                                         </svg>
                                     </span>
-                                    <input type="email" class="form-control" name="email" id="email">
+                                    <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}">
                                 </div>
                             </div>
                             <div class="col-12">
@@ -71,7 +71,7 @@
 
                 </div>
             </div>
-            {{-- nnnnnnnnnnnnnnnnnnnnn --}}
+            {{-- permissions --}}
             <div class="col-md-6">
                 <div class="bg-white p-4 p-md-5 rounded shadow-sm">
                     <h2 class="text-center mb-4">{{ __('index.select_role') }}</h2>
@@ -92,13 +92,17 @@
                             @foreach ($roles as $role)
                             <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input role-checkbox" type="checkbox" name="permission[]" value="{{ $role->prefix }}" id="{{ $role->prefix }}">
+                                    <input class="form-check-input role-checkbox" type="checkbox"
+                                           name="permission[]" value="{{ $role->prefix }}"
+                                           id="{{ $role->prefix }}"
+                                           @if(in_array($role->prefix, old('permission', []))) checked @endif>
                                     <label class="form-check-label" for="{{ $role->prefix }}">
                                         <span class="user-select-none">{{ $role->name }}</span>
                                     </label>
                                 </div>
                             </div>
-                            @endforeach
+                        @endforeach
+
                         </div>
 
 
@@ -149,4 +153,19 @@
             });
         });
     </script>
+
+{{-- <script>
+
+    $(document).ready(function () {
+$('input:checkbox').change(function(){
+
+    var ischecked=$(this).is(":checked");
+    if (ischecked) {
+        $(this).fadeOut(2002);
+
+    }
+});
+
+    })
+</script> --}}
 </x-layout.layout>
